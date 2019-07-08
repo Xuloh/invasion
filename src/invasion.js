@@ -1,3 +1,10 @@
+import $ from "jquery";
+import Victor from "victor";
+import "./style.css";
+
+window.$ = $;
+window.jQuery = $;
+
 class Entity {
     constructor(container, position) {
         if(typeof container === "string")
@@ -181,9 +188,10 @@ function update(dt) {
     gameState.pointer.update(dt);
     gameState.bullets.filter(b => b != null).forEach(b => b.update(dt));
     gameState.enemies.filter(e => e != null).forEach(e => e.update(dt));
-};
+}
 
 $(() => {
+    $('<div id="menu"><h1 id="title" class="menu-item">Invasion</h1><button id="start" class="menu-item">Start</button></div><div id="game" class="inactive"><div id="player" class="entity"></div><div id="pointer" class="entity"></div></div>').appendTo($("body"));
     let player = new Player("#player", {x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
     let pointer = new Pointer("#pointer", {x: window.innerWidth / 2, y: window.innerHeight / 2}, player, 70);
 
