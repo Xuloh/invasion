@@ -1,19 +1,27 @@
 class Entity {
-    constructor(container) {
+    constructor(container, position) {
         if(typeof container === "string")
             this.$container = $(container);
         else if(container instanceof jQuery)
             this.$container = container;
 
-        this.position = {
-            x: 0,
-            y: 0
-        };
+        if(position == null)
+            this.position = {
+                x: 0,
+                y: 0
+            };
+        else
+            this.position = position;
 
         this.center = {
             x: this.$container.width() / 2,
             y: this.$container.height() / 2
         };
+
+        this.$container.css({
+            top: (this.position.y - this.center.y) + "px",
+            left: (this.position.x - this.center.x) + "px"
+        });
     }
 
     update(dt) {
@@ -50,8 +58,8 @@ class Entity {
 }
 
 class Player extends Entity {
-    constructor(container, speed) {
-        super(container);
+    constructor(container, position, speed) {
+        super(container, position);
         this.speed = speed;
     }
 
@@ -94,18 +102,10 @@ class Player extends Entity {
 }
 
 class Pointer extends Entity {
-    constructor(container, player, distanceToPlayer) {
-        super(container);
+    constructor(container, position, player, distanceToPlayer) {
+        super(container, position);
         this.player = player;
         this.distanceToPlayer = distanceToPlayer;
-        let height = this.$container.height();
-        let width = this.$container.width();
-        let playerWidth = this.player.$container.width();
-
-        this.center = {
-            x: width / 2,
-            y: height / 2
-        };
     }
 
     update(dt) {
@@ -126,8 +126,8 @@ function update(dt) {
 };
 
 $(() => {
-    let player = new Player("#player", 1).setPosition({x: window.innerWidth / 2, y: window.innerHeight / 2});
-    let pointer = new Pointer("#pointer", player, 70);
+    let player = new Player("#player", {x: window.innerWidth / 2, y: window.innerHeight / 2}, 1);
+    let pointer = new Pointer("#pointer", {x: window.innerWidth / 2, y: window.innerHeight / 2}, player, 70);
     window.gameState = {
         player: player,
         pointer: pointer,
@@ -145,13 +145,17 @@ $(() => {
         }
     };
 
-    let lastUpdate = Date.now();
-    let mainLoop = setInterval(() => {
-        let now = Date.now();
-        let dt = now - lastUpdate;
-        lastUpdate = now;
-        update(dt);
-    }, 0);
+    $("#start").on("click", (event) => {
+        $("#menu").hide();
+        $("#game").removeClass("inactive");
+        let lastUpdate = Date.now();
+        let mainLoop = setInterval(() => {
+            let now = Date.now();
+            let dt = now - lastUpdate;
+            lastUpdate = now;
+            update(dt);
+        }, 0);
+    });
 
     // *** key handlers to update key state ***
     $(window).on("keydown", (event) => {
@@ -209,4 +213,3 @@ $(() => {
         };
     });
 });
-
