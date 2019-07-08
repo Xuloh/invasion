@@ -59,11 +59,30 @@ class Player extends Entity {
     constructor(container, position, speed) {
         super(container, position);
         this.speed = speed;
+        this.fireCooldown = true;
     }
 
     update(dt) {
         super.update(dt);
         this.movePlayer(dt);
+
+        if(this.fireCooldown && gameState.mouse.buttons.left === "down") {
+            let container = $('<div class="bullet entity"/>');
+            container.appendTo(gameState.$container);
+            let bullet = new Bullet(container, this.position, Victor.fromObject(gameState.mouse.position).subtract(this.position), 800);
+            let idx = gameState.bullets.indexOf(null);
+            if(idx >= 0) {
+                bullet.idx = idx;
+                gameState.bullets[idx] = bullet;
+            }
+            else {
+                idx = gameState.bullets.push(bullet);
+                bullet.idx = idx - 1;
+            }
+
+            this.fireCooldown = false;
+            setTimeout(() => this.fireCooldown = true, 500);
+        }
     }
 
     movePlayer(dt) {
@@ -89,14 +108,6 @@ class Player extends Entity {
         else if(x + this.center.x > window.innerWidth)
             this.position.x = window.innerWidth - this.center.x;
     }
-
-    computeMouseAngle() {
-        let mouseVec = {
-            x: (gameState.mouse.position.x - this.position.x) / window.innerWidth,
-            y: (gameState.mouse.position.y - this.position.y) / window.innerHeight
-        };
-
-    }
 }
 
 class Pointer extends Entity {
@@ -111,7 +122,6 @@ class Pointer extends Entity {
         let mousePos = Victor.fromObject(gameState.mouse.position);
         let playerPos = this.player.position;
         let playerToMouse = mousePos.distance(playerPos);
-        //let playerToMouse = Math.sqrt(Math.pow(mousePos.x - playerPos.x, 2) + Math.pow(mousePos.y - playerPos.y, 2));
         this.setPosition({
             x: playerPos.x + (mousePos.x - playerPos.x) * this.distanceToPlayer / playerToMouse,
             y: playerPos.y + (mousePos.y - playerPos.y) * this.distanceToPlayer / playerToMouse
@@ -119,17 +129,48 @@ class Pointer extends Entity {
     }
 }
 
+class Bullet extends Entity {
+    constructor(container, position, direction, speed) {
+        super(container, position);
+        this.speed = speed;
+
+        if(direction == null)
+            this.direction = new Victor(0, 0);
+        else if(typeof direction === "object")
+            this.direction = Victor.fromObject(direction);
+        else if(Array.isArray(direction))
+            this.direction = Victor.fromArray(direction);
+        else
+            throw TypeError("direction should either be an array or an object with a x and y property");
+
+        this.direction.norm();
+    }
+
+    update(dt) {
+        super.update(dt);
+        if(this.position.x >= 0 && this.position.x <= window.innerWidth && this.position.y >= 0 && this.position.y <= window.innerHeight)
+            this.move(this.direction.clone().multiply(new Victor(this.speed, this.speed)).multiply(new Victor(dt, dt)));
+        else {
+            this.$container.remove();
+            gameState.bullets[this.idx] = null;
+        }
+    }
+}
+
 function update(dt) {
     gameState.player.update(dt);
     gameState.pointer.update(dt);
+    gameState.bullets.filter(b => b != null).forEach(b => b.update(dt));
 };
 
 $(() => {
-    let player = new Player("#player", {x: window.innerWidth / 2, y: window.innerHeight / 2}, 1);
+    let player = new Player("#player", {x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
     let pointer = new Pointer("#pointer", {x: window.innerWidth / 2, y: window.innerHeight / 2}, player, 70);
     window.gameState = {
+        $container: $("#game"),
         player: player,
         pointer: pointer,
+        bullets: [],
         keyState: {
             up: "up",
             down: "up",
@@ -140,24 +181,28 @@ $(() => {
             position: {
                 x: 0,
                 y: 0
+            },
+            buttons: {
+                left: "up"
             }
         }
     };
 
-    $("#start").on("click", (event) => {
+    $("#start").on("click", event => {
         $("#menu").hide();
         $("#game").removeClass("inactive");
-        let lastUpdate = Date.now();
-        let mainLoop = setInterval(() => {
-            let now = Date.now();
-            let dt = now - lastUpdate;
+        let lastUpdate = window.performance.now();
+        let main = now => {
+            window.requestAnimationFrame(main);
+            let dt = (now - lastUpdate) / 1000;
             lastUpdate = now;
             update(dt);
-        }, 0);
+        };
+        main(lastUpdate);
     });
 
     // *** key handlers to update key state ***
-    $(window).on("keydown", (event) => {
+    $(window).on("keydown", event => {
         switch(event.originalEvent.code) {
             case "KeyW":
                 event.preventDefault();
@@ -180,7 +225,7 @@ $(() => {
         }
     });
 
-    $(window).on("keyup", (event) => {
+    $(window).on("keyup", event => {
         switch(event.originalEvent.code) {
             case "KeyW":
                 event.preventDefault();
@@ -205,10 +250,24 @@ $(() => {
     // *** *** ***
 
     // *** mouse handler to update mouse state
-    $(window).on("mousemove", (event) => {
+    $(window).on("mousemove", event => {
         gameState.mouse.position = {
             x: event.originalEvent.clientX,
             y: event.originalEvent.clientY
         };
+    });
+
+    $(window).on("mousedown", event => {
+        if(event.originalEvent.button === 0) {
+            event.preventDefault();
+            gameState.mouse.buttons.left = "down";
+        }
+    });
+
+    $(window).on("mouseup", event => {
+        if(event.originalEvent.button === 0) {
+            event.preventDefault();
+            gameState.mouse.buttons.left = "up";
+        }
     });
 });
