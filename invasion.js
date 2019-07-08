@@ -7,10 +7,10 @@ class Entity {
 
         if(position == null)
             this.position = new Victor(0, 0);
-        else if(typeof position === "object")
-            this.position = Victor.fromObject(position);
         else if(Array.isArray(position))
             this.position = Victor.fromArray(position);
+        else if(typeof position === "object")
+            this.position = Victor.fromObject(position);
         else
             throw TypeError("position should either be an array or an object with a x and y property");
 
