@@ -6,53 +6,51 @@ class Entity {
             this.$container = container;
 
         if(position == null)
-            this.position = {
-                x: 0,
-                y: 0
-            };
+            this.position = new Victor(0, 0);
+        else if(typeof position === "object")
+            this.position = Victor.fromObject(position);
+        else if(Array.isArray(position))
+            this.position = Victor.fromArray(position);
         else
-            this.position = position;
+            throw TypeError("position should either be an array or an object with a x and y property");
 
-        this.center = {
-            x: this.$container.width() / 2,
-            y: this.$container.height() / 2
-        };
+        this.center = new Victor(this.$container.width() / 2, this.$container.height() / 2);
 
         this.$container.css({
-            top: (this.position.y - this.center.y) + "px",
-            left: (this.position.x - this.center.x) + "px"
+            top: Math.round(this.position.y - this.center.y) + "px",
+            left: Math.round(this.position.x - this.center.x) + "px"
         });
     }
 
     update(dt) {
         this.$container.css({
-            top: (this.position.y - this.center.y) + "px",
-            left: (this.position.x - this.center.x) + "px"
+            top: Math.round(this.position.y - this.center.y) + "px",
+            left: Math.round(this.position.x - this.center.x) + "px"
         });
     }
 
     move(movement) {
-        if(typeof movement !== "object" || movement.x == null && movement.y == null)
-            throw TypeError("movement should be an object with a top and a left property");
+        if(typeof movement === "object")
+            movement = Victor.fromObject(movement);
+        else if(Array.isArray(movement))
+            movement = Victor.fromArray(movement);
+        else
+            throw TypeError("movement should either be an array or an object with a x and y property");
 
-        if(movement.x == null)
-            movement.x = 0;
-        if(movement.y == null)
-            movement.y = 0;
-
-        this.position = {
-            x: this.position.x + movement.x,
-            y: this.position.y + movement.y
-        };
+        this.position.add(movement);
 
         return this;
     }
 
     setPosition(position) {
-        this.position = {
-            x: position.x,
-            y: position.y
-        };
+        if(typeof position === "object")
+            position = Victor.fromObject(position);
+        else if(Array.isArray(position))
+            position = Victor.fromArray(position);
+        else
+            throw TypeError("position should either be an array or an object with a x and y property");
+
+        this.position.copy(position);
         return this;
     }
 }
@@ -110,9 +108,10 @@ class Pointer extends Entity {
 
     update(dt) {
         super.update(dt);
-        let mousePos = gameState.mouse.position;
+        let mousePos = Victor.fromObject(gameState.mouse.position);
         let playerPos = this.player.position;
-        let playerToMouse = Math.sqrt(Math.pow(mousePos.x - playerPos.x, 2) + Math.pow(mousePos.y - playerPos.y, 2));
+        let playerToMouse = mousePos.distance(playerPos);
+        //let playerToMouse = Math.sqrt(Math.pow(mousePos.x - playerPos.x, 2) + Math.pow(mousePos.y - playerPos.y, 2));
         this.setPosition({
             x: playerPos.x + (mousePos.x - playerPos.x) * this.distanceToPlayer / playerToMouse,
             y: playerPos.y + (mousePos.y - playerPos.y) * this.distanceToPlayer / playerToMouse
