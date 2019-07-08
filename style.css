@@ -1,0 +1,32 @@
+body {
+    background-color: #eee;
+    box-sizing: border-box;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    padding: 0;
+    position: relative;
+    width: 100vw;
+}
+
+.entity {
+    left: 0px;
+    position: absolute;
+    top: 0px;
+}
+
+#player {
+    background-color: hsl(120, 20%, 50%);
+    border: 1px solid #000;
+    border-radius: 50px;
+    height: 50px;
+    width: 50px;
+}
+
+#pointer {
+    background-color: #333;
+    border-radius: 50px;
+    height: 10px;
+    width: 10px;
+}
+
