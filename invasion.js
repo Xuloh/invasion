@@ -157,20 +157,46 @@ class Bullet extends Entity {
     }
 }
 
+class Enemy extends Entity {
+    constructor(container, position, speed) {
+        super(container, position);
+        this.speed = speed;
+    }
+
+    update(dt) {
+        super.update(dt);
+        this.move(
+            gameState.player.position
+                .clone()
+                .subtract(this.position)
+                .norm()
+                .multiply(new Victor(this.speed, this.speed))
+                .multiply(new Victor(dt, dt))
+        );
+    }
+}
+
 function update(dt) {
     gameState.player.update(dt);
     gameState.pointer.update(dt);
     gameState.bullets.filter(b => b != null).forEach(b => b.update(dt));
+    gameState.enemies.filter(e => e != null).forEach(e => e.update(dt));
 };
 
 $(() => {
     let player = new Player("#player", {x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
     let pointer = new Pointer("#pointer", {x: window.innerWidth / 2, y: window.innerHeight / 2}, player, 70);
+
+    let enemy1 = $('<div class="enemy entity"/>');
+    let enemy2 = $('<div class="enemy entity"/>');
+    let enemy3 = $('<div class="enemy entity"/>');
+
     window.gameState = {
         $container: $("#game"),
         player: player,
         pointer: pointer,
         bullets: [],
+        enemies: [],
         keyState: {
             up: "up",
             down: "up",
@@ -187,6 +213,16 @@ $(() => {
             }
         }
     };
+
+    enemy1.appendTo(gameState.$container);
+    enemy2.appendTo(gameState.$container);
+    enemy3.appendTo(gameState.$container);
+
+    gameState.enemies = [
+        new Enemy(enemy1, [100, 100], 300),
+        new Enemy(enemy2, [100, window.innerHeight - 100], 300),
+        new Enemy(enemy3, [window.innerWidth - 100, window.innerHeight / 2], 300)
+    ];
 
     $("#start").on("click", event => {
         $("#menu").hide();
