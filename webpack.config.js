@@ -78,7 +78,7 @@ module.exports = {
     devServer: {
         index: "index.html",
         contentBase: DIST_DIR,
-        port: 8080,
+        port: 12345,
         compress: true,
         historyApiFallback: true
     }
