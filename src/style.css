@@ -28,30 +28,10 @@ body {
     z-index: 100;
 }
 
-.menu-item {
-    margin: 50px 0;
-}
-
 #title {
     font-size: 50px;
     margin: 0;
     padding: 0;
-}
-
-#start {
-    background-color: #ddd;
-    border: solid 1px #ddd;
-    border-radius: 5px;
-    font-family: inherit;
-    font-size: 30px;
-    padding: 3px 40px;
-    transition: background-color 0.5s, border-color 0.5s, border-radius 0.5s;
-}
-
-#start:hover {
-    background-color: #eee;
-    border-color: #000;
-    border-radius: 10px;
 }
 
 #game {
@@ -65,9 +45,9 @@ body {
 }
 
 .entity {
-    left: 0px;
+    left: 0;
     position: absolute;
-    top: 0px;
+    top: 0;
 }
 
 #player {

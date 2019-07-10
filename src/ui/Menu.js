@@ -7,7 +7,7 @@ export default class Menu extends React.Component {
         return (
             <div id="menu">
                 <Typography variant="h1" gutterBottom>Invasion</Typography>
-                <Button variant="contained" color="primary">
+                <Button id="start" variant="contained" color="primary">
                     Start
                 </Button>
             </div>
