@@ -11,7 +11,7 @@ const loaders = {
         options: {
             presets: [
                 "@babel/preset-env",
-                //"@babel/preset-react"
+                "@babel/preset-react"
             ],
             cacheDirectory: true
         }
@@ -72,7 +72,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: "Invasion"
+            template: "src/index.html"
         })
     ],
     devServer: {

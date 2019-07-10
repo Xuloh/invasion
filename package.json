@@ -30,7 +30,10 @@
     "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.0.0",
     "jquery": "^3.4.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "victor": "^1.1.0"
   }
 }

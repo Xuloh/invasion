@@ -1,11 +1,17 @@
 import $ from "jquery";
 import Victor from "victor";
-import "./style.css";
+import React from "react";
+import ReactDOM from "react-dom";
+
+import App from "./ui/App.js";
+
 import Bullet from "./game/Bullet.js";
 import Enemy from "./game/Enemy.js";
 import Entity from "./game/Entity.js";
 import Player from "./game/Player.js";
 import Pointer from "./game/Pointer.js";
+
+import "./style.css";
 
 window.$ = $;
 window.jQuery = $;
@@ -17,6 +23,11 @@ function update(dt) {
     gameState.enemies.filter(e => e != null).forEach(e => e.update(dt));
 }
 
+$(() => {
+    ReactDOM.render(<App/>, document.getElementById("app"));
+});
+
+/*
 $(() => {
     $('<div id="menu"><h1 id="title" class="menu-item">Invasion</h1><button id="start" class="menu-item">Start</button></div><div id="game" class="inactive"><div id="player" class="entity"></div><div id="pointer" class="entity"></div></div>').appendTo($("body"));
     let player = new Player("#player", {x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
@@ -142,3 +153,4 @@ $(() => {
         }
     });
 });
+*/
