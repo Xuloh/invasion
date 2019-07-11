@@ -48,6 +48,11 @@ function keyUpHandler(event) {
             event.preventDefault();
             gameState.keyState.right = "up";
             break;
+        case "Escape":
+            event.preventDefault();
+            window.cancelAnimationFrame(gameState.stopMain);
+            $("#menu").show();
+            $("#game").addClass("inactive");
         default:
             break;
     }

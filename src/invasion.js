@@ -76,7 +76,7 @@ $(() => {
         $("#game").removeClass("inactive");
         let lastUpdate = window.performance.now();
         let main = now => {
-            window.requestAnimationFrame(main);
+            gameState.stopMain = window.requestAnimationFrame(main);
             let dt = (now - lastUpdate) / 1000;
             lastUpdate = now;
             update(dt);
