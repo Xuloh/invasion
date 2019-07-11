@@ -16,6 +16,9 @@ const loaders = {
             cacheDirectory: true
         }
     },
+    eslintLoader: {
+        loader: "eslint-loader"
+    },
     styleLoader: {
         loader: "style-loader",
         options: {
@@ -45,7 +48,10 @@ module.exports = {
             {
                 test: /\.jsx?/,
                 exclude: /node_modules/,
-                use: loaders.babelLoader
+                use: [
+                    loaders.babelLoader,
+                    //loaders.eslintLoader
+                ]
             },
             {
                 test: /\.css/,
@@ -81,5 +87,8 @@ module.exports = {
         port: 12345,
         compress: true,
         historyApiFallback: true
+    },
+    performance: {
+        hints: false
     }
 };
