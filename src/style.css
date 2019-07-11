@@ -30,9 +30,17 @@ body {
 }
 
 #title {
-    font-size: 50px;
-    margin: 0;
-    padding: 0;
+    animation: menu_appear 0.7s ease-in-out 0.2s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    position: relative;
+}
+
+#start {
+    animation: menu_appear 0.7s ease-in-out 0.5s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    position: relative;
 }
 
 #game.inactive {
@@ -73,4 +81,16 @@ body {
     border-radius: 50px;
     height: 50px;
     width: 50px;
+}
+
+@keyframes menu_appear {
+    from {
+        opacity: 0;
+        bottom: -50px;
+    }
+
+    to {
+        opacity: 1;
+        bottom: 0;
+    }
 }
