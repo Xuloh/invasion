@@ -21,6 +21,9 @@ body {
     flex-direction: column;
 
     background-color: rgba(255, 255, 255, 0.5);
+    animation: menu_bg_color 0.7s linear;
+    animation-fill-mode: forwards;
+
     font-family: "Ubuntu", sans-serif;
     height: 100%;
     padding-top: 20vh;
@@ -82,6 +85,16 @@ body {
     border-radius: 50px;
     height: 50px;
     width: 50px;
+}
+
+@keyframes menu_bg_color {
+    from {
+        background-color: rgba(255, 255, 255, 0);
+    }
+
+    to {
+        background-color: rgba(255, 255, 255, 0.5)
+    }
 }
 
 @keyframes menu_appear {
