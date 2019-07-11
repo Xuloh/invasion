@@ -2,7 +2,7 @@ import $ from "jquery";
 import React from "react";
 import ReactDOM from "react-dom";
 
-import App from "./ui/App.js";
+import UI from "./ui/UI.js";
 
 import Enemy from "./game/Enemy.js";
 import Player from "./game/Player.js";
@@ -30,7 +30,7 @@ function update(dt) {
 }
 
 $(() => {
-    ReactDOM.render(<App/>, document.getElementById("app"));
+    ReactDOM.render(<UI/>, document.getElementById("ui"));
     let player = new Player("#player", {x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
     let pointer = new Pointer("#pointer", {x: window.innerWidth / 2, y: window.innerHeight / 2}, player, 70);
 

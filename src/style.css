@@ -1,9 +1,4 @@
 body {
-    margin: 0;
-    padding: 0;
-}
-
-#app {
     background-color: #eee;
     box-sizing: border-box;
     height: 100vh;
@@ -12,6 +7,12 @@ body {
     padding: 0;
     position: relative;
     width: 100vw;
+}
+
+#ui, #game {
+    height: 100%;
+    position: absolute;
+    width: 100%;
 }
 
 #menu {
@@ -32,12 +33,6 @@ body {
     font-size: 50px;
     margin: 0;
     padding: 0;
-}
-
-#game {
-    height: 100%;
-    position: absolute;
-    width: 100%;
 }
 
 #game.inactive {
