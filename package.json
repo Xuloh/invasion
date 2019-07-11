@@ -5,7 +5,8 @@
   "main": "src/invasion.js",
   "scripts": {
     "watch": "webpack-dev-server -d --hot",
-    "build": "webpack -p"
+    "build": "webpack -p",
+    "build-dev": "webpack -d"
   },
   "repository": {
     "type": "git",
