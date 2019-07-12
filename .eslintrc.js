@@ -22,6 +22,8 @@ module.exports = {
     },
     plugins: [
         "react"
+        "react",
+        "no-loops",
     ],
     settings: {
         react: {
@@ -29,6 +31,7 @@ module.exports = {
         }
     },
     rules: {
+        "no-loops/no-loops": "warn",
         "quotes": [
             "error",
             "double",
