@@ -53,6 +53,7 @@ function keyUpHandler(event) {
             window.cancelAnimationFrame(gameState.stopMain);
             $("#menu").show();
             $("#game").addClass("inactive");
+            break;
         default:
             break;
     }

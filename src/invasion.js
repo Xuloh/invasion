@@ -9,7 +9,7 @@ import Player from "./game/Player.js";
 import Pointer from "./game/Pointer.js";
 
 import "./style.css";
-import { keyDownHandler, keyUpHandler, mouseDownHandler, mouseMoveHandler, mouseUpHandler } from "./event_handlers";
+import {keyDownHandler, keyUpHandler, mouseDownHandler, mouseMoveHandler, mouseUpHandler} from "./event_handlers";
 
 window.$ = $;
 window.jQuery = $;
@@ -31,12 +31,12 @@ function update(dt) {
 
 $(() => {
     ReactDOM.render(<UI/>, document.getElementById("ui"));
-    let player = new Player("#player", {x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
-    let pointer = new Pointer("#pointer", {x: window.innerWidth / 2, y: window.innerHeight / 2}, player, 70);
+    const player = new Player("#player", {x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
+    const pointer = new Pointer("#pointer", {x: window.innerWidth / 2, y: window.innerHeight / 2}, player, 70);
 
-    let enemy1 = $('<div class="enemy entity"/>');
-    let enemy2 = $('<div class="enemy entity"/>');
-    let enemy3 = $('<div class="enemy entity"/>');
+    const enemy1 = $('<div class="enemy entity"/>');
+    const enemy2 = $('<div class="enemy entity"/>');
+    const enemy3 = $('<div class="enemy entity"/>');
 
     window.gameState = {
         $container: $("#game"),
@@ -75,9 +75,9 @@ $(() => {
         $("#menu").hide();
         $("#game").removeClass("inactive");
         let lastUpdate = window.performance.now();
-        let main = now => {
+        const main = now => {
             gameState.stopMain = window.requestAnimationFrame(main);
-            let dt = (now - lastUpdate) / 1000;
+            const dt = (now - lastUpdate) / 1000;
             lastUpdate = now;
             update(dt);
         };

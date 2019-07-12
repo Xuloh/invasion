@@ -24,7 +24,7 @@ export default class Entity {
         });
     }
 
-    update(dt) {
+    update() {
         this.$container.css({
             top: Math.round(this.position.y - this.center.y) + "px",
             left: Math.round(this.position.x - this.center.x) + "px"

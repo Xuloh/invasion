@@ -14,9 +14,9 @@ export default class Player extends Entity {
         this.movePlayer(dt);
 
         if(this.fireCooldown && gameState.mouse.buttons.left === "down") {
-            let container = $('<div class="bullet entity"/>');
+            const container = $('<div class="bullet entity"/>');
             container.appendTo(gameState.$container);
-            let bullet = new Bullet(container, this.position, Victor.fromObject(gameState.mouse.position).subtract(this.position), 800);
+            const bullet = new Bullet(container, this.position, Victor.fromObject(gameState.mouse.position).subtract(this.position), 800);
             let idx = gameState.bullets.indexOf(null);
             if(idx >= 0) {
                 bullet.idx = idx;
@@ -42,8 +42,8 @@ export default class Player extends Entity {
         if(gameState.keyState.right === "down")
             this.move({x: this.speed * dt});
 
-        let x = this.position.x;
-        let y = this.position.y;
+        const x = this.position.x;
+        const y = this.position.y;
 
         if(y - this.center.y < 0)
             this.position.y = 0 + this.center.y;

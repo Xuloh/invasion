@@ -20,8 +20,14 @@ export default class Bullet extends Entity {
 
     update(dt) {
         super.update(dt);
-        if(this.position.x >= 0 && this.position.x <= window.innerWidth && this.position.y >= 0 && this.position.y <= window.innerHeight)
-            this.move(this.direction.clone().multiply(new Victor(this.speed, this.speed)).multiply(new Victor(dt, dt)));
+        if(this.position.x >= 0 && this.position.x <= window.innerWidth && this.position.y >= 0 && this.position.y <= window.innerHeight) {
+            this.move(
+                this.direction
+                    .clone()
+                    .multiply(new Victor(this.speed, this.speed))
+                    .multiply(new Victor(dt, dt))
+            );
+        }
         else {
             this.$container.remove();
             gameState.bullets[this.idx] = null;

@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const eslint = require("eslint");
 
 const DIST_DIR = path.resolve(__dirname, "dist");
 const SRC_DIR = path.resolve(__dirname, "src");
@@ -19,8 +20,8 @@ const loaders = {
     eslintLoader: {
         loader: "eslint-loader",
         options: {
-            cache: true,
-            formatter: "codeframe",
+            cache: false,
+            formatter: eslint.CLIEngine.getFormatter("unix"),
             emitError: true,
             emitWarning: true,
             failOnWarning: false,
