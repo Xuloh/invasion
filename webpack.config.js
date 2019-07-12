@@ -17,7 +17,15 @@ const loaders = {
         }
     },
     eslintLoader: {
-        loader: "eslint-loader"
+        loader: "eslint-loader",
+        options: {
+            cache: true,
+            formatter: "codeframe",
+            emitError: true,
+            emitWarning: true,
+            failOnWarning: false,
+            failOnError: true
+        }
     },
     styleLoader: {
         loader: "style-loader",
@@ -50,7 +58,7 @@ module.exports = {
                 exclude: /node_modules/,
                 use: [
                     loaders.babelLoader,
-                    //loaders.eslintLoader
+                    loaders.eslintLoader
                 ]
             },
             {
