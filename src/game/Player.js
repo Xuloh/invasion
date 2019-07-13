@@ -3,10 +3,11 @@ import Bullet from "./Bullet.js";
 import Entity from "./Entity.js";
 
 export default class Player extends Entity {
-    constructor(container, position, speed) {
-        super(container, position);
+    constructor(position, speed) {
+        super(position, {width: 50, height: 50});
         this.speed = speed;
         this.fireCooldown = true;
+        this.$container.addClass("player");
     }
 
     update(dt) {

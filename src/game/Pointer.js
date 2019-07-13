@@ -2,10 +2,11 @@ import Victor from "victor";
 import Entity from "./Entity.js";
 
 export default class Pointer extends Entity {
-    constructor(container, position, player, distanceToPlayer) {
-        super(container, position);
+    constructor(position, player, distanceToPlayer) {
+        super(position, {width: 10, height: 10});
         this.player = player;
         this.distanceToPlayer = distanceToPlayer;
+        this.$container.addClass("pointer");
     }
 
     update(dt) {

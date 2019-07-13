@@ -1,12 +1,7 @@
 import Victor from "victor";
 
 export default class Entity {
-    constructor(container, position) {
-        if(typeof container === "string")
-            this.$container = $(container);
-        else if(container instanceof jQuery)
-            this.$container = container;
-
+    constructor(position, size) {
         if(position == null)
             this.position = new Victor(0, 0);
         else if(Array.isArray(position))
@@ -14,13 +9,20 @@ export default class Entity {
         else if(typeof position === "object")
             this.position = Victor.fromObject(position);
         else
-            throw TypeError("position should either be an array or an object with a x and y property");
+            throw TypeError("position should either be an array or an object with an x and y property");
 
-        this.center = new Victor(this.$container.width() / 2, this.$container.height() / 2);
+        if(size == null || !("width" in size) || !("height" in size))
+            throw new TypeError("size should be an object with a width and height property");
 
+        this.$container = $('<div class="entity"/>');
+        gameState.$container.append(this.$container);
+
+        this.center = new Victor(size.width / 2, size.height / 2);
         this.$container.css({
             top: Math.round(this.position.y - this.center.y) + "px",
-            left: Math.round(this.position.x - this.center.x) + "px"
+            left: Math.round(this.position.x - this.center.x) + "px",
+            height: size.height + "px",
+            width: size.width + "px"
         });
     }
 

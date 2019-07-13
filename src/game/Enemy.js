@@ -2,9 +2,10 @@ import Victor from "victor";
 import Entity from "./Entity.js";
 
 export default class Enemy extends Entity {
-    constructor(container, position, speed) {
-        super(container, position);
+    constructor(position, speed) {
+        super(position, {width: 50, height: 50});
         this.speed = speed;
+        this.$container.addClass("enemy");
     }
 
     update(dt) {

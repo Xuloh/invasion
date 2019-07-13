@@ -2,8 +2,8 @@ import Victor from "victor";
 import Entity from "./Entity.js";
 
 export default class Bullet extends Entity {
-    constructor(container, position, direction, speed) {
-        super(container, position);
+    constructor(position, direction, speed) {
+        super(position, {width: 10, height: 10});
         this.speed = speed;
 
         if(direction == null)
@@ -16,6 +16,8 @@ export default class Bullet extends Entity {
             throw TypeError("direction should either be an array or an object with a x and y property");
 
         this.direction.norm();
+
+        this.$container.addClass("bullet");
     }
 
     update(dt) {
