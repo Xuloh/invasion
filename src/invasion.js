@@ -53,13 +53,17 @@ function registerHandlers() {
             $("#game").addClass("inactive");
         }
     });
+    registerKeyHandler("KeyQ", event => {
+        if(event.type === "keyup" && event.originalEvent.shiftKey)
+            gameState.disableEnemies = !gameState.disableEnemies;
+    });
 }
 
 function update(dt) {
     gameState.player.update(dt);
     gameState.pointer.update(dt);
     gameState.bullets.filter(b => b != null).forEach(b => b.update(dt));
-    gameState.enemies.filter(e => e != null).forEach(e => e.update(dt));
+    gameState.enemies.filter(e => e != null && !gameState.disableEnemies).forEach(e => e.update(dt));
 }
 
 function main(now) {
@@ -87,7 +91,8 @@ $(() => {
             buttons: {
                 left: "up"
             }
-        }
+        },
+        disableEnemies: false
     };
 
     gameState.player = new Player({x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
