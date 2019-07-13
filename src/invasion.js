@@ -9,17 +9,50 @@ import Player from "./game/Player.js";
 import Pointer from "./game/Pointer.js";
 
 import "./style.css";
-import {keyDownHandler, keyUpHandler, mouseDownHandler, mouseMoveHandler, mouseUpHandler} from "./event_handlers";
+import {initHandlers, registerKeyHandler, registerMouseHandler} from "./event_handlers";
 
 window.$ = $;
 window.jQuery = $;
 
+
 function registerHandlers() {
-    $(window).on("keydown", keyDownHandler);
-    $(window).on("keyup", keyUpHandler);
-    $(window).on("mousemove", mouseMoveHandler);
-    $(window).on("mousedown", mouseDownHandler);
-    $(window).on("mouseup", mouseUpHandler);
+    registerKeyHandler("KeyW", event => {
+        if(event.type === "keydown")
+            gameState.keyState.up = "down";
+        else if(event.type === "keyup")
+            gameState.keyState.up = "up";
+    });
+    registerKeyHandler("KeyS", event => {
+        if(event.type === "keydown")
+            gameState.keyState.down = "down";
+        else if(event.type === "keyup")
+            gameState.keyState.down = "up";
+    });
+    registerKeyHandler("KeyA", event => {
+        if(event.type === "keydown")
+            gameState.keyState.left = "down";
+        else if(event.type === "keyup")
+            gameState.keyState.left = "up";
+    });
+    registerKeyHandler("KeyD", event => {
+        if(event.type === "keydown")
+            gameState.keyState.right = "down";
+        else if(event.type === "keyup")
+            gameState.keyState.right = "up";
+    });
+    registerMouseHandler(0, event => {
+        if(event.type === "mousedown")
+            gameState.mouse.buttons.left = "down";
+        else if(event.type === "mouseup")
+            gameState.mouse.buttons.left = "up";
+    });
+    registerKeyHandler("Escape", event => {
+        if(event.type === "keyup") {
+            window.cancelAnimationFrame(gameState.mainRafToken);
+            $("#menu").show();
+            $("#game").addClass("inactive");
+        }
+    });
 }
 
 function update(dt) {
