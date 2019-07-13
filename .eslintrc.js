@@ -173,10 +173,6 @@ module.exports = {
                 "exceptAfterSingleLine": true
             }
         ],
-        "multiline-comment-style": [
-            "warn",
-            "starred-block"
-        ],
         "multiline-ternary": [
             "warn",
             "always-multiline"
@@ -255,13 +251,6 @@ module.exports = {
             {
                 "words": true,
                 "nonwords": false
-            }
-        ],
-        "spaced-comment": [
-            "warn",
-            "always",
-            {
-                "exceptions": ["todo", "TODO"]
             }
         ],
         "arrow-body-style": "warn",
