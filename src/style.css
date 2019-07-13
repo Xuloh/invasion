@@ -61,30 +61,22 @@ body {
     background-color: hsl(120, 20%, 50%);
     border: 1px solid #000;
     border-radius: 50px;
-    height: 50px;
-    width: 50px;
 }
 
 .pointer {
     background-color: #333;
     border-radius: 50px;
-    height: 10px;
-    width: 10px;
 }
 
 .bullet {
     background-color: #555;
     border-radius: 50px;
-    height: 10px;
-    width: 10px;
 }
 
 .enemy {
     background-color: hsl(10, 20%, 50%);
     border: 1px solid #000;
     border-radius: 50px;
-    height: 50px;
-    width: 50px;
 }
 
 @keyframes menu_bg_color {
