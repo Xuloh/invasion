@@ -57,7 +57,7 @@ body {
     top: 0;
 }
 
-#player {
+.player {
     background-color: hsl(120, 20%, 50%);
     border: 1px solid #000;
     border-radius: 50px;
@@ -65,7 +65,7 @@ body {
     width: 50px;
 }
 
-#pointer {
+.pointer {
     background-color: #333;
     border-radius: 50px;
     height: 10px;
