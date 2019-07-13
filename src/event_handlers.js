@@ -1,66 +1,44 @@
-// *** key handlers to update key state ***
-export {
-    keyDownHandler,
-    keyUpHandler,
-    mouseMoveHandler,
-    mouseDownHandler,
-    mouseUpHandler
-};
+import $ from "jquery";
+
+const keyHandlers = {};
+const mouseHandlers = {};
+
+function registerKeyHandler(keyCode, handler) {
+    if(!(keyCode in keyHandlers))
+        keyHandlers[keyCode] = [];
+    keyHandlers[keyCode].push(handler);
+}
+
+function registerMouseHandler(button, handler) {
+    if(!(button in mouseHandlers))
+        mouseHandlers[button] = [];
+    mouseHandlers[button].push(handler);
+}
+
+function initHandlers() {
+    $(window).on("keydown", keyDownHandler);
+    $(window).on("keyup", keyUpHandler);
+    $(window).on("mousemove", mouseMoveHandler);
+    $(window).on("mousedown", mouseDownHandler);
+    $(window).on("mouseup", mouseUpHandler);
+}
 
 function keyDownHandler(event) {
-    switch(event.originalEvent.code) {
-        case "KeyW":
-            event.preventDefault();
-            gameState.keyState.up = "down";
-            break;
-        case "KeyS":
-            event.preventDefault();
-            gameState.keyState.down = "down";
-            break;
-        case "KeyA":
-            event.preventDefault();
-            gameState.keyState.left = "down";
-            break;
-        case "KeyD":
-            event.preventDefault();
-            gameState.keyState.right = "down";
-            break;
-        default:
-            break;
+    const keyCode = event.originalEvent.code;
+    if(keyCode in keyHandlers) {
+        event.preventDefault();
+        keyHandlers[keyCode].forEach(h => h(event));
     }
 }
 
 function keyUpHandler(event) {
-    switch(event.originalEvent.code) {
-        case "KeyW":
-            event.preventDefault();
-            gameState.keyState.up = "up";
-            break;
-        case "KeyS":
-            event.preventDefault();
-            gameState.keyState.down = "up";
-            break;
-        case "KeyA":
-            event.preventDefault();
-            gameState.keyState.left = "up";
-            break;
-        case "KeyD":
-            event.preventDefault();
-            gameState.keyState.right = "up";
-            break;
-        case "Escape":
-            event.preventDefault();
-            window.cancelAnimationFrame(gameState.stopMain);
-            $("#menu").show();
-            $("#game").addClass("inactive");
-            break;
-        default:
-            break;
+    const keyCode = event.originalEvent.code;
+    if(keyCode in keyHandlers) {
+        event.preventDefault();
+        keyHandlers[keyCode].forEach(h => h(event));
     }
 }
-// *** *** ***
 
-// *** mouse handler to update mouse state
 function mouseMoveHandler(event) {
     gameState.mouse.position = {
         x: event.originalEvent.clientX,
@@ -69,15 +47,23 @@ function mouseMoveHandler(event) {
 }
 
 function mouseDownHandler(event) {
-    if(event.originalEvent.button === 0) {
+    const button = event.originalEvent.button;
+    if(button in mouseHandlers) {
         event.preventDefault();
-        gameState.mouse.buttons.left = "down";
+        mouseHandlers[button].forEach(h => h(event));
     }
 }
 
 function mouseUpHandler(event) {
-    if(event.originalEvent.button === 0) {
+    const button = event.originalEvent.button;
+    if(button in mouseHandlers) {
         event.preventDefault();
-        gameState.mouse.buttons.left = "up";
+        mouseHandlers[button].forEach(h => h(event));
     }
 }
+
+export {
+    registerKeyHandler,
+    registerMouseHandler,
+    initHandlers
+};
