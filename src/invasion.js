@@ -62,21 +62,17 @@ function update(dt) {
     gameState.enemies.filter(e => e != null).forEach(e => e.update(dt));
 }
 
+function main(now) {
+    gameState.mainRafToken = window.requestAnimationFrame(main);
+    const dt = (now - gameState.lastUpdate) / 1000;
+    gameState.lastUpdate = now;
+    update(dt);
+}
+
 $(() => {
-    ReactDOM.render(<UI/>, document.getElementById("ui"));
-    const player = new Player("#player", {x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
-    const pointer = new Pointer("#pointer", {x: window.innerWidth / 2, y: window.innerHeight / 2}, player, 70);
-
-    const enemy1 = $('<div class="enemy entity"/>');
-    const enemy2 = $('<div class="enemy entity"/>');
-    const enemy3 = $('<div class="enemy entity"/>');
-
     window.gameState = {
         $container: $("#game"),
-        player: player,
-        pointer: pointer,
         bullets: [],
-        enemies: [],
         keyState: {
             up: "up",
             down: "up",
@@ -94,28 +90,24 @@ $(() => {
         }
     };
 
-    enemy1.appendTo(gameState.$container);
-    enemy2.appendTo(gameState.$container);
-    enemy3.appendTo(gameState.$container);
-
+    gameState.player = new Player({x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
+    gameState.pointer = new Pointer({x: window.innerWidth / 2, y: window.innerHeight / 2}, gameState.player, 70);
     gameState.enemies = [
-        new Enemy(enemy1, [100, 100], 300),
-        new Enemy(enemy2, [100, window.innerHeight - 100], 300),
-        new Enemy(enemy3, [window.innerWidth - 100, window.innerHeight / 2], 300)
+        new Enemy([100, 100], 300),
+        new Enemy([100, window.innerHeight - 100], 300),
+        new Enemy([window.innerWidth - 100, window.innerHeight / 2], 300)
     ];
 
+    ReactDOM.render(<UI/>, document.getElementById("ui"));
+    initHandlers();
+    registerHandlers();
+
+    //TODO move start button click handler to react component
     $("#start").on("click", () => {
         $("#menu").hide();
         $("#game").removeClass("inactive");
-        let lastUpdate = window.performance.now();
-        const main = now => {
-            gameState.stopMain = window.requestAnimationFrame(main);
-            const dt = (now - lastUpdate) / 1000;
-            lastUpdate = now;
-            update(dt);
-        };
-        main(lastUpdate);
-    });
 
-    registerHandlers();
+        gameState.lastUpdate = window.performance.now();
+        main(gameState.lastUpdate);
+    });
 });
