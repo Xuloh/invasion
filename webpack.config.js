@@ -24,7 +24,6 @@ const loaders = {
             formatter: eslint.CLIEngine.getFormatter("unix"),
             emitError: true,
             emitWarning: true,
-            failOnWarning: false,
             failOnError: true
         }
     },
