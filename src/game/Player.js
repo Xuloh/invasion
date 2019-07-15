@@ -14,7 +14,7 @@ export default class Player extends Entity {
         super.update(dt);
         this.movePlayer(dt);
 
-        if(this.fireCooldown && gameState.mouse.buttons.left === "down") {
+        if(this.fireCooldown && gameState.controlsManager.isControlPressed("fire")) {
             const bullet = new Bullet(this.position, Victor.fromObject(gameState.mouse.position).subtract(this.position), 800);
             let idx = gameState.bullets.indexOf(null);
             if(idx >= 0) {
@@ -32,13 +32,13 @@ export default class Player extends Entity {
     }
 
     movePlayer(dt) {
-        if(gameState.keyState.up === "down")
+        if(gameState.controlsManager.isControlPressed("up"))
             this.move({y: -this.speed * dt});
-        if(gameState.keyState.down === "down")
+        if(gameState.controlsManager.isControlPressed("down"))
             this.move({y: this.speed * dt});
-        if(gameState.keyState.left === "down")
+        if(gameState.controlsManager.isControlPressed("left"))
             this.move({x: -this.speed * dt});
-        if(gameState.keyState.right === "down")
+        if(gameState.controlsManager.isControlPressed("right"))
             this.move({x: this.speed * dt});
 
         const x = this.position.x;
