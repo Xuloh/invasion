@@ -280,6 +280,7 @@ module.exports = {
             {
                 "ignoreReadBeforeAssign": true
             }
-        ]
+        ],
+        "no-unused-vars": "warn"
     }
 };
