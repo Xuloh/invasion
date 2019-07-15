@@ -1,98 +1,135 @@
 import $ from "jquery";
 
-const keyHandlers = {};
-const mouseHandlers = {};
+class EventsDispatcher {
+    constructor() {
+        this.handlers = {};
+        this.events = ["keydown", "keyup", "mousedown", "mouseup", "mousemove", "*"];
+        this.events.forEach(e => this.handlers[e] = []);
+        this.disableEvents = false;
+        this.events
+            .filter(event => event !== "*")
+            .forEach(event => window.addEventListener(event, e => this._handleEvents($.Event(e)), true));
+    }
 
-let eventsEnabled = true;
+    registerHandler(events, handler, options) {
+        if(typeof events !== "string")
+            throw new TypeError("events must a string containing a space-separated sequence of events");
 
-function registerKeyHandler(keyCode, handler) {
-    if(!(keyCode in keyHandlers))
-        keyHandlers[keyCode] = [];
-    keyHandlers[keyCode].push(handler);
-}
+        if(options != null && typeof options !== "object")
+            throw new TypeError("options must be an object");
+        options = options || {};
 
-function registerMouseHandler(button, handler) {
-    if(!(button in mouseHandlers))
-        mouseHandlers[button] = [];
-    mouseHandlers[button].push(handler);
-}
+        events = this._checkEvents(events);
 
-function initHandlers() {
-    $(window).on("keydown", keyDownHandler);
-    $(window).on("keyup", keyUpHandler);
-    $(window).on("mousemove", mouseMoveHandler);
-    $(window).on("mousedown", mouseDownHandler);
-    $(window).on("mouseup", mouseUpHandler);
-}
+        events
+            .forEach(e => {
+                this.handlers[e].push({
+                    handler: handler,
+                    options: options
+                });
+            });
+    }
 
-function enableEvents(enable) {
-    enable = enable || true;
-    eventsEnabled = enable;
-}
+    getNextEvent(events, disableEvents) {
+        this.disableEvents = disableEvents || false;
+        events = this._checkEvents(events);
 
-function getNextEvent(events, disableEvents) {
-    disableEvents = disableEvents || true;
-    return new Promise(resolve => {
-        enableEvents(!disableEvents);
-        $(window).on(events, function oneTimeEvent(event) {
-            $(window).off(event, oneTimeEvent);
-            resolve(event);
+        // eslint-disable-next-line arrow-body-style
+        const promises = events.map(event => {
+            return new Promise(resolve => {
+                window.addEventListener(event, e => {
+                    resolve(e);
+                }, {
+                    once: true,
+                    capture: true
+                });
+            });
         });
-    });
+        return Promise.race(promises);
+    }
+
+    _handleEvents(event) {
+        if(!this.disableEvents) {
+            this.handlers["*"]
+                .concat(this.handlers[event.type])
+                .forEach(h => {
+                    switch(event.type) {
+                        case "keydown":
+                        case "keyup": {
+                            const keys = h.options.keys || [];
+                            if(keys.length === 0 || keys.includes(event.originalEvent.code))
+                                h.handler(event);
+                            break;
+                        }
+                        case "mousedown":
+                        case "mouseup": {
+                            const buttons = h.options.buttons || [];
+                            if(buttons.length === 0 || buttons.includes(event.originalEvent.button))
+                                h.handler(event);
+                            break;
+                        }
+                        case "mousemove":
+                            h.handler(event);
+                            break;
+                        default:
+                            break;
+                    }
+                });
+        }
+    }
+
+    _checkEvents(events) {
+        events = events.split(" ");
+        const validEvents = events.every(e => this.events.includes(e));
+        if(!validEvents)
+            throw new TypeError(`invalid events '${events}', valid events are ${this.events}`);
+
+        return events;
+    }
 }
 
-function keyDownHandler(event) {
-    if(eventsEnabled) {
+class ControlsManager {
+    constructor() {
+        this.keys = {};
+        this.controls = {};
+        gameState.eventsDispatcher.registerHandler("keydown keyup mousedown mouseup", event => this._handleEvents(event));
+    }
+
+    setControl(control, key) {
+        this.controls[control] = key;
+    }
+
+    isKeyPressed(key) {
+        return Object.prototype.hasOwnProperty.call(this.keys, key) && this.keys[key];
+    }
+
+    isControlPressed(control) {
+        return Object.prototype.hasOwnProperty.call(this.controls, control) && this.isKeyPressed(this.controls[control]);
+    }
+
+    _handleEvents(event) {
         const keyCode = event.originalEvent.code;
-        if(keyCode in keyHandlers) {
-            event.preventDefault();
-            keyHandlers[keyCode].forEach(h => h(event));
-        }
-    }
-}
-
-function keyUpHandler(event) {
-    if(eventsEnabled) {
-        const keyCode = event.originalEvent.code;
-        if(keyCode in keyHandlers) {
-            event.preventDefault();
-            keyHandlers[keyCode].forEach(h => h(event));
-        }
-    }
-}
-
-function mouseMoveHandler(event) {
-    if(eventsEnabled) {
-        gameState.mouse.position = {
-            x: event.originalEvent.clientX,
-            y: event.originalEvent.clientY
-        };
-    }
-}
-
-function mouseDownHandler(event) {
-    if(eventsEnabled) {
-        const button = event.originalEvent.button;
-        if(button in mouseHandlers) {
-            event.preventDefault();
-            mouseHandlers[button].forEach(h => h(event));
-        }
-    }
-}
-
-function mouseUpHandler(event) {
-    if(eventsEnabled) {
-        const button = event.originalEvent.button;
-        if(button in mouseHandlers) {
-            event.preventDefault();
-            mouseHandlers[button].forEach(h => h(event));
+        const mouseButton = event.originalEvent.button;
+        switch(event.type) {
+            case "keydown":
+                this.keys[keyCode] = true;
+                break;
+            case "keyup":
+                this.keys[keyCode] = false;
+                break;
+            case "mousedown":
+                this.keys[`mouse${mouseButton}`] = true;
+                break;
+            case "mouseup":
+                this.keys[`mouse${mouseButton}`] = false;
+                break;
+            default:
+                break;
         }
     }
 }
 
 export {
-    registerKeyHandler,
-    registerMouseHandler,
-    initHandlers,
-    getNextEvent
+    ControlsManager,
+    EventsDispatcher
 };
