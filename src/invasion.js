@@ -25,11 +25,7 @@ function registerControls() {
 }
 
 function registerHandlers() {
-    gameState.eventsDispatcher.registerHandler("keyup", () => {
-        window.cancelAnimationFrame(gameState.mainRafToken);
-        $("#menu").show();
-        $("#game").addClass("inactive");
-    }, {
+    gameState.eventsDispatcher.registerHandler("keyup", gameState.stop, {
         keys: ["Escape"]
     });
 
@@ -55,6 +51,19 @@ function update(dt) {
     gameState.enemies.filter(e => e != null && !gameState.disableEnemies).forEach(e => e.update(dt));
 }
 
+function start() {
+    $("#menu").hide();
+    $("#game").removeClass("inactive");
+    gameState.lastUpdate = window.performance.now();
+    main(gameState.lastUpdate);
+}
+
+function stop() {
+    window.cancelAnimationFrame(gameState.mainRafToken);
+    $("#menu").show();
+    $("#game").addClass("inactive");
+}
+
 function main(now) {
     gameState.mainRafToken = window.requestAnimationFrame(main);
     const dt = (now - gameState.lastUpdate) / 1000;
@@ -72,7 +81,9 @@ $(() => {
                 y: 0
             }
         },
-        disableEnemies: false
+        disableEnemies: false,
+        start: start,
+        stop: stop
     };
 
     gameState.eventsDispatcher = new EventsDispatcher();
@@ -85,16 +96,7 @@ $(() => {
         new Enemy([window.innerWidth - 100, window.innerHeight / 2], 300)
     ];
 
-    ReactDOM.render(<UI/>, document.getElementById("ui"));
     registerControls();
     registerHandlers();
-
-    //TODO move start button click handler to react component
-    $("#start").on("click", () => {
-        $("#menu").hide();
-        $("#game").removeClass("inactive");
-
-        gameState.lastUpdate = window.performance.now();
-        main(gameState.lastUpdate);
-    });
+    ReactDOM.render(<UI/>, document.getElementById("ui"));
 });
