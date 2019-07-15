@@ -1,5 +1,6 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
+import PropTypes from "prop-types";
 import {Typography} from "@material-ui/core";
 
 export default class Menu extends React.Component {
@@ -8,8 +9,9 @@ export default class Menu extends React.Component {
     }
 
     render() {
+        const display = this.props.display ? "flex" : "none";
         return (
-            <div id="menu">
+            <div id="menu" style={{display: display}}>
                 <Typography id="title" variant="h1" gutterBottom>Invasion</Typography>
                 <Button id="start" variant="contained" color="primary" onClick={() => this.startClick()}>
                     Start
@@ -18,3 +20,7 @@ export default class Menu extends React.Component {
         );
     }
 }
+
+Menu.propTypes = {
+    display: PropTypes.bool
+};

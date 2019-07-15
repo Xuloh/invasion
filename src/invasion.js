@@ -52,7 +52,7 @@ function update(dt) {
 }
 
 function start() {
-    $("#menu").hide();
+    gameState.$ui.toggleMenu(false);
     $("#game").removeClass("inactive");
     gameState.lastUpdate = window.performance.now();
     main(gameState.lastUpdate);
@@ -60,7 +60,7 @@ function start() {
 
 function stop() {
     window.cancelAnimationFrame(gameState.mainRafToken);
-    $("#menu").show();
+    gameState.$ui.toggleMenu(true);
     $("#game").addClass("inactive");
 }
 
