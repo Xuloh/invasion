@@ -9,53 +9,40 @@ import Player from "./game/Player.js";
 import Pointer from "./game/Pointer.js";
 
 import "./style.css";
-import {initHandlers, registerKeyHandler, registerMouseHandler} from "./event_handlers";
+import {ControlsManager, EventsDispatcher} from "./controls_manager";
 
 window.$ = $;
 window.jQuery = $;
 
+function registerControls() {
+    gameState.controlsManager.setControl("up", "KeyW");
+    gameState.controlsManager.setControl("down", "KeyS");
+    gameState.controlsManager.setControl("left", "KeyA");
+    gameState.controlsManager.setControl("right", "KeyD");
+    gameState.controlsManager.setControl("fire", "mouse0");
+}
 
 function registerHandlers() {
-    registerKeyHandler("KeyW", event => {
-        if(event.type === "keydown")
-            gameState.keyState.up = "down";
-        else if(event.type === "keyup")
-            gameState.keyState.up = "up";
+    gameState.eventsDispatcher.registerHandler("keyup", () => {
+        window.cancelAnimationFrame(gameState.mainRafToken);
+        $("#menu").show();
+        $("#game").addClass("inactive");
+    }, {
+        keys: ["Escape"]
     });
-    registerKeyHandler("KeyS", event => {
-        if(event.type === "keydown")
-            gameState.keyState.down = "down";
-        else if(event.type === "keyup")
-            gameState.keyState.down = "up";
-    });
-    registerKeyHandler("KeyA", event => {
-        if(event.type === "keydown")
-            gameState.keyState.left = "down";
-        else if(event.type === "keyup")
-            gameState.keyState.left = "up";
-    });
-    registerKeyHandler("KeyD", event => {
-        if(event.type === "keydown")
-            gameState.keyState.right = "down";
-        else if(event.type === "keyup")
-            gameState.keyState.right = "up";
-    });
-    registerMouseHandler(0, event => {
-        if(event.type === "mousedown")
-            gameState.mouse.buttons.left = "down";
-        else if(event.type === "mouseup")
-            gameState.mouse.buttons.left = "up";
-    });
-    registerKeyHandler("Escape", event => {
-        if(event.type === "keyup") {
-            window.cancelAnimationFrame(gameState.mainRafToken);
-            $("#menu").show();
-            $("#game").addClass("inactive");
-        }
-    });
-    registerKeyHandler("KeyQ", event => {
-        if(event.type === "keyup" && event.originalEvent.shiftKey)
+
+    gameState.eventsDispatcher.registerHandler("keyup", event => {
+        if(event.originalEvent.shiftKey)
             gameState.disableEnemies = !gameState.disableEnemies;
+    }, {
+        keys: ["KeyQ"]
+    });
+
+    gameState.eventsDispatcher.registerHandler("mousemove", event => {
+        gameState.mouse.position = {
+            x: event.originalEvent.clientX,
+            y: event.originalEvent.clientY
+        };
     });
 }
 
@@ -77,24 +64,17 @@ $(() => {
     window.gameState = {
         $container: $("#game"),
         bullets: [],
-        keyState: {
-            up: "up",
-            down: "up",
-            left: "up",
-            right: "up"
-        },
         mouse: {
             position: {
                 x: 0,
                 y: 0
-            },
-            buttons: {
-                left: "up"
             }
         },
         disableEnemies: false
     };
 
+    gameState.eventsDispatcher = new EventsDispatcher();
+    gameState.controlsManager = new ControlsManager();
     gameState.player = new Player({x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
     gameState.pointer = new Pointer({x: window.innerWidth / 2, y: window.innerHeight / 2}, gameState.player, 70);
     gameState.enemies = [
@@ -104,7 +84,7 @@ $(() => {
     ];
 
     ReactDOM.render(<UI/>, document.getElementById("ui"));
-    initHandlers();
+    registerControls();
     registerHandlers();
 
     //TODO move start button click handler to react component
