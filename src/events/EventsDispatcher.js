@@ -1,12 +1,10 @@
 export default class EventsDispatcher {
     constructor() {
-        this.handlers = {};
-        this.events = ["keydown", "keyup", "mousedown", "mouseup", "mousemove", "*"];
+        this.handlers = {"*": []};
+        this.events = ["keydown", "keyup", "mousedown", "mouseup", "mousemove"];
         this.events.forEach(e => this.handlers[e] = []);
         this.disableEvents = false;
-        this.events
-            .filter(event => event !== "*")
-            .forEach(event => window.addEventListener(event, e => this._handleEvents($.Event(e)), true));
+        this.events.forEach(event => window.addEventListener(event, e => this._handleEvents($.Event(e)), true));
     }
 
     registerHandler(events, handler, options) {
@@ -77,6 +75,9 @@ export default class EventsDispatcher {
     }
 
     _checkEvents(events) {
+        if(events === "*")
+            return this.events;
+
         events = events.split(" ");
         const validEvents = events.every(e => this.events.includes(e));
         if(!validEvents)
