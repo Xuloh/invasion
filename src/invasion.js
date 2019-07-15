@@ -9,7 +9,9 @@ import Player from "./game/Player.js";
 import Pointer from "./game/Pointer.js";
 
 import "./style.css";
-import {ControlsManager, EventsDispatcher} from "./controls_manager";
+
+import EventsDispatcher from "./events/EventsDispatcher.js";
+import ControlsManager from "./events/ControlsManager.js";
 
 window.$ = $;
 window.jQuery = $;
