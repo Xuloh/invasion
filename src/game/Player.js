@@ -44,14 +44,14 @@ export default class Player extends Entity {
         const x = this.position.x;
         const y = this.position.y;
 
-        if(y - this.center.y < 0)
-            this.position.y = 0 + this.center.y;
-        else if(y + this.center.y > window.innerHeight)
-            this.position.y = window.innerHeight - this.center.y;
+        if(y - this.origin.y < 0)
+            this.position.y = 0 + this.origin.y;
+        else if(y + this.origin.y > window.innerHeight)
+            this.position.y = window.innerHeight - this.origin.y;
 
-        if(x - this.center.x < 0)
-            this.position.x = 0 + this.center.x;
-        else if(x + this.center.x > window.innerWidth)
-            this.position.x = window.innerWidth - this.center.x;
+        if(x - this.origin.x < 0)
+            this.position.x = 0 + this.origin.x;
+        else if(x + this.origin.x > window.innerWidth)
+            this.position.x = window.innerWidth - this.origin.x;
     }
 }
