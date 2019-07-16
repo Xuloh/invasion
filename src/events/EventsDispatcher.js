@@ -33,9 +33,7 @@ export default class EventsDispatcher {
         // eslint-disable-next-line arrow-body-style
         const promises = events.map(event => {
             return new Promise(resolve => {
-                window.addEventListener(event, e => {
-                    resolve(e);
-                }, {
+                window.addEventListener(event, e => resolve(e), {
                     once: true,
                     capture: true
                 });
