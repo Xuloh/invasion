@@ -7,11 +7,11 @@ import UI from "./ui/UI.js";
 import Enemy from "./game/Enemy.js";
 import Player from "./game/Player.js";
 import Pointer from "./game/Pointer.js";
-
-import "./style.css";
-
 import EventsDispatcher from "./events/EventsDispatcher.js";
 import ControlsManager from "./events/ControlsManager.js";
+import Timer from "./util/Timer.js";
+
+import "./style.css";
 
 window.$ = $;
 window.jQuery = $;
@@ -54,20 +54,19 @@ function update(dt) {
 function start() {
     gameState.$ui.toggleMenu(false);
     $("#game").removeClass("inactive");
-    gameState.lastUpdate = window.performance.now();
-    main(gameState.lastUpdate);
+    gameState.timer.reset();
+    main();
 }
 
 function stop() {
-    window.cancelAnimationFrame(gameState.mainRafToken);
     gameState.$ui.toggleMenu(true);
     $("#game").addClass("inactive");
+    window.cancelAnimationFrame(gameState.mainRafToken);
 }
 
-function main(now) {
+function main() {
     gameState.mainRafToken = window.requestAnimationFrame(main);
-    const dt = (now - gameState.lastUpdate) / 1000;
-    gameState.lastUpdate = now;
+    const dt = gameState.timer.dt();
     update(dt);
 }
 
@@ -83,7 +82,8 @@ $(() => {
         },
         disableEnemies: false,
         start: start,
-        stop: stop
+        stop: stop,
+        timer: new Timer()
     };
 
     gameState.eventsDispatcher = new EventsDispatcher();
