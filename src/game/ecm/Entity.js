@@ -15,28 +15,15 @@ export default class Entity {
             throw new TypeError("size should be an object with a width and height property");
 
         this._components = [];
-
-        this.$container = $('<div class="entity"/>');
-        gameState.$container.append(this.$container);
-
+        this.size = size;
         this.origin = new Victor(size.width / 2, size.height / 2);
-        this.$container.css({
-            top: Math.round(this.position.y - this.origin.y) + "px",
-            left: Math.round(this.position.x - this.origin.x) + "px",
-            height: size.height + "px",
-            width: size.width + "px"
-        });
 
         this.alive = true;
         this._isForDeletion = false;
     }
 
-    // eslint-disable-next-line no-unused-vars
     update(dt) {
-        this.$container.css({
-            top: Math.round(this.position.y - this.origin.y) + "px",
-            left: Math.round(this.position.x - this.origin.x) + "px"
-        });
+        this._components.forEach(c => c.update(dt));
     }
 
     move(movement) {
