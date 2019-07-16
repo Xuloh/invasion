@@ -31,7 +31,8 @@ export default class Entity {
         this._isForDeletion = false;
     }
 
-    update() {
+    // eslint-disable-next-line no-unused-vars
+    update(dt) {
         this.$container.css({
             top: Math.round(this.position.y - this.origin.y) + "px",
             left: Math.round(this.position.x - this.origin.x) + "px"

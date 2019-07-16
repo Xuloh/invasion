@@ -1,5 +1,5 @@
 import Victor from "victor";
-import Entity from "./Entity.js";
+import Entity from "./ecm/Entity.js";
 
 export default class Bullet extends Entity {
     constructor(position, direction, speed) {
