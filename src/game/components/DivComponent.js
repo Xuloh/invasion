@@ -42,4 +42,8 @@ export default class DivComponent extends Component {
             width: this._parent.size.width + "px"
         });
     }
+
+    destroy() {
+        this.$container.remove();
+    }
 }
