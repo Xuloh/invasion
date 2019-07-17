@@ -1,5 +1,6 @@
 const path = require("path");
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const CleanTerminalPlugin = require("clean-terminal-webpack-plugin");
 const eslint = require("eslint");
 
 const DIST_DIR = path.resolve(__dirname, "dist");
@@ -87,7 +88,8 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: "src/index.html"
-        })
+        }),
+        new CleanTerminalPlugin()
     ],
     devServer: {
         index: "index.html",
