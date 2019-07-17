@@ -5,11 +5,11 @@ import ReactDOM from "react-dom";
 import UI from "./ui/UI.js";
 
 import Enemy from "./game/Enemy.js";
-import Player from "./game/Player.js";
 import Pointer from "./game/Pointer.js";
 import EventsDispatcher from "./events/EventsDispatcher.js";
 import ControlsManager from "./events/ControlsManager.js";
 import Timer from "./util/Timer.js";
+import EntityFactory from "./game/EntityFactory.js";
 
 import "./style.css";
 
@@ -85,10 +85,11 @@ $(() => {
         stop: stop,
         timer: new Timer()
     };
+    const ef = new EntityFactory();
 
     gameState.eventsDispatcher = new EventsDispatcher();
     gameState.controlsManager = new ControlsManager();
-    gameState.player = new Player({x: window.innerWidth / 2, y: window.innerHeight / 2}, 450);
+    gameState.player = ef.makePlayer();
     gameState.pointer = new Pointer({x: window.innerWidth / 2, y: window.innerHeight / 2}, gameState.player, 70);
     gameState.enemies = [
         new Enemy([100, 100], 300),
