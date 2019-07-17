@@ -1,7 +1,7 @@
 import Victor from "victor";
 import Component from "../ecm/Component.js";
 
-export default class Pointer extends Component {
+export default class PointerComponent extends Component {
     constructor(parent, player, distanceToPlayer) {
         super(parent);
         this.player = player;
