@@ -3,6 +3,7 @@ import DivComponent from "./components/DivComponent.js";
 import PlayerComponent from "./components/PlayerComponent.js";
 import PointerComponent from "./components/PointerComponent.js";
 import EnemyComponent from "./components/EnemyComponent.js";
+import BulletComponent from "./components/BulletComponent.js";
 
 export default class EntityFactory {
     makePlayer() {
@@ -16,7 +17,7 @@ export default class EntityFactory {
         player.addComponent(new DivComponent(player, {
             cssClass: "entity player"
         }));
-        player.addComponent(new PlayerComponent(450));
+        player.addComponent(new PlayerComponent(player, 450));
         return player;
     }
 
@@ -28,15 +29,23 @@ export default class EntityFactory {
             width: 10,
             height: 10
         });
-        pointer.addComponent(new DivComponent({
+        pointer.addComponent(new DivComponent(pointer, {
             cssClass: "entity pointer"
         }));
-        pointer.addComponent(new PointerComponent(player, 70));
+        pointer.addComponent(new PointerComponent(pointer, player, 70));
         return pointer;
     }
 
-    makeBullet() {
-
+    makeBullet(position, direction) {
+        const bullet = new Entity(position, {
+            width: 10,
+            height: 10
+        });
+        bullet.addComponent(new DivComponent(bullet, {
+            cssClass: "entity bullet"
+        }));
+        bullet.addComponent(new BulletComponent(bullet, direction, 800));
+        return bullet;
     }
 
     makeEnemy(position) {
@@ -44,10 +53,10 @@ export default class EntityFactory {
             width: 50,
             height: 50
         });
-        enemy.addComponent(new DivComponent({
+        enemy.addComponent(new DivComponent(enemy, {
             cssClass: "entity enemy"
         }));
-        enemy.addComponent(new EnemyComponent(300));
+        enemy.addComponent(new EnemyComponent(enemy, 300));
         return enemy;
     }
 }

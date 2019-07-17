@@ -1,5 +1,4 @@
 import Victor from "victor";
-import Bullet from "./Bullet.js";
 import Component from "../ecm/Component.js";
 
 export default class PlayerComponent extends Component {
@@ -14,7 +13,7 @@ export default class PlayerComponent extends Component {
         this.movePlayer(dt);
 
         if(this.fireCooldown && gameState.controlsManager.isControlPressed("fire")) {
-            const bullet = new Bullet(this.position, Victor.fromObject(gameState.mouse.position).subtract(this.position), 800);
+            const bullet = gameState.ef.makeBullet(this._parent.position, Victor.fromObject(gameState.mouse.position).subtract(this._parent.position));
             let idx = gameState.bullets.indexOf(null);
             if(idx >= 0) {
                 bullet.idx = idx;
