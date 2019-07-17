@@ -2,6 +2,7 @@ import Entity from "./ecm/Entity.js";
 import DivComponent from "./components/DivComponent.js";
 import PlayerComponent from "./components/PlayerComponent.js";
 import PointerComponent from "./components/PointerComponent.js";
+import EnemyComponent from "./components/EnemyComponent.js";
 
 export default class EntityFactory {
     makePlayer() {
@@ -12,7 +13,7 @@ export default class EntityFactory {
             width: 50,
             height: 50
         });
-        player.addComponent(new DivComponent({
+        player.addComponent(new DivComponent(player, {
             cssClass: "entity player"
         }));
         player.addComponent(new PlayerComponent(450));
@@ -38,7 +39,15 @@ export default class EntityFactory {
 
     }
 
-    makeEnemy() {
-
+    makeEnemy(position) {
+        const enemy = new Entity(position, {
+            width: 50,
+            height: 50
+        });
+        enemy.addComponent(new DivComponent({
+            cssClass: "entity enemy"
+        }));
+        enemy.addComponent(new EnemyComponent(300));
+        return enemy;
     }
 }
