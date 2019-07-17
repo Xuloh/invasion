@@ -3,6 +3,7 @@ export default class Scene {
         this.entities = [];
     }
 
+    // eslint-disable-next-line no-empty-function
     load() {}
 
     unload() {
