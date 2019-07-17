@@ -1,9 +1,9 @@
 import Victor from "victor";
-import Entity from "./ecm/Entity.js";
+import Component from "../ecm/Component.js";
 
-export default class Bullet extends Entity {
-    constructor(position, direction, speed) {
-        super(position, {width: 10, height: 10});
+export default class BulletComponent extends Component {
+    constructor(parent, direction, speed) {
+        super(parent);
         this.speed = speed;
 
         if(direction == null)
@@ -16,14 +16,12 @@ export default class Bullet extends Entity {
             throw TypeError("direction should either be an array or an object with a x and y property");
 
         this.direction.norm();
-
-        this.$container.addClass("bullet");
     }
 
     update(dt) {
         super.update(dt);
-        if(this.position.x >= 0 && this.position.x <= window.innerWidth && this.position.y >= 0 && this.position.y <= window.innerHeight) {
-            this.move(
+        if(this._parent.position.x >= 0 && this._parent.position.x <= window.innerWidth && this._parent.position.y >= 0 && this._parent.position.y <= window.innerHeight) {
+            this._parent.move(
                 this.direction
                     .clone()
                     .multiply(new Victor(this.speed, this.speed))
@@ -31,7 +29,7 @@ export default class Bullet extends Entity {
             );
         }
         else {
-            this.$container.remove();
+            this._parent.setForDeletion();
             gameState.bullets[this.idx] = null;
         }
     }
