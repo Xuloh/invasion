@@ -8,13 +8,13 @@ export default class DivComponent extends Component {
 
         this.$container = $("<div />");
 
-        if(Object.prototype.hasOwnProperty(options, "cssClass")) {
+        if(Object.prototype.hasOwnProperty.call(options, "cssClass")) {
             if(typeof options.cssClass !== "string")
                 throw new TypeError("options.cssClass must be a string");
             this.$container.addClass(options.cssClass);
         }
 
-        if(Object.prototype.hasOwnProperty(option, "css")) {
+        if(Object.prototype.hasOwnProperty.call(options, "css")) {
             if(typeof options.css !== "object")
                 throw new TypeError("options.css must be an object");
             this.$container.css(options.css);
