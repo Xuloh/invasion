@@ -34,12 +34,12 @@ export default class DivComponent extends Component {
         gameState.$container.append(this.$container);
     }
 
-    update(dt) {
+    update() {
         this.$container.css({
-            top: Math.round(position.y - origin.y) + "px",
-            left: Math.round(position.x - origin.x) + "px",
-            height: size.height + "px",
-            width: size.width + "px"
+            top: Math.round(this.parent.position.y - this.parent.origin.y) + "px",
+            left: Math.round(this.parent.position.x - this.parent.origin.x) + "px",
+            height: this.parent.size.height + "px",
+            width: this.parent.size.width + "px"
         });
     }
 }
