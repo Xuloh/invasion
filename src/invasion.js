@@ -41,10 +41,6 @@ function registerHandlers() {
     });
 }
 
-function update(dt) {
-    gameState.mainScene.update(dt);
-}
-
 function start() {
     gameState.$ui.toggleMenu(false);
     $("#game").removeClass("inactive");
@@ -56,6 +52,10 @@ function stop() {
     gameState.$ui.toggleMenu(true);
     $("#game").addClass("inactive");
     window.cancelAnimationFrame(gameState.mainRafToken);
+}
+
+function update(dt) {
+    gameState.mainScene.update(dt);
 }
 
 function main() {
@@ -77,14 +77,13 @@ $(() => {
         start: start,
         stop: stop,
         timer: new Timer(),
-        ef: new EntityFactory()
+        ef: new EntityFactory(),
+        eventsDispatcher: new EventsDispatcher(),
+        controlsManager: new ControlsManager(),
+        mainScene: new MainScene()
     };
 
-    gameState.eventsDispatcher = new EventsDispatcher();
-    gameState.controlsManager = new ControlsManager();
-    gameState.mainScene = new MainScene();
     gameState.mainScene.load();
-
     registerControls();
     registerHandlers();
     ReactDOM.render(<UI/>, document.getElementById("ui"));
