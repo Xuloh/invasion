@@ -1,6 +1,6 @@
-import React from "react";
 import Button from "@material-ui/core/Button";
 import PropTypes from "prop-types";
+import React from "react";
 import {Typography} from "@material-ui/core";
 
 export default class Menu extends React.Component {

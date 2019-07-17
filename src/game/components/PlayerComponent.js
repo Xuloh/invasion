@@ -1,5 +1,5 @@
-import Victor from "victor";
 import Component from "../ecm/Component.js";
+import Victor from "victor";
 
 export default class PlayerComponent extends Component {
     constructor(parent, speed) {

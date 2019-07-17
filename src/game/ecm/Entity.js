@@ -1,5 +1,5 @@
-import Victor from "victor";
 import Component from "./Component.js";
+import Victor from "victor";
 
 export default class Entity {
     constructor(position, size) {

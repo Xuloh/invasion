@@ -1,16 +1,14 @@
+import "./style.css";
+
 import $ from "jquery";
+import ControlsManager from "./events/ControlsManager.js";
+import EntityFactory from "./game/EntityFactory.js";
+import EventsDispatcher from "./events/EventsDispatcher.js";
+import MainScene from "./game/MainScene.js";
 import React from "react";
 import ReactDOM from "react-dom";
-
-import UI from "./ui/UI.js";
-
-import EventsDispatcher from "./events/EventsDispatcher.js";
-import ControlsManager from "./events/ControlsManager.js";
 import Timer from "./util/Timer.js";
-import EntityFactory from "./game/EntityFactory.js";
-import MainScene from "./game/MainScene.js";
-
-import "./style.css";
+import UI from "./ui/UI.js";
 
 window.$ = $;
 window.jQuery = $;

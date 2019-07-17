@@ -1,6 +1,6 @@
-import React from "react";
-import Menu from "./Menu.js";
 import {CssBaseline} from "@material-ui/core";
+import Menu from "./Menu.js";
+import React from "react";
 
 export default class UI extends React.Component {
     constructor(props) {
