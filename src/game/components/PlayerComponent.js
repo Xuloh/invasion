@@ -14,16 +14,7 @@ export default class PlayerComponent extends Component {
 
         if(this.fireCooldown && gameState.controlsManager.isControlPressed("fire")) {
             const bullet = gameState.ef.makeBullet(this._parent.position, Victor.fromObject(gameState.mouse.position).subtract(this._parent.position));
-            let idx = gameState.bullets.indexOf(null);
-            if(idx >= 0) {
-                bullet.idx = idx;
-                gameState.bullets[idx] = bullet;
-            }
-            else {
-                idx = gameState.bullets.push(bullet);
-                bullet.idx = idx - 1;
-            }
-
+            gameState.mainScene.entities.push(bullet);
             this.fireCooldown = false;
             setTimeout(() => this.fireCooldown = true, 500);
         }

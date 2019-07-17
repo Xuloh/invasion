@@ -69,7 +69,6 @@ function main() {
 $(() => {
     window.gameState = {
         $container: $("#game"),
-        bullets: [],
         mouse: {
             position: {
                 x: 0,

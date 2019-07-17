@@ -1,5 +1,4 @@
 import Scene from "./ecm/Scene.js";
-import EntityFactory from "./EntityFactory.js";
 
 export default class MainScene extends Scene {
     load() {

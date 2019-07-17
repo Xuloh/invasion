@@ -28,9 +28,7 @@ export default class BulletComponent extends Component {
                     .multiply(new Victor(dt, dt))
             );
         }
-        else {
+        else
             this._parent.setForDeletion();
-            gameState.bullets[this.idx] = null;
-        }
     }
 }
