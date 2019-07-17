@@ -4,7 +4,7 @@ export default class Component {
         this._isForDeletion = false;
     }
 
-    // eslint-disable-next-line no-empty-function
+    // eslint-disable-next-line no-empty-function, no-unused-vars
     update(dt) {}
 
     setForDeletion() {
