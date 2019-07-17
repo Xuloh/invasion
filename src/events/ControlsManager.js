@@ -1,8 +1,9 @@
 export default class ControlsManager {
-    constructor() {
+    constructor(eventsDispatcher) {
         this.keys = {};
         this.controls = {};
-        gameState.eventsDispatcher.registerHandler("keydown keyup mousedown mouseup", event => this._handleEvents(event));
+        this.eventsDispatcher = eventsDispatcher;
+        this.eventsDispatcher.registerHandler("keydown keyup mousedown mouseup", event => this._handleEvents(event));
     }
 
     setControl(control, key) {

@@ -78,11 +78,11 @@ $(() => {
         stop: stop,
         timer: new Timer(),
         ef: new EntityFactory(),
-        eventsDispatcher: new EventsDispatcher(),
-        controlsManager: new ControlsManager(),
         mainScene: new MainScene()
     };
 
+    gameState.eventsDispatcher = new EventsDispatcher();
+    gameState.controlsManager = new ControlsManager(gameState.eventsDispatcher);
     gameState.mainScene.load();
     registerControls();
     registerHandlers();
