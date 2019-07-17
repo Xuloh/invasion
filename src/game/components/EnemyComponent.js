@@ -9,10 +9,10 @@ export default class EnemyComponent extends Component {
 
     update(dt) {
         super.update(dt);
-        this.parent.move(
+        this._parent.move(
             gameState.player.position
                 .clone()
-                .subtract(this.parent.position)
+                .subtract(this._parent.position)
                 .norm()
                 .multiply(new Victor(this.speed, this.speed))
                 .multiply(new Victor(dt, dt))

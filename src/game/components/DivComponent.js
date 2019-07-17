@@ -20,9 +20,9 @@ export default class DivComponent extends Component {
             this.$container.css(options.css);
         }
 
-        const position = this.parent.position;
-        const origin = this.parent.origin;
-        const size = this.parent.size;
+        const position = this._parent.position;
+        const origin = this._parent.origin;
+        const size = this._parent.size;
 
         this.$container.css({
             top: Math.round(position.y - origin.y) + "px",
@@ -36,10 +36,10 @@ export default class DivComponent extends Component {
 
     update() {
         this.$container.css({
-            top: Math.round(this.parent.position.y - this.parent.origin.y) + "px",
-            left: Math.round(this.parent.position.x - this.parent.origin.x) + "px",
-            height: this.parent.size.height + "px",
-            width: this.parent.size.width + "px"
+            top: Math.round(this._parent.position.y - this._parent.origin.y) + "px",
+            left: Math.round(this._parent.position.x - this._parent.origin.x) + "px",
+            height: this._parent.size.height + "px",
+            width: this._parent.size.width + "px"
         });
     }
 }
