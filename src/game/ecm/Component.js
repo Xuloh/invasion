@@ -1,6 +1,6 @@
 export default class Component {
     constructor(parent) {
-        this.parent = parent;
+        this._parent = parent;
         this._isForDeletion = false;
     }
 
