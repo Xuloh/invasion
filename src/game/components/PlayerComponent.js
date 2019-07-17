@@ -1,6 +1,6 @@
 import Victor from "victor";
 import Bullet from "./Bullet.js";
-import Entity from "./ecm/Entity.js";
+import Component from "../ecm/Component.js";
 
 export default class PlayerComponent extends Component {
     constructor(parent, speed) {
