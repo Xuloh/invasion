@@ -48,7 +48,7 @@ export default class EntityFactory {
         return bullet;
     }
 
-    makeEnemy(position) {
+    makeEnemy(position, player) {
         const enemy = new Entity(position, {
             width: 50,
             height: 50
@@ -56,7 +56,7 @@ export default class EntityFactory {
         enemy.addComponent(new DivComponent(enemy, {
             cssClass: "entity enemy"
         }));
-        enemy.addComponent(new EnemyComponent(enemy, 300));
+        enemy.addComponent(new EnemyComponent(enemy, player, 300));
         return enemy;
     }
 }
