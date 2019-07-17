@@ -8,6 +8,7 @@ import EventsDispatcher from "./events/EventsDispatcher.js";
 import ControlsManager from "./events/ControlsManager.js";
 import Timer from "./util/Timer.js";
 import EntityFactory from "./game/EntityFactory.js";
+import MainScene from "./game/MainScene.js";
 
 import "./style.css";
 
@@ -43,10 +44,7 @@ function registerHandlers() {
 }
 
 function update(dt) {
-    gameState.player.update(dt);
-    gameState.pointer.update(dt);
-    gameState.bullets.filter(b => b != null).forEach(b => b.update(dt));
-    gameState.enemies.filter(e => e != null && !gameState.disableEnemies).forEach(e => e.update(dt));
+    gameState.mainScene.update(dt);
 }
 
 function start() {
@@ -87,13 +85,8 @@ $(() => {
 
     gameState.eventsDispatcher = new EventsDispatcher();
     gameState.controlsManager = new ControlsManager();
-    gameState.player = gameState.ef.makePlayer();
-    gameState.pointer = gameState.ef.makePointer(gameState.player);
-    gameState.enemies = [
-        gameState.ef.makeEnemy([100, 100]),
-        gameState.ef.makeEnemy([100, window.innerHeight - 100]),
-        gameState.ef.makeEnemy([window.innerWidth - 100, window.innerHeight / 2])
-    ];
+    gameState.mainScene = new MainScene();
+    gameState.mainScene.load();
 
     registerControls();
     registerHandlers();
