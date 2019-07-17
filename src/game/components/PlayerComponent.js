@@ -2,12 +2,11 @@ import Victor from "victor";
 import Bullet from "./Bullet.js";
 import Entity from "./ecm/Entity.js";
 
-export default class Player extends Entity {
-    constructor(position, speed) {
-        super(position, {width: 50, height: 50});
+export default class PlayerComponent extends Component {
+    constructor(parent, speed) {
+        super(parent);
         this.speed = speed;
         this.fireCooldown = true;
-        this.$container.addClass("player");
     }
 
     update(dt) {
@@ -33,25 +32,25 @@ export default class Player extends Entity {
 
     movePlayer(dt) {
         if(gameState.controlsManager.isControlPressed("up"))
-            this.move({y: -this.speed * dt});
+            this._parent.move({y: -this.speed * dt});
         if(gameState.controlsManager.isControlPressed("down"))
-            this.move({y: this.speed * dt});
+            this._parent.move({y: this.speed * dt});
         if(gameState.controlsManager.isControlPressed("left"))
-            this.move({x: -this.speed * dt});
+            this._parent.move({x: -this.speed * dt});
         if(gameState.controlsManager.isControlPressed("right"))
-            this.move({x: this.speed * dt});
+            this._parent.move({x: this.speed * dt});
 
-        const x = this.position.x;
-        const y = this.position.y;
+        const x = this._parent.position.x;
+        const y = this._parent.position.y;
 
-        if(y - this.origin.y < 0)
-            this.position.y = 0 + this.origin.y;
-        else if(y + this.origin.y > window.innerHeight)
-            this.position.y = window.innerHeight - this.origin.y;
+        if(y - this._parent.origin.y < 0)
+            this._parent.position.y = 0 + this._parent.origin.y;
+        else if(y + this._parent.origin.y > window.innerHeight)
+            this._parent.position.y = window.innerHeight - this._parent.origin.y;
 
-        if(x - this.origin.x < 0)
-            this.position.x = 0 + this.origin.x;
-        else if(x + this.origin.x > window.innerWidth)
-            this.position.x = window.innerWidth - this.origin.x;
+        if(x - this._parent.origin.x < 0)
+            this._parent.position.x = 0 + this._parent.origin.x;
+        else if(x + this._parent.origin.x > window.innerWidth)
+            this._parent.position.x = window.innerWidth - this._parent.origin.x;
     }
 }
