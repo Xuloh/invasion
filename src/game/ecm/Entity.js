@@ -24,7 +24,14 @@ export default class Entity {
     }
 
     update(dt) {
-        this._components.forEach(c => c.update(dt));
+        this._components.forEach((c, idx, arr) => {
+            if(c.isForDeletion) {
+                c.destroy();
+                arr.splice(idx, 1);
+            }
+            else
+                c.update(dt);
+        });
     }
 
     move(movement) {
@@ -68,5 +75,9 @@ export default class Entity {
 
         this._position.copy(position);
         return this;
+    }
+
+    destroy() {
+        this._components.forEach(c => c.destroy());
     }
 }
