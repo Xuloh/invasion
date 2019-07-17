@@ -34,6 +34,13 @@ module.exports = {
     },
     rules: {
         "no-loops/no-loops": "warn",
+        "import/order": [
+            "warn",
+            {
+                "newlines-between": "always"
+            }
+        ],
+        "sort-imports": "warn",
         "quotes": [
             "error",
             "double",
