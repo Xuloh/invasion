@@ -5,6 +5,7 @@ import ControlsManager from "./events/ControlsManager.js";
 import EntityFactory from "./game/EntityFactory.js";
 import EventsDispatcher from "./events/EventsDispatcher.js";
 import MainScene from "./game/MainScene.js";
+import PhysicsManager from "./game/PhysicsManager.js";
 import React from "react";
 import ReactDOM from "react-dom";
 import Timer from "./util/Timer.js";
@@ -55,6 +56,7 @@ function stop() {
 }
 
 function update(dt) {
+    gameState.physicsManager.update(dt);
     gameState.mainScene.update(dt);
 }
 
@@ -78,7 +80,8 @@ $(() => {
         stop: stop,
         timer: new Timer(),
         ef: new EntityFactory(),
-        mainScene: new MainScene()
+        mainScene: new MainScene(),
+        physicsManager: new PhysicsManager()
     };
 
     gameState.eventsDispatcher = new EventsDispatcher();
