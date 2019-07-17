@@ -81,18 +81,18 @@ $(() => {
         disableEnemies: false,
         start: start,
         stop: stop,
-        timer: new Timer()
+        timer: new Timer(),
+        ef: new EntityFactory()
     };
-    const ef = new EntityFactory();
 
     gameState.eventsDispatcher = new EventsDispatcher();
     gameState.controlsManager = new ControlsManager();
-    gameState.player = ef.makePlayer();
-    gameState.pointer = ef.makePointer(gameState.player);
+    gameState.player = gameState.ef.makePlayer();
+    gameState.pointer = gameState.ef.makePointer(gameState.player);
     gameState.enemies = [
-        ef.makeEnemy([100, 100]),
-        ef.makeEnemy([100, window.innerHeight - 100]),
-        ef.makeEnemy([window.innerWidth - 100, window.innerHeight / 2])
+        gameState.ef.makeEnemy([100, 100]),
+        gameState.ef.makeEnemy([100, window.innerHeight - 100]),
+        gameState.ef.makeEnemy([window.innerWidth - 100, window.innerHeight / 2])
     ];
 
     registerControls();
