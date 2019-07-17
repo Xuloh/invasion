@@ -1,4 +1,5 @@
 import Victor from "victor";
+import Component from "./Component.js";
 
 export default class Entity {
     constructor(position, size) {
@@ -37,6 +38,12 @@ export default class Entity {
         this.position.add(movement);
 
         return this;
+    }
+
+    addComponent(component) {
+        if(!(component instanceof Component))
+            throw new TypeError("component must be an instance of a subclass of Component");
+        this._components.push(component);
     }
 
     get isForDeletion() {
