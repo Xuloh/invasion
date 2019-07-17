@@ -5,7 +5,6 @@ import ReactDOM from "react-dom";
 import UI from "./ui/UI.js";
 
 import Enemy from "./game/Enemy.js";
-import Pointer from "./game/Pointer.js";
 import EventsDispatcher from "./events/EventsDispatcher.js";
 import ControlsManager from "./events/ControlsManager.js";
 import Timer from "./util/Timer.js";
@@ -90,7 +89,7 @@ $(() => {
     gameState.eventsDispatcher = new EventsDispatcher();
     gameState.controlsManager = new ControlsManager();
     gameState.player = ef.makePlayer();
-    gameState.pointer = new Pointer({x: window.innerWidth / 2, y: window.innerHeight / 2}, gameState.player, 70);
+    gameState.pointer = ef.makePointer(gameState.player);
     gameState.enemies = [
         new Enemy([100, 100], 300),
         new Enemy([100, window.innerHeight - 100], 300),
