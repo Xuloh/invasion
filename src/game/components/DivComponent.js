@@ -1,7 +1,8 @@
 import Component from "../ecm/Component.js";
 
 export default class DivComponent extends Component {
-    constructor(options) {
+    constructor(parent, options) {
+        super(parent);
         if(typeof options !== "object")
             throw new TypeError("options must be an object");
 
