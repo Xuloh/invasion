@@ -1,19 +1,18 @@
 import Victor from "victor";
-import Entity from "./ecm/Entity.js";
+import Component from "../ecm/Component.js";
 
-export default class Enemy extends Entity {
-    constructor(position, speed) {
-        super(position, {width: 50, height: 50});
+export default class EnemyComponent extends Component {
+    constructor(parent, speed) {
+        super(parent);
         this.speed = speed;
-        this.$container.addClass("enemy");
     }
 
     update(dt) {
         super.update(dt);
-        this.move(
+        this.parent.move(
             gameState.player.position
                 .clone()
-                .subtract(this.position)
+                .subtract(this.parent.position)
                 .norm()
                 .multiply(new Victor(this.speed, this.speed))
                 .multiply(new Victor(dt, dt))
