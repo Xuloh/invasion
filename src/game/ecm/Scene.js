@@ -11,6 +11,13 @@ export default class Scene {
     }
 
     update(dt) {
-        this.entities.forEach(e => e.update(dt));
+        this.entities.forEach((e, idx, arr) => {
+            if(e.isForDeletion) {
+                e.destroy();
+                arr.splice(idx, 1);
+            }
+            else if(e.alive)
+                e.update(dt);
+        });
     }
 }
