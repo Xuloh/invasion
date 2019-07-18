@@ -2,6 +2,7 @@ import BulletComponent from "./components/BulletComponent.js";
 import DivComponent from "./components/DivComponent.js";
 import EnemyComponent from "./components/EnemyComponent.js";
 import Entity from "./ecm/Entity.js";
+import PhysicsComponent from "./components/PhysicsComponent.js";
 import PlayerComponent from "./components/PlayerComponent.js";
 import PointerComponent from "./components/PointerComponent.js";
 
@@ -18,6 +19,7 @@ export default class EntityFactory {
             cssClass: "entity player"
         }));
         player.addComponent(new PlayerComponent(player, 450));
+        player.addComponent(new PhysicsComponent(player, 50));
         return player;
     }
 
@@ -45,6 +47,7 @@ export default class EntityFactory {
             cssClass: "entity bullet"
         }));
         bullet.addComponent(new BulletComponent(bullet, direction, 800));
+        bullet.addComponent(new PhysicsComponent(bullet, 10));
         return bullet;
     }
 
@@ -57,6 +60,7 @@ export default class EntityFactory {
             cssClass: "entity enemy"
         }));
         enemy.addComponent(new EnemyComponent(enemy, player, 300));
+        enemy.addComponent(new PhysicsComponent(enemy, 50));
         return enemy;
     }
 }
