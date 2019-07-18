@@ -1,11 +1,17 @@
 import Component from "../ecm/Component.js";
+import PhysicsComponent from "./PhysicsComponent.js";
 import Victor from "victor";
 
 export default class PlayerComponent extends Component {
-    constructor(parent, speed) {
+    constructor(parent, speed, maxVelocity) {
         super(parent);
         this.speed = speed;
         this.fireCooldown = true;
+        this._maxVelocity = maxVelocity;
+        this.physicsComponent = this._parent.getComponent(PhysicsComponent);
+
+        if(this.physicsComponent == null)
+            throw new Error("PlayerComponent needs a PhysicsComponent, please add one to its parent entity");
     }
 
     update(dt) {
@@ -22,25 +28,18 @@ export default class PlayerComponent extends Component {
 
     movePlayer(dt) {
         if(gameState.controlsManager.isControlPressed("up"))
-            this._parent.move({y: -this.speed * dt});
+            this.physicsComponent.applyForce({x: 0, y: -this.speed * dt});
         if(gameState.controlsManager.isControlPressed("down"))
-            this._parent.move({y: this.speed * dt});
+            this.physicsComponent.applyForce({x: 0, y: this.speed * dt});
         if(gameState.controlsManager.isControlPressed("left"))
-            this._parent.move({x: -this.speed * dt});
+            this.physicsComponent.applyForce({x: -this.speed * dt, y: 0});
         if(gameState.controlsManager.isControlPressed("right"))
-            this._parent.move({x: this.speed * dt});
+            this.physicsComponent.applyForce({x: this.speed * dt, y: 0});
 
-        const x = this._parent.position.x;
-        const y = this._parent.position.y;
-
-        if(y - this._parent.origin.y < 0)
-            this._parent.position.y = 0 + this._parent.origin.y;
-        else if(y + this._parent.origin.y > window.innerHeight)
-            this._parent.position.y = window.innerHeight - this._parent.origin.y;
-
-        if(x - this._parent.origin.x < 0)
-            this._parent.position.x = 0 + this._parent.origin.x;
-        else if(x + this._parent.origin.x > window.innerWidth)
-            this._parent.position.x = window.innerWidth - this._parent.origin.x;
+        const velocity = this.physicsComponent.velocity;
+        this.physicsComponent.velocity = {
+            x: Math.sign(velocity.x) * Math.min(Math.abs(velocity.x), this._maxVelocity.x),
+            y: Math.sign(velocity.y) * Math.min(Math.abs(velocity.y), this._maxVelocity.y)
+        };
     }
 }

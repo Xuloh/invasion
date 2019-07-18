@@ -81,7 +81,8 @@ $(() => {
         timer: new Timer(),
         ef: new EntityFactory(),
         mainScene: new MainScene(),
-        physicsManager: new PhysicsManager({x: 0, y: 0})
+        physicsManager: new PhysicsManager({x: 0, y: 0}),
+        pixelToMetersRatio: 50
     };
 
     gameState.eventsDispatcher = new EventsDispatcher();

@@ -10,7 +10,8 @@ export default class PointerComponent extends Component {
 
     update(dt) {
         super.update(dt);
-        const mousePos = Victor.fromObject(gameState.mouse.position);
+        const ratio = gameState.pixelToMetersRatio;
+        const mousePos = Victor.fromObject(gameState.mouse.position).multiply({x: 1 / ratio, y: 1 / ratio});
         const playerPos = this.player.position;
         const playerToMouse = mousePos.distance(playerPos);
         this._parent.position = {

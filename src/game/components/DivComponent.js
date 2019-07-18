@@ -23,23 +23,24 @@ export default class DivComponent extends Component {
         const position = this._parent.position;
         const origin = this._parent.origin;
         const size = this._parent.size;
-
+        const ratio = gameState.pixelToMetersRatio;
         this.$container.css({
-            top: Math.round(position.y - origin.y) + "px",
-            left: Math.round(position.x - origin.x) + "px",
-            height: size.height + "px",
-            width: size.width + "px"
+            top: Math.round((position.y - origin.y) * ratio) + "px",
+            left: Math.round((position.x - origin.x) * ratio) + "px",
+            height: size.height * ratio + "px",
+            width: size.width * ratio + "px"
         });
 
         gameState.$container.append(this.$container);
     }
 
     update() {
+        const ratio = gameState.pixelToMetersRatio;
         this.$container.css({
-            top: Math.round(this._parent.position.y - this._parent.origin.y) + "px",
-            left: Math.round(this._parent.position.x - this._parent.origin.x) + "px",
-            height: this._parent.size.height + "px",
-            width: this._parent.size.width + "px"
+            top: Math.round((this._parent.position.y - this._parent.origin.y) * ratio) + "px",
+            left: Math.round((this._parent.position.x - this._parent.origin.x) * ratio) + "px",
+            height: this._parent.size.height * ratio + "px",
+            width: this._parent.size.width * ratio + "px"
         });
     }
 

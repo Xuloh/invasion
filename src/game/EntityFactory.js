@@ -8,59 +8,61 @@ import PointerComponent from "./components/PointerComponent.js";
 
 export default class EntityFactory {
     makePlayer() {
+        const ratio = gameState.pixelToMetersRatio;
         const player = new Entity({
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2
+            x: window.innerWidth / 2 * 1 / ratio,
+            y: window.innerHeight / 2 * 1 / ratio
         }, {
-            width: 50,
-            height: 50
+            width: 1,
+            height: 1
         });
         player.addComponent(DivComponent, {
             cssClass: "entity player"
         });
-        player.addComponent(PlayerComponent, 450);
-        player.addComponent(PhysicsComponent, 50);
+        player.addComponent(PhysicsComponent, 1);
+        player.addComponent(PlayerComponent, 1, {x: 3, y: 3});
         return player;
     }
 
     makePointer(player) {
+        const ratio = gameState.pixelToMetersRatio;
         const pointer = new Entity({
-            x: window.innerWidth / 2,
-            y: window.innerHeight / 2
+            x: window.innerWidth / 2 * 1 / ratio,
+            y: window.innerHeight / 2 * 1 / ratio
         }, {
-            width: 10,
-            height: 10
+            width: 0.2,
+            height: 0.2
         });
         pointer.addComponent(DivComponent, {
             cssClass: "entity pointer"
         });
-        pointer.addComponent(PointerComponent, player, 70);
+        pointer.addComponent(PointerComponent, player, 1.5);
         return pointer;
     }
 
     makeBullet(position, direction) {
         const bullet = new Entity(position, {
-            width: 10,
-            height: 10
+            width: 0.2,
+            height: 0.2
         });
         bullet.addComponent(DivComponent, {
             cssClass: "entity bullet"
         });
-        bullet.addComponent(BulletComponent, direction, 800);
-        bullet.addComponent(PhysicsComponent, 10);
+        bullet.addComponent(PhysicsComponent, 0.2);
+        bullet.addComponent(BulletComponent, direction, 10);
         return bullet;
     }
 
     makeEnemy(position, player) {
         const enemy = new Entity(position, {
-            width: 50,
-            height: 50
+            width: 1,
+            height: 1
         });
         enemy.addComponent(DivComponent, {
             cssClass: "entity enemy"
         });
-        enemy.addComponent(EnemyComponent, player, 300);
-        enemy.addComponent(PhysicsComponent, 50);
+        enemy.addComponent(PhysicsComponent, 1);
+        enemy.addComponent(EnemyComponent, player, 0.7);
         return enemy;
     }
 }
