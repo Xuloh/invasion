@@ -19,7 +19,20 @@ export default class PlayerComponent extends Component {
         this.movePlayer(dt);
 
         if(this.fireCooldown && gameState.controlsManager.isControlPressed("fire")) {
-            const bullet = gameState.ef.makeBullet(this._parent.position, Victor.fromObject(gameState.mouse.position).subtract(this._parent.position));
+            const ratio = gameState.pixelToMetersRatio;
+
+            const mousePos = Victor.fromObject(gameState.mouse.position).multiply({x: 1 / ratio, y: 1 / ratio});
+            const playerPos = this._parent.position;
+            const playerToMouse = mousePos.distance(playerPos);
+
+            const position = {
+                x: playerPos.x + (mousePos.x - playerPos.x) * 1.5 / playerToMouse,
+                y: playerPos.y + (mousePos.y - playerPos.y) * 1.5 / playerToMouse
+            };
+            const direction = mousePos.subtract(this._parent.position).norm();
+
+            const bullet = gameState.ef.makeBullet(position, direction);
+
             gameState.mainScene.entities.push(bullet);
             this.fireCooldown = false;
             setTimeout(() => this.fireCooldown = true, 500);

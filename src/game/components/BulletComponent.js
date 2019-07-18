@@ -1,6 +1,7 @@
 import Component from "../ecm/Component.js";
 import PhysicsComponent from "./PhysicsComponent.js";
 import Victor from "victor";
+import {timeout} from "../../util/PromiseUtil.js";
 
 export default class BulletComponent extends Component {
     constructor(parent, direction, speed) {
@@ -21,19 +22,18 @@ export default class BulletComponent extends Component {
             throw TypeError("direction should either be an array or an object with a x and y property");
 
         this.direction.norm();
+
+        // bullet ttl
+        timeout(2000).then(() => this._parent.setForDeletion());
     }
 
     update(dt) {
         super.update(dt);
-        if(this._parent.position.x >= 0 && this._parent.position.x <= window.innerWidth && this._parent.position.y >= 0 && this._parent.position.y <= window.innerHeight) {
-            this._parent.move(
-                this.direction
-                    .clone()
-                    .multiply(new Victor(this.speed, this.speed))
-                    .multiply(new Victor(dt, dt))
-            );
-        }
-        else
-            this._parent.setForDeletion();
+        this.physicsComponent.applyForce(
+            this.direction
+                .clone()
+                .multiply(new Victor(this.speed, this.speed))
+                .multiply(new Victor(dt, dt))
+        );
     }
 }

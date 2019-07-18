@@ -49,7 +49,7 @@ export default class EntityFactory {
             cssClass: "entity bullet"
         });
         bullet.addComponent(PhysicsComponent, 0.2);
-        bullet.addComponent(BulletComponent, direction, 10);
+        bullet.addComponent(BulletComponent, direction, 2);
         return bullet;
     }
 
