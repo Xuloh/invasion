@@ -62,7 +62,7 @@ export default class EntityFactory {
             cssClass: "entity enemy"
         });
         enemy.addComponent(PhysicsComponent, 1);
-        enemy.addComponent(EnemyComponent, player, 0.7);
+        enemy.addComponent(EnemyComponent, player, 0.7, {x: 2.7, y: 2.7});
         return enemy;
     }
 }
