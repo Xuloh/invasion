@@ -49,8 +49,20 @@ export default class Entity {
 
     addComponent(component, ...args) {
         if(!(component.prototype instanceof Component))
-            throw new TypeError("component must be a subclass of Component");
+            throw new TypeError(`${component.name} is not a subclass of Component`);
         this._components.push(new component(this, ...args));
+    }
+
+    getComponent(component) {
+        if(!(component.prototype instanceof Component))
+            throw new TypeError(`${component.name} is not a subclass of Component`);
+        return this._components.find(c => c instanceof component);
+    }
+
+    getComponents(component) {
+        if(!(component.prototype instanceof Component))
+            throw new TypeError(`${component.name} is not a subclass of Component`);
+        return this._components.filter(c => c instanceof component);
     }
 
     get isForDeletion() {
