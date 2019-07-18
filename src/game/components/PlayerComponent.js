@@ -17,7 +17,27 @@ export default class PlayerComponent extends Component {
     update(dt) {
         super.update(dt);
         this.movePlayer(dt);
+        this.fire();
+    }
 
+    movePlayer(dt) {
+        if(gameState.controlsManager.isControlPressed("up"))
+            this.physicsComponent.applyForce({x: 0, y: -this.speed * dt});
+        if(gameState.controlsManager.isControlPressed("down"))
+            this.physicsComponent.applyForce({x: 0, y: this.speed * dt});
+        if(gameState.controlsManager.isControlPressed("left"))
+            this.physicsComponent.applyForce({x: -this.speed * dt, y: 0});
+        if(gameState.controlsManager.isControlPressed("right"))
+            this.physicsComponent.applyForce({x: this.speed * dt, y: 0});
+
+        const velocity = this.physicsComponent.velocity;
+        this.physicsComponent.velocity = {
+            x: Math.sign(velocity.x) * Math.min(Math.abs(velocity.x), this._maxVelocity.x),
+            y: Math.sign(velocity.y) * Math.min(Math.abs(velocity.y), this._maxVelocity.y)
+        };
+    }
+
+    fire() {
         if(this.fireCooldown && gameState.controlsManager.isControlPressed("fire")) {
             const ratio = gameState.pixelToMetersRatio;
 
@@ -37,22 +57,5 @@ export default class PlayerComponent extends Component {
             this.fireCooldown = false;
             setTimeout(() => this.fireCooldown = true, 500);
         }
-    }
-
-    movePlayer(dt) {
-        if(gameState.controlsManager.isControlPressed("up"))
-            this.physicsComponent.applyForce({x: 0, y: -this.speed * dt});
-        if(gameState.controlsManager.isControlPressed("down"))
-            this.physicsComponent.applyForce({x: 0, y: this.speed * dt});
-        if(gameState.controlsManager.isControlPressed("left"))
-            this.physicsComponent.applyForce({x: -this.speed * dt, y: 0});
-        if(gameState.controlsManager.isControlPressed("right"))
-            this.physicsComponent.applyForce({x: this.speed * dt, y: 0});
-
-        const velocity = this.physicsComponent.velocity;
-        this.physicsComponent.velocity = {
-            x: Math.sign(velocity.x) * Math.min(Math.abs(velocity.x), this._maxVelocity.x),
-            y: Math.sign(velocity.y) * Math.min(Math.abs(velocity.y), this._maxVelocity.y)
-        };
     }
 }
