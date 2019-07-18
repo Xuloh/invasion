@@ -19,7 +19,9 @@ export default class EntityFactory {
         player.addComponent(DivComponent, {
             cssClass: "entity player"
         });
-        player.addComponent(PhysicsComponent, 1);
+        player.addComponent(PhysicsComponent, 1, {
+            label: "Player"
+        });
         player.addComponent(PlayerComponent, 1, {x: 3, y: 3});
         return player;
     }
@@ -48,7 +50,9 @@ export default class EntityFactory {
         bullet.addComponent(DivComponent, {
             cssClass: "entity bullet"
         });
-        bullet.addComponent(PhysicsComponent, 0.2);
+        bullet.addComponent(PhysicsComponent, 0.2, {
+            label: "Bullet"
+        });
         bullet.addComponent(BulletComponent, direction, 2);
         return bullet;
     }
@@ -61,7 +65,9 @@ export default class EntityFactory {
         enemy.addComponent(DivComponent, {
             cssClass: "entity enemy"
         });
-        enemy.addComponent(PhysicsComponent, 1);
+        enemy.addComponent(PhysicsComponent, 1, {
+            label: "Enemy"
+        });
         enemy.addComponent(EnemyComponent, player, 0.7, {x: 2.7, y: 2.7});
         return enemy;
     }
