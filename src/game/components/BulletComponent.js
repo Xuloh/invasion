@@ -1,10 +1,15 @@
 import Component from "../ecm/Component.js";
+import PhysicsComponent from "./PhysicsComponent.js";
 import Victor from "victor";
 
 export default class BulletComponent extends Component {
     constructor(parent, direction, speed) {
         super(parent);
         this.speed = speed;
+
+        this.physicsComponent = this._parent.getComponent(PhysicsComponent);
+        if(this.physicsComponent == null)
+            throw new Error("BulletComponent needs a PhysicsComponent, please add one to its parent entity");
 
         if(direction == null)
             this.direction = new Victor(0, 0);

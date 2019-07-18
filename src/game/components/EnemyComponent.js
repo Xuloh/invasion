@@ -1,4 +1,5 @@
 import Component from "../ecm/Component.js";
+import PhysicsComponent from "./PhysicsComponent.js";
 import Victor from "victor";
 
 export default class EnemyComponent extends Component {
@@ -6,6 +7,10 @@ export default class EnemyComponent extends Component {
         super(parent);
         this.player = player;
         this.speed = speed;
+
+        this.physicsComponent = this._parent.getComponent(PhysicsComponent);
+        if(this.physicsComponent == null)
+            throw new Error("EnemyComponent needs a PhysicsComponent, please add one to its parent entity");
     }
 
     update(dt) {
