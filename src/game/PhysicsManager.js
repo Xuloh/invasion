@@ -1,11 +1,13 @@
 import {Engine, World} from "matter-js";
 
 export default class PhysicsManager {
-    constructor() {
+    constructor(gravity) {
+        if(gravity == null)
+            gravity = {x: 0, y: 9.81};
         this.world = World.create({
             gravity: {
-                x: 0,
-                y: 9.81,
+                x: gravity.x,
+                y: gravity.y,
                 scale: 1
             }
         });
