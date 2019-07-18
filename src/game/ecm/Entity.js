@@ -47,10 +47,10 @@ export default class Entity {
         return this;
     }
 
-    addComponent(component) {
-        if(!(component instanceof Component))
-            throw new TypeError("component must be an instance of a subclass of Component");
-        this._components.push(component);
+    addComponent(component, ...args) {
+        if(!(component.prototype instanceof Component))
+            throw new TypeError("component must be a subclass of Component");
+        this._components.push(new component(this, ...args));
     }
 
     get isForDeletion() {

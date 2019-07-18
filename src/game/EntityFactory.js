@@ -15,11 +15,11 @@ export default class EntityFactory {
             width: 50,
             height: 50
         });
-        player.addComponent(new DivComponent(player, {
+        player.addComponent(DivComponent, {
             cssClass: "entity player"
-        }));
-        player.addComponent(new PlayerComponent(player, 450));
-        player.addComponent(new PhysicsComponent(player, 50));
+        });
+        player.addComponent(PlayerComponent, 450);
+        player.addComponent(PhysicsComponent, 50);
         return player;
     }
 
@@ -31,10 +31,10 @@ export default class EntityFactory {
             width: 10,
             height: 10
         });
-        pointer.addComponent(new DivComponent(pointer, {
+        pointer.addComponent(DivComponent, {
             cssClass: "entity pointer"
-        }));
-        pointer.addComponent(new PointerComponent(pointer, player, 70));
+        });
+        pointer.addComponent(PointerComponent, player, 70);
         return pointer;
     }
 
@@ -43,11 +43,11 @@ export default class EntityFactory {
             width: 10,
             height: 10
         });
-        bullet.addComponent(new DivComponent(bullet, {
+        bullet.addComponent(DivComponent, {
             cssClass: "entity bullet"
-        }));
-        bullet.addComponent(new BulletComponent(bullet, direction, 800));
-        bullet.addComponent(new PhysicsComponent(bullet, 10));
+        });
+        bullet.addComponent(BulletComponent, direction, 800);
+        bullet.addComponent(PhysicsComponent, 10);
         return bullet;
     }
 
@@ -56,11 +56,11 @@ export default class EntityFactory {
             width: 50,
             height: 50
         });
-        enemy.addComponent(new DivComponent(enemy, {
+        enemy.addComponent(DivComponent, {
             cssClass: "entity enemy"
-        }));
-        enemy.addComponent(new EnemyComponent(enemy, player, 300));
-        enemy.addComponent(new PhysicsComponent(enemy, 50));
+        });
+        enemy.addComponent(EnemyComponent, player, 300);
+        enemy.addComponent(PhysicsComponent, 50);
         return enemy;
     }
 }
