@@ -68,4 +68,57 @@ export default class EntityFactory {
         enemy.addComponent(EnemyComponent, player, 0.7, {x: 2.7, y: 2.7});
         return enemy;
     }
+
+    makeWalls() {
+        const ratio = gameState.pixelToMetersRatio;
+        const wall1 = new Entity({
+            x: window.innerWidth / 2 * 1 / ratio,
+            y: -0.5
+        }, {
+            width: window.innerWidth * 1 / ratio,
+            height: 1
+        }, "Top wall");
+        wall1.addComponent(PhysicsComponent, "rectangle", {
+            width: window.innerWidth * 1 / ratio,
+            height: 1
+        });
+
+        const wall2 = new Entity({
+            x: (window.innerWidth * 1 / ratio) + 0.5,
+            y: window.innerHeight / 2 * 1 / ratio
+        }, {
+            width: 1,
+            height: window.innerHeight * 1 / ratio
+        }, "Right wall");
+        wall2.addComponent(PhysicsComponent, "rectangle", {
+            width: 1,
+            height: window.innerHeight * 1 / ratio
+        });
+
+        const wall3 = new Entity({
+            x: window.innerWidth / 2 * 1 / ratio,
+            y: (window.innerHeight * 1 / ratio) + 0.5
+        }, {
+            width: window.innerWidth * 1 / ratio,
+            height: 1
+        }, "Bottom wall");
+        wall3.addComponent(PhysicsComponent, "rectangle", {
+            width: window.innerWidth * 1 / ratio,
+            height: 1
+        });
+
+        const wall4 = new Entity({
+            x: -0.5,
+            y: window.innerHeight / 2 * 1 / ratio
+        }, {
+            width: 1,
+            height: window.innerHeight * 1 / ratio
+        }, "Left wall");
+        wall4.addComponent(PhysicsComponent, "rectangle", {
+            width: 1,
+            height: window.innerHeight * 1 / ratio
+        });
+
+        return [wall1, wall2, wall3, wall4];
+    }
 }

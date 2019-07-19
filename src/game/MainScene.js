@@ -9,5 +9,6 @@ export default class MainScene extends Scene {
         this.entities.push(gameState.ef.makeEnemy([100 * 1 / ratio, 100 * 1 / ratio], player));
         this.entities.push(gameState.ef.makeEnemy([100 * 1 / ratio, (window.innerHeight - 100) * 1 / ratio], player));
         this.entities.push(gameState.ef.makeEnemy([(window.innerWidth - 100) * 1 / ratio, (window.innerHeight / 2) * 1 / ratio], player));
+        this.entities = this.entities.concat(gameState.ef.makeWalls());
     }
 }
