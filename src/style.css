@@ -32,6 +32,10 @@ body {
     z-index: 100;
 }
 
+#menu > * {
+    margin-bottom: 0.35em;
+}
+
 #title {
     animation: menu_appear 0.7s ease-in-out 0.2s;
     animation-fill-mode: forwards;
@@ -41,6 +45,13 @@ body {
 
 #start {
     animation: menu_appear 0.7s ease-in-out 0.5s;
+    animation-fill-mode: forwards;
+    opacity: 0;
+    position: relative;
+}
+
+#settings {
+    animation: menu_appear 0.7s ease-in-out 0.8s;
     animation-fill-mode: forwards;
     opacity: 0;
     position: relative;
