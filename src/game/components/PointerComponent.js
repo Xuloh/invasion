@@ -18,5 +18,6 @@ export default class PointerComponent extends Component {
             x: playerPos.x + (mousePos.x - playerPos.x) * this.distanceToPlayer / playerToMouse,
             y: playerPos.y + (mousePos.y - playerPos.y) * this.distanceToPlayer / playerToMouse
         };
+        this._parent.angle = mousePos.subtract(playerPos).angle();
     }
 }

@@ -22,6 +22,7 @@ export default class Entity {
         this._components = [];
         this.size = size;
         this.origin = new Victor(size.width / 2, size.height / 2);
+        this.angle = 0;
 
         this.alive = true;
         this._isForDeletion = false;

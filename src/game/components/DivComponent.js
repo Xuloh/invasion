@@ -28,7 +28,8 @@ export default class DivComponent extends Component {
             top: Math.round((position.y - origin.y) * ratio) + "px",
             left: Math.round((position.x - origin.x) * ratio) + "px",
             height: size.height * ratio + "px",
-            width: size.width * ratio + "px"
+            width: size.width * ratio + "px",
+            rotate: "z " + this._parent.angle + "rad"
         });
 
         gameState.$container.append(this.$container);
@@ -40,7 +41,8 @@ export default class DivComponent extends Component {
             top: Math.round((this._parent.position.y - this._parent.origin.y) * ratio) + "px",
             left: Math.round((this._parent.position.x - this._parent.origin.x) * ratio) + "px",
             height: this._parent.size.height * ratio + "px",
-            width: this._parent.size.width * ratio + "px"
+            width: this._parent.size.width * ratio + "px",
+            transform: `rotateZ(${this._parent.angle}rad)`
         });
     }
 

@@ -14,6 +14,7 @@ export default class PhysicsComponent extends Component {
             x: this.body.position.x,
             y: this.body.position.y
         };
+        this._parent.angle = this.body.angle;
     }
 
     get velocity() {
