@@ -33,7 +33,7 @@ export default class EntityFactory {
             y: window.innerHeight / 2 * 1 / ratio
         }, null, "Pointer");
         pointer.addComponent(DivComponent, {
-            cssClass: "entity fas fa-chevron-right"
+            cssClass: "entity pointer fas fa-chevron-right"
         });
         pointer.addComponent(PointerComponent, player, 1.5);
         return pointer;

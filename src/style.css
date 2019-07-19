@@ -64,8 +64,10 @@ body {
 }
 
 .pointer {
-    background-color: #333;
-    border-radius: 50px;
+    align-items: center;
+    display: flex;
+    font-size: 20px;
+    justify-content: center;
 }
 
 .bullet {
