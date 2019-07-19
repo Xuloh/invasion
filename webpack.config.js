@@ -41,7 +41,8 @@ const loaders = {
             implementation: require("sass")
         }
     },*/
-    fileLoader: "file-loader"
+    fileLoader: "file-loader",
+    rawLoader: "raw-loader"
 };
 
 module.exports = {
@@ -69,6 +70,10 @@ module.exports = {
                     loaders.cssLoader
                 ]
             },
+            {
+                test: /\.glsl/,
+                use: loaders.rawLoader
+            }
             /*{
                 test: /\.scss/,
                 exclude: /node_modules/,

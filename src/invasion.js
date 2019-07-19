@@ -8,6 +8,7 @@ import MainScene from "./game/MainScene";
 import PhysicsManager from "./game/PhysicsManager";
 import React from "react";
 import ReactDOM from "react-dom";
+import Renderer from "./game/Renderer";
 import Timer from "./util/Timer";
 import UI from "./ui/UI";
 import setupFontAwesomeLibrary from "./font-awesome-library";
@@ -83,7 +84,10 @@ $(() => {
         ef: new EntityFactory(),
         mainScene: new MainScene(),
         physicsManager: new PhysicsManager({x: 0, y: 0}),
-        pixelToMetersRatio: 50
+        pixelToMetersRatio: 50,
+        renderer: new Renderer("game", {
+            clearColor: "#eee"
+        })
     };
 
     gameState.eventsDispatcher = new EventsDispatcher();
