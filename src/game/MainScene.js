@@ -1,4 +1,4 @@
-import Scene from "./ecm/Scene.js";
+import Scene from "./ecm/Scene";
 
 export default class MainScene extends Scene {
     load() {

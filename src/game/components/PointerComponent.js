@@ -1,4 +1,4 @@
-import Component from "../ecm/Component.js";
+import Component from "../ecm/Component";
 import Victor from "victor";
 
 export default class PointerComponent extends Component {

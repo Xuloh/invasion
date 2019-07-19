@@ -1,5 +1,5 @@
-import Component from "../ecm/Component.js";
-import PhysicsComponent from "./PhysicsComponent.js";
+import Component from "../ecm/Component";
+import PhysicsComponent from "./PhysicsComponent";
 import Victor from "victor";
 
 export default class EnemyComponent extends Component {

@@ -1,10 +1,10 @@
-import BulletComponent from "./components/BulletComponent.js";
-import DivComponent from "./components/DivComponent.js";
-import EnemyComponent from "./components/EnemyComponent.js";
-import Entity from "./ecm/Entity.js";
-import PhysicsComponent from "./components/PhysicsComponent.js";
-import PlayerComponent from "./components/PlayerComponent.js";
-import PointerComponent from "./components/PointerComponent.js";
+import BulletComponent from "./components/BulletComponent";
+import DivComponent from "./components/DivComponent";
+import EnemyComponent from "./components/EnemyComponent";
+import Entity from "./ecm/Entity";
+import PhysicsComponent from "./components/PhysicsComponent";
+import PlayerComponent from "./components/PlayerComponent";
+import PointerComponent from "./components/PointerComponent";
 
 export default class EntityFactory {
     makePlayer() {

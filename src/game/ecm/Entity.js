@@ -1,4 +1,4 @@
-import Component from "./Component.js";
+import Component from "./Component";
 import Victor from "victor";
 
 export default class Entity {

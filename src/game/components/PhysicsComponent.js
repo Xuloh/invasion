@@ -1,5 +1,5 @@
 import {Bodies, Body, World} from "matter-js";
-import Component from "../ecm/Component.js";
+import Component from "../ecm/Component";
 
 export default class PhysicsComponent extends Component {
     constructor(parent, radius, options) {

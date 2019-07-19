@@ -1,15 +1,15 @@
 import "./style.css";
 
 import $ from "jquery";
-import ControlsManager from "./events/ControlsManager.js";
-import EntityFactory from "./game/EntityFactory.js";
-import EventsDispatcher from "./events/EventsDispatcher.js";
-import MainScene from "./game/MainScene.js";
-import PhysicsManager from "./game/PhysicsManager.js";
+import ControlsManager from "./events/ControlsManager";
+import EntityFactory from "./game/EntityFactory";
+import EventsDispatcher from "./events/EventsDispatcher";
+import MainScene from "./game/MainScene";
+import PhysicsManager from "./game/PhysicsManager";
 import React from "react";
 import ReactDOM from "react-dom";
-import Timer from "./util/Timer.js";
-import UI from "./ui/UI.js";
+import Timer from "./util/Timer";
+import UI from "./ui/UI";
 import setupFontAwesomeLibrary from "./font-awesome-library";
 
 window.$ = $;
