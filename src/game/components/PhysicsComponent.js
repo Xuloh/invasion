@@ -2,10 +2,25 @@ import {Bodies, Body, World} from "matter-js";
 import Component from "../ecm/Component";
 
 export default class PhysicsComponent extends Component {
-    constructor(parent, radius, options) {
+    constructor(parent, type, options) {
         super(parent);
         const position = this._parent.position;
-        this.body = Bodies.circle(position.x, position.y, radius, options);
+
+        if(options.label == null)
+            options.label = this._parent.label;
+
+        if(type === "circle") {
+            if(options.radius == null)
+                options.radius = 1;
+            this.body = Bodies.circle(position.x, position.y, options.radius, options);
+        }
+        else if(type === "rectangle") {
+            if(options.width == null)
+                options.width = 1;
+            if(options.height == null)
+                options.height = 1;
+            this.body = Bodies.circle(position.x, position.y, options.width, options.height, options);
+        }
         World.add(gameState.physicsManager.world, this.body);
     }
 
