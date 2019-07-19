@@ -13,7 +13,7 @@ export default class Entity {
             throw TypeError("position should either be an array or an object with an x and y property");
 
         if(size == null || !("width" in size) || !("height" in size))
-            throw new TypeError("size should be an object with a width and height property");
+            size = {width: 1, height: 1};
 
         this._components = [];
         this.size = size;
