@@ -2,7 +2,7 @@ import Component from "./Component.js";
 import Victor from "victor";
 
 export default class Entity {
-    constructor(position, size) {
+    constructor(position, size, label) {
         if(position == null)
             this._position = new Victor(0, 0);
         else if(Array.isArray(position))
@@ -15,6 +15,10 @@ export default class Entity {
         if(size == null || !("width" in size) || !("height" in size))
             size = {width: 1, height: 1};
 
+        if(label == null || typeof label !== "string")
+            label = "Entity";
+
+        this.label = label;
         this._components = [];
         this.size = size;
         this.origin = new Victor(size.width / 2, size.height / 2);

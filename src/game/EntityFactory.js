@@ -15,7 +15,7 @@ export default class EntityFactory {
         }, {
             width: 1,
             height: 1
-        });
+        }, "Player");
         player.addComponent(DivComponent, {
             cssClass: "entity player"
         });
@@ -31,10 +31,7 @@ export default class EntityFactory {
         const pointer = new Entity({
             x: window.innerWidth / 2 * 1 / ratio,
             y: window.innerHeight / 2 * 1 / ratio
-        }, {
-            width: 0.2,
-            height: 0.2
-        });
+        }, null, "Pointer");
         pointer.addComponent(DivComponent, {
             cssClass: "entity fas fa-chevron-right"
         });
@@ -46,7 +43,7 @@ export default class EntityFactory {
         const bullet = new Entity(position, {
             width: 0.2,
             height: 0.2
-        });
+        }, "Bullet");
         bullet.addComponent(DivComponent, {
             cssClass: "entity bullet"
         });
@@ -61,7 +58,7 @@ export default class EntityFactory {
         const enemy = new Entity(position, {
             width: 1,
             height: 1
-        });
+        }, "Enemy");
         enemy.addComponent(DivComponent, {
             cssClass: "entity enemy"
         });
