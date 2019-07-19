@@ -19,7 +19,7 @@ export default class PhysicsComponent extends Component {
                 options.width = 1;
             if(options.height == null)
                 options.height = 1;
-            this.body = Bodies.circle(position.x, position.y, options.width, options.height, options);
+            this.body = Bodies.rectangle(position.x, position.y, options.width, options.height, options);
         }
         World.add(gameState.physicsManager.world, this.body);
     }
