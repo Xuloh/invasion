@@ -10,6 +10,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Timer from "./util/Timer.js";
 import UI from "./ui/UI.js";
+import setupFontAwesomeLibrary from "./font-awesome-library";
 
 window.$ = $;
 window.jQuery = $;
@@ -88,6 +89,7 @@ $(() => {
     gameState.eventsDispatcher = new EventsDispatcher();
     gameState.controlsManager = new ControlsManager(gameState.eventsDispatcher);
     gameState.mainScene.load();
+    setupFontAwesomeLibrary();
     registerControls();
     registerHandlers();
     ReactDOM.render(<UI/>, document.getElementById("ui"));

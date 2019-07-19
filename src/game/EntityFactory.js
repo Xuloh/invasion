@@ -36,7 +36,7 @@ export default class EntityFactory {
             height: 0.2
         });
         pointer.addComponent(DivComponent, {
-            cssClass: "entity pointer"
+            cssClass: "entity fas fa-chevron-right"
         });
         pointer.addComponent(PointerComponent, player, 1.5);
         return pointer;
