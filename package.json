@@ -4,7 +4,7 @@
   "description": "small js game",
   "main": "src/invasion.js",
   "scripts": {
-    "watch": "webpack-dev-server -d --hot",
+    "watch": "webpack-dev-server -d --hot --host 0.0.0.0",
     "build": "webpack -p",
     "build-dev": "webpack -d"
   },
