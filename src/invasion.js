@@ -49,6 +49,7 @@ function resize() {
         height: gameState.$container.height(),
         width: gameState.$container.width()
     });
+    gameState.renderer.resetProjection();
 }
 
 function start() {

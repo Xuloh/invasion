@@ -31,7 +31,22 @@ export default class Renderer {
 
         this.shaderLibrary = new ShaderLibrary(this);
 
-        // create perspective matrix
+        this.resetProjection();
+
+        // init some webgl stuff
+        this.gl.clearColor(
+            this.options.clearColor.red() / 255,
+            this.options.clearColor.green() / 255,
+            this.options.clearColor.blue() / 255,
+            this.options.clearColor.alpha()
+        );
+        this.gl.clearDepth(1.0);
+        this.gl.enable(this.gl.DEPTH_TEST);
+        this.gl.depthFunc(this.gl.LEQUAL);
+    }
+
+    resetProjection() {
+        // create projection matrix
         const fov = 45 * Math.PI / 180; // field of view in radians
         const aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
         const zNear = 0.1;
@@ -45,17 +60,6 @@ export default class Renderer {
             zNear,
             zFar
         );
-
-        // init some webgl stuff
-        this.gl.clearColor(
-            this.options.clearColor.red() / 255,
-            this.options.clearColor.green() / 255,
-            this.options.clearColor.blue() / 255,
-            this.options.clearColor.alpha()
-        );
-        this.gl.clearDepth(1.0);
-        this.gl.enable(this.gl.DEPTH_TEST);
-        this.gl.depthFunc(this.gl.LEQUAL);
     }
 
     initBuffers() {
