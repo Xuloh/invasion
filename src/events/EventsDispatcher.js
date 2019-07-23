@@ -44,8 +44,7 @@ export default class EventsDispatcher {
 
     _handleEvents(event) {
         if(!this.disableEvents) {
-            this.handlers["*"]
-                .concat(this.handlers[event.type])
+            [...this.handlers["*"], ...this.handlers[event.type]]
                 .forEach(h => {
                     switch(event.type) {
                         case "keydown":
