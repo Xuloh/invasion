@@ -30,7 +30,7 @@ export default class Renderer {
     }
 
     _handleOptions(options) {
-        if(options != null || typeof options !== "object")
+        if(options != null && typeof options !== "object")
             throw new TypeError("options must be an object or null or undefined");
         if(options == null)
             options = {};
