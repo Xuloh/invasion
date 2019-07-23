@@ -1,9 +1,7 @@
 import "./style.css";
 
 import $ from "jquery";
-import ControlsManager from "./events/ControlsManager";
 import EntityFactory from "./game/EntityFactory";
-import EventsDispatcher from "./events/EventsDispatcher";
 import MainScene from "./game/MainScene";
 import PhysicsManager from "./game/PhysicsManager";
 import React from "react";
@@ -11,32 +9,36 @@ import ReactDOM from "react-dom";
 import Renderer from "./game/Renderer";
 import Timer from "./util/Timer";
 import UI from "./ui/UI";
+import {registerHandler} from "./events/EventsDispatcher";
+import {setControl} from "./events/ControlsManager";
 import setupFontAwesomeLibrary from "./font-awesome-library";
 
 window.$ = $;
 window.jQuery = $;
 
 function registerControls() {
-    gameState.controlsManager.setControl("up", "KeyW");
-    gameState.controlsManager.setControl("down", "KeyS");
-    gameState.controlsManager.setControl("left", "KeyA");
-    gameState.controlsManager.setControl("right", "KeyD");
-    gameState.controlsManager.setControl("fire", "mouse0");
+    [
+        ["up", "KeyW"],
+        ["down", "KeyS"],
+        ["left", "KeyA"],
+        ["right", "KeyD"],
+        ["fire", "mouse0"]
+    ].forEach(control => setControl(control[0], control[1]));
 }
 
 function registerHandlers() {
-    gameState.eventsDispatcher.registerHandler("keyup", gameState.stop, {
+    registerHandler("keyup", gameState.stop, {
         keys: ["Escape"]
     });
 
-    gameState.eventsDispatcher.registerHandler("keyup", event => {
+    registerHandler("keyup", event => {
         if(event.originalEvent.shiftKey)
             gameState.disableEnemies = !gameState.disableEnemies;
     }, {
         keys: ["KeyQ"]
     });
 
-    gameState.eventsDispatcher.registerHandler("mousemove", event => {
+    registerHandler("mousemove", event => {
         gameState.mouse.position = {
             x: event.originalEvent.clientX,
             y: event.originalEvent.clientY
@@ -106,8 +108,6 @@ $(() => {
     gameState.$container.on("resize", resize);
     resize();
 
-    gameState.eventsDispatcher = new EventsDispatcher();
-    gameState.controlsManager = new ControlsManager(gameState.eventsDispatcher);
     gameState.mainScene.load();
     setupFontAwesomeLibrary();
     registerControls();
