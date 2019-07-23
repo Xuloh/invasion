@@ -5,6 +5,7 @@ import Entity from "./ecm/Entity";
 import PhysicsComponent from "./components/PhysicsComponent";
 import PlayerComponent from "./components/PlayerComponent";
 import PointerComponent from "./components/PointerComponent";
+import TriangleComponent from "./components/TriangleComponent";
 
 export default class EntityFactory {
     makePlayer() {
@@ -67,5 +68,11 @@ export default class EntityFactory {
         });
         enemy.addComponent(EnemyComponent, player, 0.7, {x: 2.7, y: 2.7});
         return enemy;
+    }
+
+    makeTest() {
+        const test = new Entity([0, 0], null, "WebGL Test");
+        test.addComponent(TriangleComponent);
+        return test;
     }
 }
