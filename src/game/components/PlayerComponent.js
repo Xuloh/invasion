@@ -1,6 +1,7 @@
 import Component from "../ecm/Component";
 import PhysicsComponent from "./PhysicsComponent";
 import Victor from "victor";
+import {isControlPressed} from "../../events/ControlsManager";
 
 export default class PlayerComponent extends Component {
     constructor(parent, speed, maxVelocity) {
@@ -21,13 +22,13 @@ export default class PlayerComponent extends Component {
     }
 
     movePlayer(dt) {
-        if(gameState.controlsManager.isControlPressed("up"))
+        if(isControlPressed("up"))
             this.physicsComponent.applyForce({x: 0, y: -this.speed * dt});
-        if(gameState.controlsManager.isControlPressed("down"))
+        if(isControlPressed("down"))
             this.physicsComponent.applyForce({x: 0, y: this.speed * dt});
-        if(gameState.controlsManager.isControlPressed("left"))
+        if(isControlPressed("left"))
             this.physicsComponent.applyForce({x: -this.speed * dt, y: 0});
-        if(gameState.controlsManager.isControlPressed("right"))
+        if(isControlPressed("right"))
             this.physicsComponent.applyForce({x: this.speed * dt, y: 0});
 
         const velocity = this.physicsComponent.velocity;
@@ -38,7 +39,7 @@ export default class PlayerComponent extends Component {
     }
 
     fire() {
-        if(this.fireCooldown && gameState.controlsManager.isControlPressed("fire")) {
+        if(this.fireCooldown && isControlPressed("fire")) {
             const ratio = gameState.pixelToMetersRatio;
 
             const mousePos = Victor.fromObject(gameState.mouse.position).multiply({x: 1 / ratio, y: 1 / ratio});
