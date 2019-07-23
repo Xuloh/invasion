@@ -35,6 +35,7 @@ module.exports = {
     rules: {
         "no-loops/no-loops": "warn",
         "sort-imports": "warn",
+        "react/require-render-return": "off",
         "quotes": [
             "error",
             "double",
