@@ -2,8 +2,9 @@ import {registerHandler} from "./EventsDispatcher";
 
 const keys = {};
 const controls = {};
+const mousePosition = {x: 0, y: 0};
 
-registerHandler("keydown keyup mousedown mouseup", event => handleEvents(event));
+registerHandler("keydown keyup mousedown mouseup mousemove", event => handleEvents(event));
 
 function setControl(control, key) {
     controls[control] = key;
@@ -15,6 +16,17 @@ function isKeyPressed(key) {
 
 function isControlPressed(control) {
     return Object.prototype.hasOwnProperty.call(controls, control) && this.isKeyPressed(controls[control]);
+}
+
+function getMousePosition() {
+    return {
+        get x() {
+            return mousePosition.x;
+        },
+        get y() {
+            return mousePosition.y;
+        }
+    };
 }
 
 function handleEvents(event) {
@@ -33,6 +45,10 @@ function handleEvents(event) {
         case "mouseup":
             keys[`mouse${mouseButton}`] = false;
             break;
+        case "mousemove":
+            mousePosition.x = event.originalEvent.clientX;
+            mousePosition.y = event.originalEvent.clientY;
+            break;
         default:
             break;
     }
@@ -41,5 +57,6 @@ function handleEvents(event) {
 export {
     setControl,
     isKeyPressed,
-    isControlPressed
+    isControlPressed,
+    getMousePosition
 };

@@ -37,13 +37,6 @@ function registerHandlers() {
     }, {
         keys: ["KeyQ"]
     });
-
-    registerHandler("mousemove", event => {
-        gameState.mouse.position = {
-            x: event.originalEvent.clientX,
-            y: event.originalEvent.clientY
-        };
-    });
 }
 
 function resize() {
@@ -86,12 +79,6 @@ function main() {
 $(() => {
     window.gameState = {
         $container: $("#game"),
-        mouse: {
-            position: {
-                x: 0,
-                y: 0
-            }
-        },
         disableEnemies: false,
         start: start,
         stop: stop,
