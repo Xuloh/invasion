@@ -16,33 +16,39 @@ export default class Renderer {
         if(this.gl == null)
             throw new Error("Couldn't initialize WebGL. It may not be supported on this browser");
 
-        // handle options
-        if(options == null)
-            options = {};
-        if(typeof options !== "object")
-            throw new TypeError("options must be an object");
-
-        const clearColor = Color("#000");
-        if(options.clearColor != null)
-            options.clearColor = Color(options.clearColor);
-        else
-            options.clearColor = clearColor;
-        this.options = options;
+        this._handleOptions();
 
         this.shaderLibrary = new ShaderLibrary(this);
 
         this.resetProjection();
 
         // init some webgl stuff
-        this.gl.clearColor(
-            this.options.clearColor.red() / 255,
-            this.options.clearColor.green() / 255,
-            this.options.clearColor.blue() / 255,
-            this.options.clearColor.alpha()
-        );
+        this.gl.clearColor(...options.clearColor);
         this.gl.clearDepth(1.0);
         this.gl.enable(this.gl.DEPTH_TEST);
         this.gl.depthFunc(this.gl.LEQUAL);
+    }
+
+    _handleOptions(options) {
+        if(options != null || typeof options !== "object")
+            throw new TypeError("options must be an object or null or undefined");
+        if(options == null)
+            options = {};
+
+        if(options.clearColor != null) {
+            const clearColor = Color(options.clearColor);
+            options.clearColor = [
+                clearColor.red() / 255,
+                clearColor.green() / 255,
+                clearColor.blue() / 255,
+                clearColor.alpha()
+            ];
+        }
+
+        this.options = {
+            clearColor: [0.0, 0.0, 0.0, 1.0],
+            ...options
+        };
     }
 
     resetProjection() {
@@ -62,39 +68,28 @@ export default class Renderer {
         );
     }
 
-    initBuffers() {
-        /* eslint-disable array-element-newline */
+    putAttribArray(location, buffer, numComponents) {
+        const type = this.gl.FLOAT;
+        const normalize = false;
+        const stride = 0;
+        const offset = 0;
+        this.gl.vertexAttribPointer(
+            location,
+            numComponents,
+            type,
+            normalize,
+            stride,
+            offset
+        );
+        this.gl.enableVertexAttribArray(location);
+    }
 
-        const positionBuffer = this.gl.createBuffer();
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, positionBuffer);
-
-        const positions = [
-            1.0, 1.0,
-            -1.0, 1.0,
-            1.0, -1.0,
-            -1.0, -1.0
-        ];
-
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(positions), this.gl.STATIC_DRAW);
-
-        const colorBuffer = this.gl.createBuffer();
-        this.gl.bindBuffer(this.gl.ARRAY_BUFFER, colorBuffer);
-
-        const colors = [
-            1.0, 0.0, 0.0, 1.0,
-            0.0, 1.0, 0.0, 1.0,
-            0.0, 0.0, 1.0, 1.0,
-            1.0, 1.0, 1.0, 1.0
-        ];
-
-        this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array(colors), this.gl.STATIC_DRAW);
-
-        this.buffers = {
-            color: colorBuffer,
-            position: positionBuffer
-        };
-
-        /* eslint-enable array-element-newline */
+    putUniformMatrix(location, matrix) {
+        this.gl.uniformMatrix4fv(
+            location,
+            false,
+            matrix
+        );
     }
 
     render(params) {
@@ -126,29 +121,5 @@ export default class Renderer {
         this.gl.drawArrays(params.mode, offset, params.vertexCount);
 
         buffers.forEach(b => this.gl.deleteBuffer(b));
-    }
-
-    putAttribArray(location, buffer, numComponents) {
-        const type = this.gl.FLOAT;
-        const normalize = false;
-        const stride = 0;
-        const offset = 0;
-        this.gl.vertexAttribPointer(
-            location,
-            numComponents,
-            type,
-            normalize,
-            stride,
-            offset
-        );
-        this.gl.enableVertexAttribArray(location);
-    }
-
-    putUniformMatrix(location, matrix) {
-        this.gl.uniformMatrix4fv(
-            location,
-            false,
-            matrix
-        );
     }
 }
