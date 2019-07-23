@@ -44,6 +44,13 @@ function registerHandlers() {
     });
 }
 
+function resize() {
+    gameState.$container.attr({
+        height: gameState.$container.height(),
+        width: gameState.$container.width()
+    });
+}
+
 function start() {
     gameState.$ui.toggleMenu(false);
     $("#game").removeClass("inactive");
@@ -94,6 +101,9 @@ $(() => {
             clearColor: "#eee"
         })
     };
+
+    gameState.$container.on("resize", resize);
+    resize();
 
     gameState.eventsDispatcher = new EventsDispatcher();
     gameState.controlsManager = new ControlsManager(gameState.eventsDispatcher);
