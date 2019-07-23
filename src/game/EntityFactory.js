@@ -1,5 +1,4 @@
 import BulletComponent from "./components/BulletComponent";
-import DivComponent from "./components/DivComponent";
 import EnemyComponent from "./components/EnemyComponent";
 import Entity from "./ecm/Entity";
 import PhysicsComponent from "./components/PhysicsComponent";
@@ -17,9 +16,6 @@ export default class EntityFactory {
             width: 1,
             height: 1
         }, "Player");
-        player.addComponent(DivComponent, {
-            cssClass: "entity player"
-        });
         player.addComponent(PhysicsComponent, 1, {
             label: "Player"
         });
@@ -33,9 +29,6 @@ export default class EntityFactory {
             x: window.innerWidth / 2 * 1 / ratio,
             y: window.innerHeight / 2 * 1 / ratio
         }, null, "Pointer");
-        pointer.addComponent(DivComponent, {
-            cssClass: "entity pointer fas fa-chevron-right"
-        });
         pointer.addComponent(PointerComponent, player, 1.5);
         return pointer;
     }
@@ -45,9 +38,6 @@ export default class EntityFactory {
             width: 0.2,
             height: 0.2
         }, "Bullet");
-        bullet.addComponent(DivComponent, {
-            cssClass: "entity bullet"
-        });
         bullet.addComponent(PhysicsComponent, 0.2, {
             label: "Bullet"
         });
@@ -60,9 +50,6 @@ export default class EntityFactory {
             width: 1,
             height: 1
         }, "Enemy");
-        enemy.addComponent(DivComponent, {
-            cssClass: "entity enemy"
-        });
         enemy.addComponent(PhysicsComponent, 1, {
             label: "Enemy"
         });
