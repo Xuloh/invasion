@@ -20,4 +20,8 @@ export default class Scene {
                 e.update(dt);
         });
     }
+
+    render() {
+        this.entities.forEach(e => e.render());
+    }
 }

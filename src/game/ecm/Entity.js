@@ -39,6 +39,10 @@ export default class Entity {
         });
     }
 
+    render() {
+        this._components.forEach(c => c.render());
+    }
+
     move(movement) {
         if(typeof movement === "object")
             movement = Victor.fromObject(movement);
