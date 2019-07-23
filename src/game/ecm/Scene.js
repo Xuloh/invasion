@@ -22,6 +22,9 @@ export default class Scene {
     }
 
     render() {
-        this.entities.forEach(e => e.render());
+        this.entities.forEach(e => {
+            if(e.visible)
+                e.render();
+        });
     }
 }

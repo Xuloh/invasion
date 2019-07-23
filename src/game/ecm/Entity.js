@@ -25,6 +25,7 @@ export default class Entity {
         this.angle = 0;
 
         this.alive = true;
+        this.visible = true;
         this._isForDeletion = false;
     }
 
