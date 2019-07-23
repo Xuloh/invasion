@@ -7,6 +7,7 @@ import PhysicsManager from "./game/PhysicsManager";
 import React from "react";
 import ReactDOM from "react-dom";
 import Renderer from "./game/Renderer";
+import SceneManager from "./game/SceneManager";
 import Timer from "./util/Timer";
 import UI from "./ui/UI";
 import {registerHandler} from "./events/EventsDispatcher";
@@ -62,11 +63,11 @@ function stop() {
 
 function update(dt) {
     gameState.physicsManager.update(dt);
-    gameState.mainScene.update(dt);
+    SceneManager.update(dt);
 }
 
 function render() {
-    gameState.mainScene.render();
+    SceneManager.render();
 }
 
 function main() {
@@ -84,7 +85,6 @@ $(() => {
         stop: stop,
         timer: new Timer(),
         ef: new EntityFactory(),
-        mainScene: new MainScene(),
         physicsManager: new PhysicsManager({x: 0, y: 0}),
         pixelToMetersRatio: 50,
         renderer: new Renderer("game", {
@@ -94,10 +94,10 @@ $(() => {
 
     gameState.$container.on("resize", resize);
     resize();
-
-    gameState.mainScene.load();
     setupFontAwesomeLibrary();
     registerControls();
     registerHandlers();
+    SceneManager.add("main", new MainScene());
+    SceneManager.load("main");
     ReactDOM.render(<UI/>, document.getElementById("ui"));
 });
