@@ -1,9 +1,10 @@
+/* eslint-disable no-empty-function, no-unused-vars */
+
 export default class Scene {
     constructor() {
         this.entities = [];
     }
 
-    // eslint-disable-next-line no-empty-function
     load() {}
 
     unload() {
@@ -27,4 +28,6 @@ export default class Scene {
                 e.render();
         });
     }
+
+    handle(message) {}
 }

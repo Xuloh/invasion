@@ -35,10 +35,15 @@ function render() {
     currentScene.render();
 }
 
+function message(msg) {
+    currentScene.handle(msg);
+}
+
 export default {
     add,
     load,
     getCurrentScene,
     update,
-    render
+    render,
+    message
 };
