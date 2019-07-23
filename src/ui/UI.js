@@ -5,6 +5,7 @@ import React from "react";
 export default class UI extends React.Component {
     constructor(props) {
         super(props);
+        gameState.$ui = this;
         this.state = {
             displayMenu: true
         };
