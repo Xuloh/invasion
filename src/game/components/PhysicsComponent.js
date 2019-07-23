@@ -2,11 +2,12 @@ import {Bodies, Body, World} from "matter-js";
 import Component from "../ecm/Component";
 
 export default class PhysicsComponent extends Component {
-    constructor(parent, radius, options) {
+    constructor(parent, world, radius, options) {
         super(parent);
+        this.world = world;
         const position = this._parent.position;
         this.body = Bodies.circle(position.x, position.y, radius, options);
-        World.add(gameState.physicsManager.world, this.body);
+        World.add(this.world, this.body);
     }
 
     update() {
@@ -30,6 +31,6 @@ export default class PhysicsComponent extends Component {
     }
 
     destroy() {
-        World.remove(gameState.physicsManager.world, this.body);
+        World.remove(this.world, this.body);
     }
 }
