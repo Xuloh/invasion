@@ -62,10 +62,15 @@ function update(dt) {
     gameState.mainScene.update(dt);
 }
 
+function render() {
+    gameState.mainScene.render();
+}
+
 function main() {
     gameState.mainRafToken = window.requestAnimationFrame(main);
     const dt = gameState.timer.dt();
     update(dt);
+    render();
 }
 
 $(() => {
