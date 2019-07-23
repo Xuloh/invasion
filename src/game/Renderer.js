@@ -93,6 +93,7 @@ export default class Renderer {
     }
 
     render(params) {
+        //TODO implement a render queue instead of rendering everything on the spot
         // clear the canvas
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
