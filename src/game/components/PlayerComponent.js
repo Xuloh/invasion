@@ -1,7 +1,7 @@
+import {getMousePosition, isControlPressed} from "../../events/ControlsManager";
 import Component from "../ecm/Component";
 import PhysicsComponent from "./PhysicsComponent";
 import Victor from "victor";
-import {isControlPressed} from "../../events/ControlsManager";
 
 export default class PlayerComponent extends Component {
     constructor(parent, speed, maxVelocity) {
@@ -42,7 +42,7 @@ export default class PlayerComponent extends Component {
         if(this.fireCooldown && isControlPressed("fire")) {
             const ratio = gameState.pixelToMetersRatio;
 
-            const mousePos = Victor.fromObject(gameState.mouse.position).multiply({x: 1 / ratio, y: 1 / ratio});
+            const mousePos = Victor.fromObject(getMousePosition()).multiply({x: 1 / ratio, y: 1 / ratio});
             const playerPos = this._parent.position;
             const playerToMouse = mousePos.distance(playerPos);
 
