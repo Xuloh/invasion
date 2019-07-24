@@ -4,7 +4,6 @@ import Scene from "./ecm/Scene";
 export default class MainScene extends Scene {
     load() {
         // const player = this.entityFactory.makePlayer();
-        // const ratio = gameState.pixelToMetersRatio;
         this.entities.push(new Player([-5, 3]));
         //this.entities.push(this.entityFactory.makeTest());
         // this.entities.push(player);

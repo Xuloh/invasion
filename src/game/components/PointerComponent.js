@@ -2,6 +2,7 @@ import Component from "../ecm/Component";
 import Transform2DComponent from "./Transform2DComponent";
 import Victor from "victor";
 import {getMousePosition} from "../../events/ControlsManager";
+import {pixelRatio} from "../Renderer";
 
 export default class PointerComponent extends Component {
     constructor(parent, player, distanceToPlayer) {
@@ -13,8 +14,7 @@ export default class PointerComponent extends Component {
 
     update(dt) {
         super.update(dt);
-        const ratio = gameState.pixelToMetersRatio;
-        const mousePos = Victor.fromObject(getMousePosition).multiply({x: 1 / ratio, y: 1 / ratio});
+        const mousePos = Victor.fromObject(getMousePosition).multiply({x: 1 / pixelRatio, y: 1 / pixelRatio});
         const playerPos = this.player.position;
         const playerToMouse = mousePos.distance(playerPos);
         this.transform2d.position = {
