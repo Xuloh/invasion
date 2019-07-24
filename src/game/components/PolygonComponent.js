@@ -1,4 +1,5 @@
 /* eslint-disable array-element-newline, no-loops/no-loops */
+import * as Renderer from "../Renderer";
 import Component from "../ecm/Component";
 import Transform2DComponent from "./Transform2DComponent";
 
@@ -27,8 +28,8 @@ export default class PolygonComponent extends Component {
     }
 
     render() {
-        gameState.renderer.render({
-            mode: gameState.renderer.gl.TRIANGLE_FAN,
+        Renderer.render({
+            mode: Renderer.gl.TRIANGLE_FAN,
             vertexCount: 2 + this.edges,
             shader: this.shader,
             attributes: {

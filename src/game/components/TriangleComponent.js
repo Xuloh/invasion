@@ -1,4 +1,5 @@
 /* eslint-disable array-element-newline */
+import * as Renderer from "../Renderer";
 import Component from "../ecm/Component";
 import Transform2DComponent from "./Transform2DComponent";
 
@@ -16,8 +17,8 @@ export default class TriangleComponent extends Component {
     }
 
     render() {
-        gameState.renderer.render({
-            mode: gameState.renderer.gl.TRIANGLES,
+        Renderer.render({
+            mode: Renderer.gl.TRIANGLES,
             vertexCount: 3,
             shader: this.shader,
             attributes: {
