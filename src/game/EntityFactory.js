@@ -3,21 +3,9 @@ import EnemyComponent from "./components/EnemyComponent";
 import Entity from "./ecm/Entity";
 import Entity2D from "./entities/Entity2D";
 import PhysicsComponent from "./components/PhysicsComponent";
-import PlayerComponent from "./components/PlayerComponent";
-import PointerComponent from "./components/PointerComponent";
 import PolygonComponent from "./components/PolygonComponent";
 
 export default class EntityFactory {
-    makePointer(player) {
-        const ratio = gameState.pixelToMetersRatio;
-        const pointer = new Entity({
-            x: window.innerWidth / 2 * 1 / ratio,
-            y: window.innerHeight / 2 * 1 / ratio
-        }, null, "Pointer");
-        pointer.addComponent(PointerComponent, player, 1.5);
-        return pointer;
-    }
-
     makeBullet(position, direction) {
         const bullet = new Entity(position, {
             width: 0.2,
