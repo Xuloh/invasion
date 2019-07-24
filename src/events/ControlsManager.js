@@ -15,7 +15,7 @@ function isKeyPressed(key) {
 }
 
 function isControlPressed(control) {
-    return Object.prototype.hasOwnProperty.call(controls, control) && this.isKeyPressed(controls[control]);
+    return Object.prototype.hasOwnProperty.call(controls, control) && isKeyPressed(controls[control]);
 }
 
 function getMousePosition() {
