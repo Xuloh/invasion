@@ -46,7 +46,7 @@ function resize() {
         height: gameState.$container.height(),
         width: gameState.$container.width()
     });
-    gameState.renderer.resetProjection();
+    gameState.renderer.resize();
 }
 
 function start() {
@@ -89,7 +89,8 @@ $(() => {
         physicsManager: new PhysicsManager({x: 0, y: 0}),
         pixelToMetersRatio: 50,
         renderer: new Renderer("game", {
-            clearColor: "#eee"
+            clearColor: "#eee",
+            ratio: 50
         })
     };
 

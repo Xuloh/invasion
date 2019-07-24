@@ -20,7 +20,7 @@ export default class Renderer {
 
         this.shaderLibrary = new ShaderLibrary(this);
 
-        this.resetProjection();
+        this.createProjection();
 
         // init some webgl stuff
         this.gl.clearColor(...options.clearColor);
@@ -47,30 +47,32 @@ export default class Renderer {
 
         this.options = {
             clearColor: [0.0, 0.0, 0.0, 1.0],
+            ratio: 50,
             ...options
         };
     }
 
-    resetProjection() {
+    createProjection() {
         // create projection matrix
-        const fov = 45 * Math.PI / 180; // field of view in radians
-        const aspect = this.gl.canvas.clientWidth / this.gl.canvas.clientHeight;
-        const zNear = 0.1;
-        const zFar = 100.0;
+        const ratio = this.options.ratio;
+        const width = this.canvas.clientWidth * 1 / ratio;
+        const height = this.canvas.clientHeight * 1 / ratio;
+
         this.projectionMatrix = mat4.create();
 
-        mat4.perspective(
+        mat4.ortho(
             this.projectionMatrix,
-            fov,
-            aspect,
-            zNear,
-            zFar
+            -width / 2,
+            width / 2,
+            -height / 2,
+            height / 2,
+            0.0,
+            100.0
         );
-        mat4.translate(
-            this.projectionMatrix,
-            this.projectionMatrix,
-            [0.0, 0.0, -1.0]
-        );
+    }
+
+    resize() {
+        this.gl.viewport(0, 0, this.canvas.clientWidth, this.canvas.clientHeight);
     }
 
     putAttribArray(location, buffer, numComponents) {
