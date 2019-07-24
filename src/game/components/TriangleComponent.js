@@ -8,9 +8,9 @@ export default class TriangleComponent extends Component {
         this.transform2d = this.require(Transform2DComponent);
         this.shader = "flatColor";
         this.vertices = [
-            -0.5, 0.0,
-            0.5, 0.0,
-            0.0, 0.87
+            -0.5, 0.87,
+            0.5, 0.87,
+            0.0, 0.0
         ];
         this.colors = [
             1.0, 0.0, 0.0, 1.0,
