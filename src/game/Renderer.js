@@ -91,14 +91,6 @@ export default class Renderer {
         this.gl.enableVertexAttribArray(location);
     }
 
-    putUniformMatrix(location, matrix) {
-        this.gl.uniformMatrix4fv(
-            location,
-            false,
-            matrix
-        );
-    }
-
     render(params) {
         //TODO implement a render queue instead of rendering everything on the spot
         // clear the canvas
@@ -107,6 +99,7 @@ export default class Renderer {
         const buffers = [];
 
         const shader = this.shaderLibrary.shaderPrograms[params.shader];
+
         Object.keys(params.attributes).forEach(attribute => {
             const bufferIdx = buffers.push(this.gl.createBuffer()) - 1;
             const data = params.attributes[attribute];
@@ -119,11 +112,32 @@ export default class Renderer {
 
         Object.keys(params.uniforms).forEach(uniform => {
             const data = params.uniforms[uniform];
-            this.putUniformMatrix(shader.infos.uniformLocations[uniform], data);
+            switch(data.type) {
+                case "mat4":
+                    this.gl.uniformMatrix4fv(
+                        shader.infos.uniformLocations[uniform],
+                        false,
+                        data.value
+                    );
+                    break;
+                case "vec4":
+                    this.gl.uniform4fv(
+                        shader.infos.uniformLocations[uniform],
+                        data.value
+                    );
+                    break;
+                default:
+                    console.warn("Unsupported uniform type : " + data.type);
+                    break;
+            }
         });
 
         // set shader uniforms
-        this.putUniformMatrix(shader.infos.uniformLocations.projectionMatrix, this.projectionMatrix);
+        this.gl.uniformMatrix4fv(
+            shader.infos.uniformLocations.projectionMatrix,
+            false,
+            this.projectionMatrix
+        );
 
         const offset = 0;
         this.gl.drawArrays(params.mode, offset, params.vertexCount);

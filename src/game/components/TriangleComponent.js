@@ -9,14 +9,10 @@ export default class TriangleComponent extends Component {
         this.shader = "flatColor";
         this.vertices = [
             -0.5, 0.87,
-            0.5, 0.87,
-            0.0, 0.0
+            0.0, 0.0,
+            0.5, 0.87
         ];
-        this.colors = [
-            1.0, 0.0, 0.0, 1.0,
-            0.0, 1.0, 0.0, 1.0,
-            0.0, 0.0, 1.0, 1.0
-        ];
+        this.color = [0.0, 0.0, 0.0, 1.0];
     }
 
     render() {
@@ -25,11 +21,17 @@ export default class TriangleComponent extends Component {
             vertexCount: 3,
             shader: this.shader,
             attributes: {
-                vertexPosition: this.vertices,
-                vertexColor: this.colors
+                vertexPosition: this.vertices
             },
             uniforms: {
-                modelViewMatrix: this.transform2d.transform2d
+                modelViewMatrix: {
+                    type: "mat4",
+                    value: this.transform2d.transform2d
+                },
+                color: {
+                    type: "vec4",
+                    value: this.color
+                }
             }
         });
     }
