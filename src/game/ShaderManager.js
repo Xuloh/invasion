@@ -2,7 +2,7 @@
 import * as flatColor from "../shaders/flatColor";
 import {upperCaseFirst} from "../util/Util.js";
 
-export default class ShaderLibrary {
+export default class ShaderManager {
     constructor(renderer) {
         this.shaders = {
             flatColor: flatColor
