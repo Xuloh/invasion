@@ -1,10 +1,11 @@
 /* eslint-disable array-element-newline */
 import Component from "../ecm/Component";
-import {mat4} from "gl-matrix";
+import Transform2DComponent from "./Transform2DComponent";
 
 export default class TriangleComponent extends Component {
     constructor(parent) {
         super(parent);
+        this.transform2d = this.require(Transform2DComponent);
         this.shader = "flatColor";
         this.vertices = [
             -0.5, 0.0,
@@ -16,14 +17,6 @@ export default class TriangleComponent extends Component {
             0.0, 1.0, 0.0, 1.0,
             0.0, 0.0, 1.0, 1.0
         ];
-
-        //TODO take position from parent entity
-        this.modelViewMatrix = mat4.create();
-        mat4.translate(
-            this.modelViewMatrix,
-            this.modelViewMatrix,
-            [-0.0, 0.0, -6.0]
-        );
     }
 
     render() {
@@ -36,7 +29,7 @@ export default class TriangleComponent extends Component {
                 vertexColor: this.colors
             },
             uniforms: {
-                modelViewMatrix: this.modelViewMatrix
+                modelViewMatrix: this.transform2d.transform2d
             }
         });
     }
