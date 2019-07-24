@@ -1,11 +1,12 @@
 import {Bodies, Body, World} from "matter-js";
 import Component from "../ecm/Component";
 import Transform2DComponent from "./Transform2DComponent";
+import {getWorld} from "../PhysicsManager";
 
 export default class PhysicsComponent extends Component {
-    constructor(parent, world, radius, options) {
+    constructor(parent, radius, options) {
         super(parent);
-        this.world = world;
+        this.world = getWorld();
         this.transform2d = this.require(Transform2DComponent);
         const position = this.transform2d.position;
         this.body = Bodies.circle(position.x, position.y, radius, options);

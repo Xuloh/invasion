@@ -6,7 +6,7 @@ import PolygonComponent from "../components/PolygonComponent";
 export default class Player extends Entity2D {
     constructor(position) {
         super(position, 0.0, 1.0, "Player");
-        this.addComponent(PhysicsComponent, gameState.physicsManager.world, 1, {
+        this.addComponent(PhysicsComponent, 1, {
             label: "Player"
         });
         this.addComponent(PlayerComponent, 1, {x: 3, y: 3});
