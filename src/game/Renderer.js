@@ -66,6 +66,11 @@ export default class Renderer {
             zNear,
             zFar
         );
+        mat4.translate(
+            this.projectionMatrix,
+            this.projectionMatrix,
+            [0.0, 0.0, -1.0]
+        );
     }
 
     putAttribArray(location, buffer, numComponents) {
