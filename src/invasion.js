@@ -1,12 +1,12 @@
 import "./style.css";
 
 import * as PhysicsManager from "./game/PhysicsManager";
+import * as Renderer from "./game/Renderer";
 import * as SceneManager from "./game/SceneManager";
 import $ from "jquery";
 import MainScene from "./game/MainScene";
 import React from "react";
 import ReactDOM from "react-dom";
-import Renderer from "./game/Renderer";
 import Timer from "./util/Timer";
 import UI from "./ui/UI";
 import {registerHandler} from "./events/EventsDispatcher";
@@ -45,7 +45,7 @@ function resize() {
         height: gameState.$container.height(),
         width: gameState.$container.width()
     });
-    gameState.renderer.resize();
+    Renderer.resize();
 }
 
 function start() {
@@ -84,14 +84,14 @@ $(() => {
         start: start,
         stop: stop,
         timer: new Timer(),
-        pixelToMetersRatio: 50,
-        renderer: new Renderer("game", {
-            clearColor: "#eee",
-            ratio: 50
-        })
+        pixelToMetersRatio: 50
     };
 
     PhysicsManager.init({x: 0, y: 0});
+    Renderer.init("game", {
+        clearColor: "#eee",
+        ratio: 50
+    });
     gameState.$container.on("resize", resize);
     resize();
     setupFontAwesomeLibrary();
