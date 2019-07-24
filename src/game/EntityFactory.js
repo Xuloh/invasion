@@ -59,8 +59,8 @@ export default class EntityFactory {
     }
 
     makeTest() {
-        const test = new Entity2D([0, 0], 0.0, null, "WebGL Test");
-        test.addComponent(PolygonComponent, 9, 3);
+        const test = new Entity2D([0, 0], 0.0, 1.0, "WebGL Test");
+        test.addComponent(PolygonComponent, 9, [0.4, 0.6, 0.4, 1.0], 1);
         return test;
     }
 }
