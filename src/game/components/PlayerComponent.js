@@ -1,4 +1,6 @@
+import * as SceneManager from "../SceneManager";
 import {getMousePosition, isControlPressed} from "../../events/ControlsManager";
+import Bullet from "../entities/Bullet";
 import Component from "../ecm/Component";
 import PhysicsComponent from "./PhysicsComponent";
 import Victor from "victor";
@@ -49,9 +51,14 @@ export default class PlayerComponent extends Component {
             };
             const direction = mousePos.subtract(this._parent.position).norm();
 
-            const bullet = gameState.ef.makeBullet(position, direction);
+            SceneManager.message({
+                type: "spawn",
+                args: {
+                    entity: Bullet,
+                    options: [position, direction]
+                }
+            });
 
-            gameState.mainScene.entities.push(bullet);
             this.fireCooldown = false;
             setTimeout(() => this.fireCooldown = true, 500);
         }
