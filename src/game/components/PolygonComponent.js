@@ -3,7 +3,7 @@ import Component from "../ecm/Component";
 import Transform2DComponent from "./Transform2DComponent";
 
 export default class PolygonComponent extends Component {
-    constructor(parent, edges, radius) {
+    constructor(parent, edges, color, radius) {
         super(parent);
 
         if(edges < 3)
@@ -11,6 +11,9 @@ export default class PolygonComponent extends Component {
 
         if(radius == null)
             radius = 1;
+
+        if(!Array.isArray(color) || color.length < 4)
+            color = [0.0, 0.0, 0.0, 1.0];
 
         this.edges = edges;
         this.radius = radius;
@@ -20,7 +23,7 @@ export default class PolygonComponent extends Component {
 
         this._buildVertices();
 
-        this.color = [0.0, 0.0, 0.0, 1.0];
+        this.color = color;
     }
 
     render() {
