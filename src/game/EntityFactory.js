@@ -8,22 +8,6 @@ import PointerComponent from "./components/PointerComponent";
 import PolygonComponent from "./components/PolygonComponent";
 
 export default class EntityFactory {
-    makePlayer() {
-        const ratio = gameState.pixelToMetersRatio;
-        const player = new Entity({
-            x: window.innerWidth / 2 * 1 / ratio,
-            y: window.innerHeight / 2 * 1 / ratio
-        }, {
-            width: 1,
-            height: 1
-        }, "Player");
-        player.addComponent(PhysicsComponent, 1, {
-            label: "Player"
-        });
-        player.addComponent(PlayerComponent, 1, {x: 3, y: 3});
-        return player;
-    }
-
     makePointer(player) {
         const ratio = gameState.pixelToMetersRatio;
         const pointer = new Entity({
