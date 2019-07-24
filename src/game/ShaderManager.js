@@ -3,11 +3,11 @@ import * as flatColor from "../shaders/flatColor";
 import {upperCaseFirst} from "../util/Util.js";
 
 export default class ShaderManager {
-    constructor(renderer) {
+    constructor(webGLContext) {
         this.shaders = {
             flatColor: flatColor
         };
-        this.renderer = renderer;
+        this.gl = webGLContext;
         this.shaderPrograms = {};
         this.initLibrary();
     }
@@ -20,14 +20,14 @@ export default class ShaderManager {
     }
 
     loadShader(type, source) {
-        const shader = this.renderer.gl.createShader(type);
-        this.renderer.gl.shaderSource(shader, source);
-        this.renderer.gl.compileShader(shader);
+        const shader = this.gl.createShader(type);
+        this.gl.shaderSource(shader, source);
+        this.gl.compileShader(shader);
 
         // if shader compilation fails
-        if(!this.renderer.gl.getShaderParameter(shader, this.renderer.gl.COMPILE_STATUS)) {
-            console.error(`An error occured compiling shader : ${this.renderer.gl.getShaderInfoLog(shader)}`);
-            this.renderer.gl.deleteShader(shader);
+        if(!this.gl.getShaderParameter(shader, this.gl.COMPILE_STATUS)) {
+            console.error(`An error occured compiling shader : ${this.gl.getShaderInfoLog(shader)}`);
+            this.gl.deleteShader(shader);
             return null;
         }
 
@@ -35,17 +35,17 @@ export default class ShaderManager {
     }
 
     loadProgram(shaderName) {
-        const vs = this.loadShader(this.renderer.gl.VERTEX_SHADER, this.shaders[shaderName].vs);
-        const fs = this.loadShader(this.renderer.gl.FRAGMENT_SHADER, this.shaders[shaderName].fs);
+        const vs = this.loadShader(this.gl.VERTEX_SHADER, this.shaders[shaderName].vs);
+        const fs = this.loadShader(this.gl.FRAGMENT_SHADER, this.shaders[shaderName].fs);
 
-        let shaderProgram = this.renderer.gl.createProgram();
-        this.renderer.gl.attachShader(shaderProgram, vs);
-        this.renderer.gl.attachShader(shaderProgram, fs);
-        this.renderer.gl.linkProgram(shaderProgram);
+        let shaderProgram = this.gl.createProgram();
+        this.gl.attachShader(shaderProgram, vs);
+        this.gl.attachShader(shaderProgram, fs);
+        this.gl.linkProgram(shaderProgram);
 
         // if shader program link fails
-        if(!this.renderer.gl.getProgramParameter(shaderProgram, this.renderer.gl.LINK_STATUS)) {
-            console.error(`Unable to initialize shader program '${shaderName}' : ${this.renderer.gl.getProgramInfoLog(shaderProgram)}`);
+        if(!this.gl.getProgramParameter(shaderProgram, this.gl.LINK_STATUS)) {
+            console.error(`Unable to initialize shader program '${shaderName}' : ${this.gl.getProgramInfoLog(shaderProgram)}`);
             shaderProgram = null;
         }
 
@@ -63,14 +63,14 @@ export default class ShaderManager {
         if(Object.prototype.hasOwnProperty.call(infos, "attributes")) {
             programInfos.attribLocations = {};
             infos.attributes.forEach(attribute => {
-                programInfos.attribLocations[attribute] = this.renderer.gl.getAttribLocation(shaderProgram, `a${upperCaseFirst(attribute)}`);
+                programInfos.attribLocations[attribute] = this.gl.getAttribLocation(shaderProgram, `a${upperCaseFirst(attribute)}`);
             });
         }
 
         if(Object.prototype.hasOwnProperty.call(infos, "uniforms")) {
             programInfos.uniformLocations = {};
             infos.uniforms.forEach(uniform => {
-                programInfos.uniformLocations[uniform] = this.renderer.gl.getUniformLocation(shaderProgram, `u${upperCaseFirst(uniform)}`);
+                programInfos.uniformLocations[uniform] = this.gl.getUniformLocation(shaderProgram, `u${upperCaseFirst(uniform)}`);
             });
         }
     }
