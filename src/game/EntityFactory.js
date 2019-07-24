@@ -5,7 +5,7 @@ import Entity2D from "./entities/Entity2D";
 import PhysicsComponent from "./components/PhysicsComponent";
 import PlayerComponent from "./components/PlayerComponent";
 import PointerComponent from "./components/PointerComponent";
-import TriangleComponent from "./components/TriangleComponent";
+import PolygonComponent from "./components/PolygonComponent";
 
 export default class EntityFactory {
     makePlayer() {
@@ -60,7 +60,7 @@ export default class EntityFactory {
 
     makeTest() {
         const test = new Entity2D([0, 0], 0.0, null, "WebGL Test");
-        test.addComponent(TriangleComponent);
+        test.addComponent(PolygonComponent, 9, 3);
         return test;
     }
 }
