@@ -140,7 +140,7 @@ function render(params) {
     gl.uniformMatrix4fv(
         shader.infos.uniformLocations.projectionMatrix,
         false,
-        this.projectionMatrix
+        projectionMatrix
     );
 
     const offset = 0;
