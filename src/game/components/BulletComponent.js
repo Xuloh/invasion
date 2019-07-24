@@ -1,5 +1,6 @@
 import Component from "../ecm/Component";
 import PhysicsComponent from "./PhysicsComponent";
+import Transform2DComponent from "./Transform2DComponent";
 import Victor from "victor";
 import {timeout} from "../../util/PromiseUtil";
 
@@ -8,9 +9,7 @@ export default class BulletComponent extends Component {
         super(parent);
         this.speed = speed;
 
-        this.physicsComponent = this._parent.getComponent(PhysicsComponent);
-        if(this.physicsComponent == null)
-            throw new Error("BulletComponent needs a PhysicsComponent, please add one to its parent entity");
+        this.physicsComponent = this.require(PhysicsComponent);
 
         if(direction == null)
             this.direction = new Victor(0, 0);
