@@ -19,4 +19,11 @@ export default class Component {
     }
 
     destroy() {}
+
+    require(component) {
+        const comp = this._parent.getComponent(component);
+        if(comp == null)
+            throw new Error(`${this.constructor.name} needs a ${component.name}, please add one to its parent entity`);
+        return comp;
+    }
 }
