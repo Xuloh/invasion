@@ -1,21 +1,23 @@
 import {Bodies, Body, World} from "matter-js";
 import Component from "../ecm/Component";
+import Transform2DComponent from "./Transform2DComponent";
 
 export default class PhysicsComponent extends Component {
     constructor(parent, world, radius, options) {
         super(parent);
         this.world = world;
-        const position = this._parent.position;
+        this.transform2d = this.require(Transform2DComponent);
+        const position = this.transform2d.position;
         this.body = Bodies.circle(position.x, position.y, radius, options);
         World.add(this.world, this.body);
     }
 
     update() {
-        this._parent.position = {
-            x: this.body.position.x,
-            y: this.body.position.y
-        };
-        this._parent.angle = this.body.angle;
+        /*this.transform2d.position = [
+            this.body.position.x,
+            this.body.position.y
+        ];
+        this.transform2d.rotation = this.body.angle;*/
     }
 
     get velocity() {
