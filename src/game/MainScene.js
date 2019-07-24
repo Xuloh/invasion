@@ -1,13 +1,7 @@
-import EntityFactory from "./EntityFactory";
 import Player from "./entities/Player";
 import Scene from "./ecm/Scene";
 
 export default class MainScene extends Scene {
-    constructor() {
-        super();
-        this.entityFactory = new EntityFactory();
-    }
-
     load() {
         // const player = this.entityFactory.makePlayer();
         // const ratio = gameState.pixelToMetersRatio;

@@ -3,7 +3,6 @@ import "./style.css";
 import * as PhysicsManager from "./game/PhysicsManager";
 import * as SceneManager from "./game/SceneManager";
 import $ from "jquery";
-import EntityFactory from "./game/EntityFactory";
 import MainScene from "./game/MainScene";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -85,7 +84,6 @@ $(() => {
         start: start,
         stop: stop,
         timer: new Timer(),
-        ef: new EntityFactory(),
         pixelToMetersRatio: 50,
         renderer: new Renderer("game", {
             clearColor: "#eee",
