@@ -1,4 +1,4 @@
-import {mat3, vec2} from "gl-matrix";
+import {mat4, quat, vec2} from "gl-matrix";
 import Component from "../ecm/Component";
 
 export default class Transform2DComponent extends Component {
@@ -10,13 +10,21 @@ export default class Transform2DComponent extends Component {
         if(rotation == null)
             rotation = 0.0;
         if(scale == null)
-            scale = 1.0;
+            scale = vec2.fromValues(1.0, 1.0);
 
-        this._2dTransform = mat3.create();
+        this._rotation = rotation;
+        this._position = position;
+        this._scale = scale;
 
-        this.position = position;
-        this.rotation = rotation;
-        this.scale = scale;
+        this._2dTransform = mat4.create();
+        const quatRotation = quat.create();
+        quat.rotateZ(quatRotation, quatRotation, this._rotation);
+        mat4.fromRotationTranslationScale(
+            this._2dTransform,
+            quatRotation,
+            [...this._position, 0.0],
+            [...this._scale, 1.0]
+        );
     }
 
     get position() {
@@ -25,7 +33,7 @@ export default class Transform2DComponent extends Component {
 
     set position(position) {
         this._position = position;
-        mat3.translate(this._2dTransform, this._2dTransform, this._position);
+        mat4.translate(this._2dTransform, this._2dTransform, [...this._position, 0.0]);
     }
 
     get rotation() {
@@ -34,7 +42,7 @@ export default class Transform2DComponent extends Component {
 
     set rotation(rotation) {
         this._rotation = rotation;
-        mat3.rotate(this._2dTransform, this._2dTransform, this._rotation);
+        mat4.rotateZ(this._2dTransform, this._2dTransform, this._rotation);
     }
 
     get scale() {
@@ -43,7 +51,7 @@ export default class Transform2DComponent extends Component {
 
     set scale(scale) {
         this._scale = scale;
-        mat3.scale(this._2dTransform, this._2dTransform, this._scale);
+        mat4.scale(this._2dTransform, this._2dTransform, [...this._scale, 1.0]);
     }
 
     get transform2d() {
