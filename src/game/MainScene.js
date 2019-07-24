@@ -1,4 +1,5 @@
 import EntityFactory from "./EntityFactory";
+import Player from "./entities/Player";
 import Scene from "./ecm/Scene";
 
 export default class MainScene extends Scene {
@@ -10,7 +11,8 @@ export default class MainScene extends Scene {
     load() {
         // const player = this.entityFactory.makePlayer();
         // const ratio = gameState.pixelToMetersRatio;
-        this.entities.push(this.entityFactory.makeTest());
+        this.entities.push(new Player([-5, 3]));
+        //this.entities.push(this.entityFactory.makeTest());
         // this.entities.push(player);
         // this.entities.push(this.entityFactory.makePointer(player));
         // this.entities.push(this.entityFactory.makeEnemy([100 * 1 / ratio, 100 * 1 / ratio], player));
