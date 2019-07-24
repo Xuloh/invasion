@@ -30,7 +30,7 @@ function getWorld() {
     return world;
 }
 
-export default {
+export {
     init,
     update,
     getWorld

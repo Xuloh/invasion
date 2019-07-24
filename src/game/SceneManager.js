@@ -39,7 +39,7 @@ function message(msg) {
     currentScene.handle(msg);
 }
 
-export default {
+export {
     add,
     load,
     getCurrentScene,
