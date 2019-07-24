@@ -1,5 +1,4 @@
 /* eslint-disable array-element-newline, no-loops/no-loops */
-import {mat4, vec3} from "gl-matrix";
 import Component from "../ecm/Component";
 import Transform2DComponent from "./Transform2DComponent";
 
@@ -45,6 +44,7 @@ export default class PolygonComponent extends Component {
         });
     }
 
+    /* j'ai fait ça tout seul sans félix donc je le garde en commentaire
     _buildVertices() {
         // first vertices : center and rightmost one
         this.vertices = [0.0, 0.0, this.radius, 0.0];
@@ -65,5 +65,16 @@ export default class PolygonComponent extends Component {
         // close polygon by repeating the 2 point
         this.vertices.push(this.radius);
         this.vertices.push(0.0);
+    }
+    */
+
+    _buildVertices() {
+        this.vertices = [0.0, 0.0];
+        for(let i = 1; i <= this.edges; i++) {
+            this.vertices.push(this.radius * Math.cos(2 * i * Math.PI / this.edges));
+            this.vertices.push(this.radius * Math.sin(2 * i * Math.PI / this.edges));
+        }
+        this.vertices.push(this.vertices[2]);
+        this.vertices.push(this.vertices[3]);
     }
 }
