@@ -45,4 +45,8 @@ export default class Transform2DComponent extends Component {
         this._scale = scale;
         mat3.scale(this._2dTransform, this._2dTransform, this._scale);
     }
+
+    get transform2d() {
+        return this._2dTransform;
+    }
 }
