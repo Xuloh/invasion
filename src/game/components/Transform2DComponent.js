@@ -9,6 +9,8 @@ export default class Transform2DComponent extends Component {
             position = vec2.create();
         if(rotation == null)
             rotation = 0.0;
+        if(typeof scale === "number")
+            scale = [scale, scale];
         if(scale == null)
             scale = vec2.fromValues(1.0, 1.0);
 
