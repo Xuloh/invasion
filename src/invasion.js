@@ -83,14 +83,12 @@ $(() => {
         disableEnemies: false,
         start: start,
         stop: stop,
-        timer: new Timer(),
-        pixelToMetersRatio: 50
+        timer: new Timer()
     };
 
     PhysicsManager.init({x: 0, y: 0});
     Renderer.init("game", {
-        clearColor: "#eee",
-        ratio: 50
+        clearColor: "#eee"
     });
     gameState.$container.on("resize", resize);
     resize();

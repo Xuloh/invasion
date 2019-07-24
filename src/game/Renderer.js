@@ -7,6 +7,7 @@ let gl = null;
 let shaderManager = null;
 let options = null;
 let projectionMatrix = null;
+const pixelRatio = 50;
 
 function init(canvasId, opts) {
     // get canvas
@@ -52,16 +53,14 @@ function handleOptions(opts) {
 
     options = {
         clearColor: [0.0, 0.0, 0.0, 1.0],
-        ratio: 50,
         ...opts
     };
 }
 
 function createProjection() {
     // create projection matrix
-    const ratio = options.ratio;
-    const width = canvas.clientWidth * 1 / ratio;
-    const height = canvas.clientHeight * 1 / ratio;
+    const width = canvas.clientWidth * 1 / pixelRatio;
+    const height = canvas.clientHeight * 1 / pixelRatio;
 
     projectionMatrix = mat4.create();
 
@@ -153,5 +152,6 @@ export {
     init,
     resize,
     render,
-    gl
+    gl,
+    pixelRatio
 };
