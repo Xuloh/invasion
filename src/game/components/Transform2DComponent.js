@@ -1,5 +1,5 @@
-import Component from "../ecm/Component";
 import {mat3, vec2} from "gl-matrix";
+import Component from "../ecm/Component";
 
 export default class Transform2DComponent extends Component {
     constructor(parent, position, rotation, scale) {
@@ -7,7 +7,7 @@ export default class Transform2DComponent extends Component {
 
         if(position == null)
             position = vec2.create();
-        if(rotation == null);
+        if(rotation == null)
             rotation = 0.0;
         if(scale == null)
             scale = 1.0;
