@@ -13,6 +13,7 @@ import UI from "./ui/UI";
 import {registerHandler} from "./events/EventsDispatcher";
 import {setControl} from "./events/ControlsManager";
 import setupFontAwesomeLibrary from "./font-awesome-library";
+import {timeout} from "./util/PromiseUtil";
 
 window.$ = $;
 window.jQuery = $;
@@ -100,4 +101,5 @@ $(() => {
     SceneManager.add("main", new MainScene());
     SceneManager.load("main");
     ReactDOM.render(<UI/>, document.getElementById("ui"));
+    timeout(1000).then(() => $("#start").click());
 });
