@@ -17,6 +17,10 @@ import {timeout} from "./util/PromiseUtil";
 window.$ = $;
 window.jQuery = $;
 
+const timer = new Timer();
+let $container = null;
+let disableEnemies = false;
+
 function registerControls() {
     [
         ["up", "KeyW"],
@@ -34,16 +38,16 @@ function registerHandlers() {
 
     registerHandler("keyup", event => {
         if(event.originalEvent.shiftKey)
-            gameState.disableEnemies = !gameState.disableEnemies;
+            disableEnemies = !disableEnemies;
     }, {
         keys: ["KeyQ"]
     });
 }
 
 function resize() {
-    gameState.$container.attr({
-        height: gameState.$container.height(),
-        width: gameState.$container.width()
+    $container.attr({
+        height: $container.height(),
+        width: $container.width()
     });
     Renderer.resize();
 }
@@ -51,7 +55,7 @@ function resize() {
 function start() {
     gameState.$ui.toggleMenu(false);
     $("#game").removeClass("inactive");
-    gameState.timer.reset();
+    timer.reset();
     main();
 }
 
@@ -72,25 +76,22 @@ function render() {
 
 function main() {
     gameState.mainRafToken = window.requestAnimationFrame(main);
-    const dt = gameState.timer.dt();
+    const dt = timer.dt();
     update(dt);
     render();
 }
 
 $(() => {
     window.gameState = {
-        $container: $("#game"),
-        disableEnemies: false,
         start: start,
-        stop: stop,
-        timer: new Timer()
+        stop: stop
     };
-
     PhysicsManager.init({x: 0, y: 0});
     Renderer.init("game", {
         clearColor: "#eee"
     });
-    gameState.$container.on("resize", resize);
+    $container = $("#game");
+    $container.on("resize", resize);
     resize();
     setupFontAwesomeLibrary();
     registerControls();
