@@ -63,7 +63,7 @@ function stop() {
 }
 
 function update(dt) {
-    gameState.physicsManager.update(dt);
+    PhysicsManager.update(dt);
     SceneManager.update(dt);
 }
 
@@ -86,7 +86,6 @@ $(() => {
         stop: stop,
         timer: new Timer(),
         ef: new EntityFactory(),
-        physicsManager: new PhysicsManager({x: 0, y: 0}),
         pixelToMetersRatio: 50,
         renderer: new Renderer("game", {
             clearColor: "#eee",
@@ -94,6 +93,7 @@ $(() => {
         })
     };
 
+    PhysicsManager.init({x: 0, y: 0});
     gameState.$container.on("resize", resize);
     resize();
     setupFontAwesomeLibrary();

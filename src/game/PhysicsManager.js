@@ -1,26 +1,37 @@
 import {Engine, World} from "matter-js";
 
-export default class PhysicsManager {
-    constructor(gravity) {
-        if(gravity == null)
-            gravity = {x: 0, y: 9.81};
-        this.world = World.create({
-            gravity: {
-                x: gravity.x,
-                y: gravity.y,
-                scale: 1
-            }
-        });
-        this.engine = Engine.create({
-            constraintIterations: 2,
-            enableSleeping: false,
-            positionIterations: 6,
-            velocityIterations: 4,
-            world: this.world
-        });
-    }
+let world = null;
+let engine = null;
 
-    update(dt) {
-        Engine.update(this.engine, dt);
-    }
+function init(gravity) {
+    if(gravity == null)
+        gravity = {x: 0, y: 9.81};
+    world = World.create({
+        gravity: {
+            x: gravity.x,
+            y: gravity.y,
+            scale: 1
+        }
+    });
+    engine = Engine.create({
+        constraintIterations: 2,
+        enableSleeping: false,
+        positionIterations: 6,
+        velocityIterations: 4,
+        world: this.world
+    });
 }
+
+function update(dt) {
+    Engine.update(engine, dt);
+}
+
+function getWorld() {
+    return world;
+}
+
+export default {
+    init,
+    update,
+    getWorld
+};
