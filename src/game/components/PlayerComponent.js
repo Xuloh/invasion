@@ -9,10 +9,7 @@ export default class PlayerComponent extends Component {
         this.speed = speed;
         this.fireCooldown = true;
         this._maxVelocity = maxVelocity;
-        this.physicsComponent = this._parent.getComponent(PhysicsComponent);
-
-        if(this.physicsComponent == null)
-            throw new Error("PlayerComponent needs a PhysicsComponent, please add one to its parent entity");
+        this.physicsComponent = this.require(PhysicsComponent);
     }
 
     update(dt) {
