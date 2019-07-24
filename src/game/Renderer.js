@@ -152,5 +152,6 @@ function render(params) {
 export {
     init,
     resize,
-    render
+    render,
+    gl
 };
