@@ -1,6 +1,5 @@
 import Component from "../ecm/Component";
 import PhysicsComponent from "./PhysicsComponent";
-import Transform2DComponent from "./Transform2DComponent";
 import Victor from "victor";
 import {timeout} from "../../util/PromiseUtil";
 
