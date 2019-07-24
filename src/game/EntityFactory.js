@@ -1,6 +1,7 @@
 import BulletComponent from "./components/BulletComponent";
 import EnemyComponent from "./components/EnemyComponent";
 import Entity from "./ecm/Entity";
+import Entity2D from "./entities/Entity2D";
 import PhysicsComponent from "./components/PhysicsComponent";
 import PlayerComponent from "./components/PlayerComponent";
 import PointerComponent from "./components/PointerComponent";
@@ -58,7 +59,7 @@ export default class EntityFactory {
     }
 
     makeTest() {
-        const test = new Entity([0, 0], null, "WebGL Test");
+        const test = new Entity2D([0, 0], 0.0, null, "WebGL Test");
         test.addComponent(TriangleComponent);
         return test;
     }
