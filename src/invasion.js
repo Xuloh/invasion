@@ -28,7 +28,7 @@ function registerControls() {
 }
 
 function registerHandlers() {
-    registerHandler("keyup", gameState.stop, {
+    registerHandler("keyup", stop, {
         keys: ["Escape"]
     });
 
