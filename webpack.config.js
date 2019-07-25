@@ -91,6 +91,12 @@ module.exports = {
             }*/
         ]
     },
+    resolve: {
+        modules: [
+            path.resolve("./src"),
+            path.resolve("./node_modules")
+        ]
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: "src/index.html"
