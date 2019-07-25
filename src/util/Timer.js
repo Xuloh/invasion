@@ -3,10 +3,11 @@ export default class Timer {
         this.reset();
     }
 
-    dt() {
+    dt(keep) {
         const now = window.performance.now();
         const dt = now - this.last;
-        this.last = now;
+        if(!keep)
+            this.last = now;
         return dt / 1000;
     }
 
