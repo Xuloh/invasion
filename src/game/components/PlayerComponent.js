@@ -4,8 +4,8 @@ import Bullet from "game/entities/Bullet";
 import Component from "game/ecm/Component";
 import PhysicsComponent from "game/components/PhysicsComponent";
 import Transform2DComponent from "game/components/Transform2DComponent";
-import Victor from "victor";
-import {pixelRatio} from "game/Renderer";
+import {mapScreenToWorldCoordinates} from "game/Renderer";
+import {vec2} from "gl-matrix";
 
 export default class PlayerComponent extends Component {
     constructor(parent, speed, maxVelocity) {
@@ -25,33 +25,35 @@ export default class PlayerComponent extends Component {
 
     movePlayer(dt) {
         if(isControlPressed("up"))
-            this.physicsComponent.applyForce({x: 0, y: -this.speed * dt});
+            this.physicsComponent.applyForce([0, -this.speed * dt]);
         if(isControlPressed("down"))
-            this.physicsComponent.applyForce({x: 0, y: this.speed * dt});
+            this.physicsComponent.applyForce([0, this.speed * dt]);
         if(isControlPressed("left"))
-            this.physicsComponent.applyForce({x: -this.speed * dt, y: 0});
+            this.physicsComponent.applyForce([-this.speed * dt, 0]);
         if(isControlPressed("right"))
-            this.physicsComponent.applyForce({x: this.speed * dt, y: 0});
+            this.physicsComponent.applyForce([this.speed * dt, 0]);
 
         const velocity = this.physicsComponent.velocity;
-        this.physicsComponent.velocity = {
-            x: Math.sign(velocity.x) * Math.min(Math.abs(velocity.x), this._maxVelocity.x),
-            y: Math.sign(velocity.y) * Math.min(Math.abs(velocity.y), this._maxVelocity.y)
-        };
+        this.physicsComponent.velocity = [
+            Math.sign(velocity[0]) * Math.min(Math.abs(velocity[0]), this._maxVelocity[0]),
+            Math.sign(velocity[1]) * Math.min(Math.abs(velocity[1]), this._maxVelocity[1])
+        ];
     }
 
     fire() {
         if(this.fireCooldown && isControlPressed("fire")) {
-            //TODO convert mouse screen position to world position
-            const mousePos = Victor.fromObject(getMousePosition()).multiply({x: 1 / pixelRatio, y: 1 / pixelRatio});
+            const mousePos = mapScreenToWorldCoordinates([getMousePosition().x, getMousePosition().y]);
             const playerPos = this.transform2d.position;
-            const playerToMouse = mousePos.distance(playerPos);
+            const playerToMouse = vec2.distance(mousePos, playerPos);
 
-            const position = {
-                x: playerPos.x + (mousePos.x - playerPos.x) * 1.5 / playerToMouse,
-                y: playerPos.y + (mousePos.y - playerPos.y) * 1.5 / playerToMouse
-            };
-            const direction = mousePos.subtract(this.transform2d.position).norm();
+            const position = [
+                playerPos[0] + (mousePos[0] - playerPos[0]) * 1.5 / playerToMouse,
+                playerPos[1] + (mousePos[1] - playerPos[1]) * 1.5 / playerToMouse
+            ];
+
+            const direction = vec2.create();
+            vec2.subtract(direction, mousePos, playerPos);
+            vec2.normalize(direction, direction);
 
             SceneManager.message({
                 type: "spawn",
