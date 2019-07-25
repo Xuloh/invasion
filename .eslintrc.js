@@ -30,7 +30,8 @@ module.exports = {
     settings: {
         react: {
             version: "detect"
-        }
+        },
+        "import/resolver": "webpack"
     },
     rules: {
         "no-loops/no-loops": "warn",
