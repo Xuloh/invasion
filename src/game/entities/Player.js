@@ -9,7 +9,7 @@ export default class Player extends Entity2D {
         this.addComponent(PhysicsComponent, 1, {
             label: "Player"
         });
-        this.addComponent(PlayerComponent, 1, {x: 3, y: 3});
         this.addComponent(PolygonComponent, 30, [0.4, 0.6, 0.4, 1.0], 1);
+        this.addComponent(PlayerComponent, 1, 3);
     }
 }
