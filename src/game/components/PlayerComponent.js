@@ -3,6 +3,7 @@ import {getMousePosition, isControlPressed} from "events/ControlsManager";
 import Bullet from "game/entities/Bullet";
 import Component from "game/ecm/Component";
 import PhysicsComponent from "game/components/PhysicsComponent";
+import Transform2DComponent from "game/components/Transform2DComponent";
 import Victor from "victor";
 import {pixelRatio} from "game/Renderer";
 
@@ -13,6 +14,7 @@ export default class PlayerComponent extends Component {
         this.fireCooldown = true;
         this._maxVelocity = maxVelocity;
         this.physicsComponent = this.require(PhysicsComponent);
+        this.transform2d = this.require(Transform2DComponent);
     }
 
     update(dt) {
@@ -42,14 +44,14 @@ export default class PlayerComponent extends Component {
         if(this.fireCooldown && isControlPressed("fire")) {
             //TODO convert mouse screen position to world position
             const mousePos = Victor.fromObject(getMousePosition()).multiply({x: 1 / pixelRatio, y: 1 / pixelRatio});
-            const playerPos = this._parent.position;
+            const playerPos = this.transform2d.position;
             const playerToMouse = mousePos.distance(playerPos);
 
             const position = {
                 x: playerPos.x + (mousePos.x - playerPos.x) * 1.5 / playerToMouse,
                 y: playerPos.y + (mousePos.y - playerPos.y) * 1.5 / playerToMouse
             };
-            const direction = mousePos.subtract(this._parent.position).norm();
+            const direction = mousePos.subtract(this.transform2d.position).norm();
 
             SceneManager.message({
                 type: "spawn",
