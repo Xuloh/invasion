@@ -3,11 +3,11 @@ import "./style.css";
 import * as PhysicsManager from "game/PhysicsManager";
 import * as Renderer from "game/Renderer";
 import * as SceneManager from "game/SceneManager";
+import * as TimeManager from "game/TimeManager";
 import $ from "jquery";
 import MainScene from "game/MainScene";
 import React from "react";
 import ReactDOM from "react-dom";
-import Timer from "util/Timer";
 import UI from "ui/UI";
 import {registerHandler} from "events/EventsDispatcher";
 import {setControl} from "events/ControlsManager";
@@ -17,7 +17,6 @@ import {timeout} from "util/PromiseUtil";
 window.$ = $;
 window.jQuery = $;
 
-const timer = new Timer();
 let $container = null;
 let disableEnemies = false;
 
@@ -55,7 +54,7 @@ function resize() {
 function start() {
     gameState.$ui.toggleMenu(false);
     $("#game").removeClass("inactive");
-    timer.reset();
+    TimeManager.reset();
     main();
 }
 
@@ -76,7 +75,7 @@ function render() {
 
 function main() {
     gameState.mainRafToken = window.requestAnimationFrame(main);
-    const dt = timer.dt();
+    const dt = TimeManager.dt();
     update(dt);
     render();
 }
