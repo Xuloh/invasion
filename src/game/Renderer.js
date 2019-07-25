@@ -8,6 +8,7 @@ let shaderManager = null;
 let options = null;
 let projectionMatrix = null;
 let invProjectionMatrix = null;
+let renderQueue = [];
 
 const pixelRatio = 50;
 
@@ -100,57 +101,65 @@ function putAttribArray(location, buffer, numComponents) {
     gl.enableVertexAttribArray(location);
 }
 
-function render(params) {
+function queue(params) {
+    renderQueue.push(params);
+}
+
+function render() {
     //TODO implement a render queue instead of rendering everything on the spot
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    const buffers = [];
+    renderQueue.forEach(params => {
+        const buffers = [];
 
-    const shader = shaderManager.shaderPrograms[params.shader];
+        const shader = shaderManager.shaderPrograms[params.shader];
 
-    Object.keys(params.attributes).forEach(attribute => {
-        const bufferIdx = buffers.push(gl.createBuffer()) - 1;
-        const data = params.attributes[attribute];
-        gl.bindBuffer(gl.ARRAY_BUFFER, buffers[bufferIdx]);
-        gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.DYNAMIC_DRAW);
-        putAttribArray(shader.infos.attribLocations[attribute], buffers[bufferIdx], data.length / params.vertexCount);
+        Object.keys(params.attributes).forEach(attribute => {
+            const bufferIdx = buffers.push(gl.createBuffer()) - 1;
+            const data = params.attributes[attribute];
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffers[bufferIdx]);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.DYNAMIC_DRAW);
+            putAttribArray(shader.infos.attribLocations[attribute], buffers[bufferIdx], data.length / params.vertexCount);
+        });
+
+        gl.useProgram(shader.program);
+
+        Object.keys(params.uniforms).forEach(uniform => {
+            const data = params.uniforms[uniform];
+            switch(data.type) {
+                case "mat4":
+                    gl.uniformMatrix4fv(
+                        shader.infos.uniformLocations[uniform],
+                        false,
+                        data.value
+                    );
+                    break;
+                case "vec4":
+                    gl.uniform4fv(
+                        shader.infos.uniformLocations[uniform],
+                        data.value
+                    );
+                    break;
+                default:
+                    console.warn("Unsupported uniform type : " + data.type);
+                    break;
+            }
+        });
+
+        // set shader uniforms
+        gl.uniformMatrix4fv(
+            shader.infos.uniformLocations.projectionMatrix,
+            false,
+            projectionMatrix
+        );
+
+        const offset = 0;
+        gl.drawArrays(params.mode, offset, params.vertexCount);
+
+        buffers.forEach(b => gl.deleteBuffer(b));
     });
 
-    gl.useProgram(shader.program);
-
-    Object.keys(params.uniforms).forEach(uniform => {
-        const data = params.uniforms[uniform];
-        switch(data.type) {
-            case "mat4":
-                gl.uniformMatrix4fv(
-                    shader.infos.uniformLocations[uniform],
-                    false,
-                    data.value
-                );
-                break;
-            case "vec4":
-                gl.uniform4fv(
-                    shader.infos.uniformLocations[uniform],
-                    data.value
-                );
-                break;
-            default:
-                console.warn("Unsupported uniform type : " + data.type);
-                break;
-        }
-    });
-
-    // set shader uniforms
-    gl.uniformMatrix4fv(
-        shader.infos.uniformLocations.projectionMatrix,
-        false,
-        projectionMatrix
-    );
-
-    const offset = 0;
-    gl.drawArrays(params.mode, offset, params.vertexCount);
-
-    buffers.forEach(b => gl.deleteBuffer(b));
+    renderQueue = [];
 }
 
 function mapWorldToScreenCoordinates(worldPos) {
@@ -173,6 +182,7 @@ function mapScreenToWorldCoordinates(screenPos) {
 export {
     init,
     resize,
+    queue,
     render,
     gl,
     mapWorldToScreenCoordinates,
