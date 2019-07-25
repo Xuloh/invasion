@@ -18,7 +18,7 @@ function init(gravity) {
         enableSleeping: false,
         positionIterations: 6,
         velocityIterations: 4,
-        world: this.world
+        world: world
     });
 }
 
