@@ -83,6 +83,7 @@ function update(dt) {
 
 function render() {
     SceneManager.render();
+    Renderer.render();
 }
 
 function main() {
