@@ -10,7 +10,11 @@ export default class PhysicsComponent extends Component {
         this.transform2d = this.require(Transform2DComponent);
 
         const position = this.transform2d.position;
-        this.body = Bodies.circle(position[0], position[1], radius, options);
+        const angle = this.transform2d.rotation;
+        this.body = Bodies.circle(position[0], position[1], radius, {
+            ...options,
+            angle: angle
+        });
         World.add(this.world, this.body);
     }
 
