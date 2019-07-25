@@ -4,7 +4,7 @@ import Scene from "game/ecm/Scene";
 export default class MainScene extends Scene {
     load() {
         // const player = this.entityFactory.makePlayer();
-        this.entities.push(new Player([-5, 3]));
+        this.entities.push(new Player([0, 0]));
         //this.entities.push(this.entityFactory.makeTest());
         // this.entities.push(player);
         // this.entities.push(this.entityFactory.makePointer(player));
