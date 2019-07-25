@@ -19,6 +19,25 @@ window.jQuery = $;
 
 let $container = null;
 let disableEnemies = false;
+let mainRafToken = null;
+
+// this function is provided by the UI component when it is created
+// function performUIAction(action, args)
+let performUIAction = null;
+
+// eslint-disable-next-line no-unused-vars
+function handleUIAction(action, args) {
+    switch(action) {
+        case "startClick":
+            performUIAction("toggleMenu", {display: false});
+            $container.removeClass("inactive");
+            TimeManager.reset();
+            main();
+            break;
+        default:
+            break;
+    }
+}
 
 function registerControls() {
     [
@@ -31,7 +50,7 @@ function registerControls() {
 }
 
 function registerHandlers() {
-    registerHandler("keyup", stop, {
+    registerHandler("keyup", openMenu, {
         keys: ["Escape"]
     });
 
@@ -51,17 +70,10 @@ function resize() {
     Renderer.resize();
 }
 
-function start() {
-    gameState.$ui.toggleMenu(false);
-    $("#game").removeClass("inactive");
-    TimeManager.reset();
-    main();
-}
-
-function stop() {
-    gameState.$ui.toggleMenu(true);
-    $("#game").addClass("inactive");
-    window.cancelAnimationFrame(gameState.mainRafToken);
+function openMenu() {
+    performUIAction("toggleMenu", {display: true});
+    $container.addClass("inactive");
+    window.cancelAnimationFrame(mainRafToken);
 }
 
 function update(dt) {
@@ -74,17 +86,13 @@ function render() {
 }
 
 function main() {
-    gameState.mainRafToken = window.requestAnimationFrame(main);
+    mainRafToken = window.requestAnimationFrame(main);
     const dt = TimeManager.dt();
     update(dt);
     render();
 }
 
 $(() => {
-    window.gameState = {
-        start: start,
-        stop: stop
-    };
     PhysicsManager.init({x: 0, y: 0});
     Renderer.init("game", {
         clearColor: "#eee"
@@ -97,6 +105,12 @@ $(() => {
     registerHandlers();
     SceneManager.add("main", new MainScene());
     SceneManager.load("main");
-    ReactDOM.render(<UI/>, document.getElementById("ui"));
-    timeout(1000).then(() => $("#start").click());
+    ReactDOM.render(
+        <UI
+            performAction={func => performUIAction = func}
+            handleAction={handleUIAction}
+        />,
+        document.getElementById("ui")
+    );
+    //timeout(1000).then(() => $("#start").click());
 });

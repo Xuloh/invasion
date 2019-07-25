@@ -12,8 +12,7 @@ module.exports = {
     ],
     globals: {
         Atomics: "readonly",
-        SharedArrayBuffer: "readonly",
-        gameState: "writable"
+        SharedArrayBuffer: "readonly"
     },
     parserOptions: {
         ecmaFeatures: {
