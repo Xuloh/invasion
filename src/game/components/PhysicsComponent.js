@@ -8,17 +8,18 @@ export default class PhysicsComponent extends Component {
         super(parent);
         this.world = getWorld();
         this.transform2d = this.require(Transform2DComponent);
+
         const position = this.transform2d.position;
-        this.body = Bodies.circle(position.x, position.y, radius, options);
+        this.body = Bodies.circle(position[0], position[1], radius, options);
         World.add(this.world, this.body);
     }
 
     update() {
-        /*this.transform2d.position = [
+        this.transform2d.position = [
             this.body.position.x,
             this.body.position.y
         ];
-        this.transform2d.rotation = this.body.angle;*/
+        this.transform2d.rotation = this.body.angle;
     }
 
     get velocity() {
