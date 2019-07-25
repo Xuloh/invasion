@@ -22,15 +22,16 @@ export default class PhysicsComponent extends Component {
     }
 
     get velocity() {
-        return this.body.velocity;
+        const velocity = this.body.velocity;
+        return [velocity.x, velocity.y];
     }
 
     set velocity(velocity) {
-        Body.setVelocity(this.body, velocity);
+        Body.setVelocity(this.body, {x: velocity[0], y: velocity[1]});
     }
 
     applyForce(force) {
-        Body.applyForce(this.body, this.body.position, force);
+        Body.applyForce(this.body, this.body.position, {x: force[0], y: force[1]});
     }
 
     destroy() {
