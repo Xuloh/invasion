@@ -100,7 +100,7 @@ $(() => {
     });
 
     $container = $("#game");
-    $container.on("resize", resize);
+    $(window).on("resize", resize);
     resize();
     setupFontAwesomeLibrary();
     registerControls();
