@@ -1,18 +1,18 @@
 import "./style.css";
 
-import * as PhysicsManager from "./game/PhysicsManager";
-import * as Renderer from "./game/Renderer";
-import * as SceneManager from "./game/SceneManager";
+import * as PhysicsManager from "game/PhysicsManager";
+import * as Renderer from "game/Renderer";
+import * as SceneManager from "game/SceneManager";
 import $ from "jquery";
-import MainScene from "./game/MainScene";
+import MainScene from "game/MainScene";
 import React from "react";
 import ReactDOM from "react-dom";
-import Timer from "./util/Timer";
-import UI from "./ui/UI";
-import {registerHandler} from "./events/EventsDispatcher";
-import {setControl} from "./events/ControlsManager";
-import setupFontAwesomeLibrary from "./font-awesome-library";
-import {timeout} from "./util/PromiseUtil";
+import Timer from "util/Timer";
+import UI from "ui/UI";
+import {registerHandler} from "events/EventsDispatcher";
+import {setControl} from "events/ControlsManager";
+import setupFontAwesomeLibrary from "font-awesome-library";
+import {timeout} from "util/PromiseUtil";
 
 window.$ = $;
 window.jQuery = $;

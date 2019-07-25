@@ -1,5 +1,5 @@
 import Color from "color";
-import ShaderManager from "./ShaderManager";
+import ShaderManager from "game/ShaderManager";
 import {mat4} from "gl-matrix";
 
 let canvas = null;

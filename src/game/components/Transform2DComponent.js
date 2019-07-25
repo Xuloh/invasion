@@ -1,5 +1,5 @@
 import {mat4, quat, vec2} from "gl-matrix";
-import Component from "../ecm/Component";
+import Component from "game/ecm/Component";
 
 export default class Transform2DComponent extends Component {
     constructor(parent, position, rotation, scale) {

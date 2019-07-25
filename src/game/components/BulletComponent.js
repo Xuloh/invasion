@@ -1,7 +1,7 @@
-import Component from "../ecm/Component";
-import PhysicsComponent from "./PhysicsComponent";
+import Component from "game/ecm/Component";
+import PhysicsComponent from "game/components/PhysicsComponent";
 import Victor from "victor";
-import {timeout} from "../../util/PromiseUtil";
+import {timeout} from "util/PromiseUtil";
 
 export default class BulletComponent extends Component {
     constructor(parent, direction, speed) {

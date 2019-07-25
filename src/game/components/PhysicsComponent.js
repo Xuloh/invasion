@@ -1,7 +1,7 @@
 import {Bodies, Body, World} from "matter-js";
-import Component from "../ecm/Component";
-import Transform2DComponent from "./Transform2DComponent";
-import {getWorld} from "../PhysicsManager";
+import Component from "game/ecm/Component";
+import Transform2DComponent from "game/components/Transform2DComponent";
+import {getWorld} from "game/PhysicsManager";
 
 export default class PhysicsComponent extends Component {
     constructor(parent, radius, options) {

@@ -1,5 +1,5 @@
-import Player from "./entities/Player";
-import Scene from "./ecm/Scene";
+import Player from "game/entities/Player";
+import Scene from "game/ecm/Scene";
 
 export default class MainScene extends Scene {
     load() {

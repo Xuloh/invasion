@@ -1,7 +1,7 @@
-import Entity2D from "./Entity2D";
-import PhysicsComponent from "../components/PhysicsComponent";
-import PlayerComponent from "../components/PlayerComponent";
-import PolygonComponent from "../components/PolygonComponent";
+import Entity2D from "game/entities/Entity2D";
+import PhysicsComponent from "game/components/PhysicsComponent";
+import PlayerComponent from "game/components/PlayerComponent";
+import PolygonComponent from "game/components/PolygonComponent";
 
 export default class Player extends Entity2D {
     constructor(position) {

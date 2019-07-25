@@ -1,6 +1,6 @@
-import Component from "../ecm/Component";
-import PhysicsComponent from "./PhysicsComponent";
-import Transform2DComponent from "./Transform2DComponent";
+import Component from "game/ecm/Component";
+import PhysicsComponent from "game/components/PhysicsComponent";
+import Transform2DComponent from "game/components/Transform2DComponent";
 import Victor from "victor";
 
 export default class EnemyComponent extends Component {

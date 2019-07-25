@@ -1,7 +1,7 @@
 /* eslint-disable array-element-newline, no-loops/no-loops */
-import * as Renderer from "../Renderer";
-import Component from "../ecm/Component";
-import Transform2DComponent from "./Transform2DComponent";
+import * as Renderer from "game/Renderer";
+import Component from "game/ecm/Component";
+import Transform2DComponent from "game/components/Transform2DComponent";
 
 export default class PolygonComponent extends Component {
     constructor(parent, edges, color, radius) {

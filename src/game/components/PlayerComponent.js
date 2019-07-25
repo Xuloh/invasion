@@ -1,10 +1,10 @@
-import * as SceneManager from "../SceneManager";
-import {getMousePosition, isControlPressed} from "../../events/ControlsManager";
-import Bullet from "../entities/Bullet";
-import Component from "../ecm/Component";
-import PhysicsComponent from "./PhysicsComponent";
+import * as SceneManager from "game/SceneManager";
+import {getMousePosition, isControlPressed} from "events/ControlsManager";
+import Bullet from "game/entities/Bullet";
+import Component from "game/ecm/Component";
+import PhysicsComponent from "game/components/PhysicsComponent";
 import Victor from "victor";
-import {pixelRatio} from "../Renderer";
+import {pixelRatio} from "game/Renderer";
 
 export default class PlayerComponent extends Component {
     constructor(parent, speed, maxVelocity) {

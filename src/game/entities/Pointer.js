@@ -1,6 +1,6 @@
-import Entity2D from "./Entity2D";
-import PointerComponent from "../components/PointerComponent";
-import PolygonComponent from "../components/PolygonComponent";
+import Entity2D from "game/entities/Entity2D";
+import PointerComponent from "game/components/PointerComponent";
+import PolygonComponent from "game/components/PolygonComponent";
 
 export default class Pointer extends Entity2D {
     constructor(player) {

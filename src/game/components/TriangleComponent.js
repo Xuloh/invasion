@@ -1,7 +1,7 @@
 /* eslint-disable array-element-newline */
-import * as Renderer from "../Renderer";
-import Component from "../ecm/Component";
-import Transform2DComponent from "./Transform2DComponent";
+import * as Renderer from "game/Renderer";
+import Component from "game/ecm/Component";
+import Transform2DComponent from "game/components/Transform2DComponent";
 
 export default class TriangleComponent extends Component {
     constructor(parent) {

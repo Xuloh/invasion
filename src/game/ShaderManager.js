@@ -1,6 +1,6 @@
 /* eslint-disable camelcase */
-import * as flatColor from "../shaders/flatColor";
-import {upperCaseFirst} from "../util/Util.js";
+import * as flatColor from "shaders/flatColor";
+import {upperCaseFirst} from "util/Util.js";
 
 export default class ShaderManager {
     constructor(webGLContext) {

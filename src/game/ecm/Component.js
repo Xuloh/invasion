@@ -1,5 +1,4 @@
 /* eslint-disable no-empty-function, no-unused-vars */
-
 export default class Component {
     constructor(parent) {
         this._parent = parent;

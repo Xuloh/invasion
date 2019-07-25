@@ -1,4 +1,4 @@
-import {registerHandler} from "./EventsDispatcher";
+import {registerHandler} from "events/EventsDispatcher";
 
 const keys = {};
 const controls = {};

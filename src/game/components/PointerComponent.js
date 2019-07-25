@@ -1,8 +1,8 @@
-import Component from "../ecm/Component";
-import Transform2DComponent from "./Transform2DComponent";
+import Component from "game/ecm/Component";
+import Transform2DComponent from "game/components/Transform2DComponent";
 import Victor from "victor";
-import {getMousePosition} from "../../events/ControlsManager";
-import {pixelRatio} from "../Renderer";
+import {getMousePosition} from "events/ControlsManager";
+import {pixelRatio} from "game/Renderer";
 
 export default class PointerComponent extends Component {
     constructor(parent, player, distanceToPlayer) {

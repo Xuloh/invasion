@@ -1,7 +1,7 @@
-import BulletComponent from "../components/BulletComponent";
-import Entity2D from "./Entity2D";
-import PhysicsComponent from "../components/PhysicsComponent";
-import PolygonComponent from "../components/PolygonComponent";
+import BulletComponent from "game/components/BulletComponent";
+import Entity2D from "game/entities/Entity2D";
+import PhysicsComponent from "game/components/PhysicsComponent";
+import PolygonComponent from "game/components/PolygonComponent";
 
 export default class Bullet extends Entity2D {
     constructor(position, direction) {

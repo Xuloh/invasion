@@ -1,4 +1,4 @@
-import Component from "./Component";
+import Component from "game/ecm/Component";
 import Victor from "victor";
 
 export default class Entity {
