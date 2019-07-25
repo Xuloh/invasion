@@ -24,8 +24,8 @@ export default class Transform2DComponent extends Component {
         mat4.fromRotationTranslationScale(
             this._2dTransform,
             quatRotation,
-            [...this._position, 0.0],
-            [...this._scale, 1.0]
+            [this._position[0], this._position[1], 0.0],
+            [this._scale[0], this._scale[1], 1.0]
         );
     }
 
@@ -35,7 +35,7 @@ export default class Transform2DComponent extends Component {
 
     set position(position) {
         this._position = position;
-        mat4.translate(this._2dTransform, this._2dTransform, [...this._position, 0.0]);
+        mat4.translate(this._2dTransform, this._2dTransform, [this._position[0], this._position[1], 0.0]);
     }
 
     get rotation() {
@@ -53,7 +53,7 @@ export default class Transform2DComponent extends Component {
 
     set scale(scale) {
         this._scale = scale;
-        mat4.scale(this._2dTransform, this._2dTransform, [...this._scale, 1.0]);
+        mat4.scale(this._2dTransform, this._2dTransform, [this._scale[0], this._scale[1], 1.0]);
     }
 
     get transform2d() {
