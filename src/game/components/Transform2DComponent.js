@@ -19,6 +19,10 @@ export default class Transform2DComponent extends Component {
         this._scale = scale;
 
         this._2dTransform = mat4.create();
+        this._updateTransform();
+    }
+
+    _updateTransform() {
         const quatRotation = quat.create();
         quat.rotateZ(quatRotation, quatRotation, this._rotation);
         mat4.fromRotationTranslationScale(
@@ -35,7 +39,8 @@ export default class Transform2DComponent extends Component {
 
     set position(position) {
         this._position = position;
-        mat4.translate(this._2dTransform, this._2dTransform, [this._position[0], this._position[1], 0.0]);
+        this._updateTransform();
+        //mat4.translate(this._2dTransform, this._2dTransform, [this._position[0], this._position[1], 0.0]);
     }
 
     get rotation() {
@@ -44,7 +49,8 @@ export default class Transform2DComponent extends Component {
 
     set rotation(rotation) {
         this._rotation = rotation;
-        mat4.rotateZ(this._2dTransform, this._2dTransform, this._rotation);
+        this._updateTransform();
+        //mat4.rotateZ(this._2dTransform, this._2dTransform, this._rotation);
     }
 
     get scale() {
@@ -53,7 +59,8 @@ export default class Transform2DComponent extends Component {
 
     set scale(scale) {
         this._scale = scale;
-        mat4.scale(this._2dTransform, this._2dTransform, [this._scale[0], this._scale[1], 1.0]);
+        this._updateTransform();
+        //mat4.scale(this._2dTransform, this._2dTransform, [this._scale[0], this._scale[1], 1.0]);
     }
 
     get transform2d() {
