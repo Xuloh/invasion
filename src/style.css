@@ -24,7 +24,6 @@ body {
     animation: menu_bg_color 0.7s linear;
     animation-fill-mode: forwards;
 
-    font-family: "Ubuntu", sans-serif;
     height: 100%;
     padding-top: 20vh;
     position: absolute;
