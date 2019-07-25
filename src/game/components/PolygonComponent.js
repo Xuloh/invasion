@@ -28,7 +28,7 @@ export default class PolygonComponent extends Component {
     }
 
     render() {
-        Renderer.render({
+        Renderer.queue({
             mode: Renderer.gl.TRIANGLE_FAN,
             vertexCount: 2 + this.edges,
             shader: this.shader,

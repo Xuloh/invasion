@@ -17,7 +17,7 @@ export default class TriangleComponent extends Component {
     }
 
     render() {
-        Renderer.render({
+        Renderer.queue({
             mode: Renderer.gl.TRIANGLES,
             vertexCount: 3,
             shader: this.shader,
