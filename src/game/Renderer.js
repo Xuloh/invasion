@@ -1,12 +1,14 @@
+import {mat4, vec2, vec3} from "gl-matrix";
 import Color from "color";
 import ShaderManager from "game/ShaderManager";
-import {mat4} from "gl-matrix";
 
 let canvas = null;
 let gl = null;
 let shaderManager = null;
 let options = null;
 let projectionMatrix = null;
+let invProjectionMatrix = null;
+
 const pixelRatio = 50;
 
 function init(canvasId, opts) {
@@ -73,6 +75,9 @@ function createProjection() {
         0.0,
         100.0
     );
+
+    invProjectionMatrix = mat4.create();
+    mat4.invert(invProjectionMatrix, projectionMatrix);
 }
 
 function resize() {
@@ -148,10 +153,28 @@ function render(params) {
     buffers.forEach(b => gl.deleteBuffer(b));
 }
 
+function mapWorldToScreenCoordinates(worldPos) {
+    if(worldPos.length === 2)
+        worldPos = vec3.fromValues(worldPos[0], worldPos[1], 0.0);
+    vec3.transformMat4(worldPos, worldPos, projectionMatrix);
+    const screenX = Math.round(((worldPos[0] + 1) / 2) * canvas.clientWidth);
+    const screenY = Math.round(((1 - worldPos[1]) / 2) * canvas.clientHeight);
+    return vec2.fromValues(screenX, screenY);
+}
+
+function mapScreenToWorldCoordinates(screenPos) {
+    const worldX = 2 * screenPos[0] / canvas.clientWidth - 1;
+    const worldY = -2 * screenPos[1] / canvas.clientHeight + 1;
+    const worldPos = vec3.fromValues(worldX, worldY, 0);
+    vec3.transformMat4(worldPos, worldPos, invProjectionMatrix);
+    return worldPos;
+}
+
 export {
     init,
     resize,
     render,
     gl,
-    pixelRatio
+    mapWorldToScreenCoordinates,
+    mapScreenToWorldCoordinates
 };
