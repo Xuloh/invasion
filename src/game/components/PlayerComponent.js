@@ -5,6 +5,7 @@ import Component from "game/ecm/Component";
 import PhysicsComponent from "game/components/PhysicsComponent";
 import Transform2DComponent from "game/components/Transform2DComponent";
 import {mapScreenToWorldCoordinates} from "game/Renderer";
+import {timeout} from "util/PromiseUtil";
 import {vec2} from "gl-matrix";
 
 export default class PlayerComponent extends Component {
@@ -25,9 +26,9 @@ export default class PlayerComponent extends Component {
 
     movePlayer(dt) {
         if(isControlPressed("up"))
-            this.physicsComponent.applyForce([0, -this.speed * dt]);
-        if(isControlPressed("down"))
             this.physicsComponent.applyForce([0, this.speed * dt]);
+        if(isControlPressed("down"))
+            this.physicsComponent.applyForce([0, -this.speed * dt]);
         if(isControlPressed("left"))
             this.physicsComponent.applyForce([-this.speed * dt, 0]);
         if(isControlPressed("right"))
@@ -35,8 +36,8 @@ export default class PlayerComponent extends Component {
 
         const velocity = this.physicsComponent.velocity;
         this.physicsComponent.velocity = [
-            Math.sign(velocity[0]) * Math.min(Math.abs(velocity[0]), this._maxVelocity[0]),
-            Math.sign(velocity[1]) * Math.min(Math.abs(velocity[1]), this._maxVelocity[1])
+            Math.sign(velocity[0]) * Math.min(Math.abs(velocity[0]), this._maxVelocity),
+            Math.sign(velocity[1]) * Math.min(Math.abs(velocity[1]), this._maxVelocity)
         ];
     }
 
@@ -64,7 +65,7 @@ export default class PlayerComponent extends Component {
             });
 
             this.fireCooldown = false;
-            setTimeout(() => this.fireCooldown = true, 500);
+            timeout(500).then(() => this.fireCooldown = true);
         }
     }
 }
