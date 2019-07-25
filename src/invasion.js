@@ -93,16 +93,17 @@ function main() {
 }
 
 $(() => {
-    PhysicsManager.init({x: 0, y: 0});
-    Renderer.init("game", {
-        clearColor: "#eee"
-    });
     $container = $("#game");
     $container.on("resize", resize);
     resize();
     setupFontAwesomeLibrary();
     registerControls();
     registerHandlers();
+
+    PhysicsManager.init({x: 0, y: 0});
+    Renderer.init("game", {
+        clearColor: "#eee"
+    });
     SceneManager.add("main", new MainScene());
     SceneManager.load("main");
     ReactDOM.render(
@@ -112,5 +113,6 @@ $(() => {
         />,
         document.getElementById("ui")
     );
+
     //timeout(1000).then(() => $("#start").click());
 });
