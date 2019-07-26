@@ -82,7 +82,14 @@ function createProjection() {
 }
 
 function resize() {
-    gl.viewport(0, 0, canvas.clientWidth, canvas.clientHeight);
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    if(canvas.width !== width || canvas.height !== height) {
+        canvas.width = width;
+        canvas.height = height;
+        gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+        createProjection();
+    }
 }
 
 function putAttribArray(location, buffer, numComponents) {

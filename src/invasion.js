@@ -12,7 +12,6 @@ import UI from "ui/UI";
 import {registerHandler} from "events/EventsDispatcher";
 import {setControl} from "events/ControlsManager";
 import setupFontAwesomeLibrary from "font-awesome-library";
-import {timeout} from "util/PromiseUtil";
 
 window.$ = $;
 window.jQuery = $;
@@ -61,14 +60,6 @@ function registerHandlers() {
     });
 }
 
-function resize() {
-    $container.attr({
-        height: $container.height(),
-        width: $container.width()
-    });
-    Renderer.resize();
-}
-
 function openMenu() {
     performUIAction("toggleMenu", {display: true});
     $container.addClass("inactive");
@@ -81,6 +72,7 @@ function update(dt) {
 }
 
 function render() {
+    Renderer.resize();
     SceneManager.render();
     Renderer.render();
 }
@@ -99,8 +91,6 @@ $(() => {
     });
 
     $container = $("#game");
-    $(window).on("resize", resize);
-    resize();
     setupFontAwesomeLibrary();
     registerControls();
     registerHandlers();
@@ -118,6 +108,4 @@ $(() => {
         />,
         document.getElementById("ui")
     );
-
-    timeout(1000).then(() => $("#start").click());
 });
