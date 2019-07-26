@@ -60,6 +60,16 @@ function registerHandlers() {
     });
 }
 
+function addCollisionCategories() {
+    PhysicsManager.addCategory("player");
+    PhysicsManager.addCategory("enemy");
+    PhysicsManager.addCategory("bullet");
+
+    PhysicsManager.setCategoryMask("player", ["enemy"]);
+    PhysicsManager.setCategoryMask("enemy", ["player", "bullet"]);
+    PhysicsManager.setCategoryMask("bullet", ["enemy"]);
+}
+
 function openMenu() {
     performUIAction("toggleMenu", {display: true});
     $container.addClass("inactive");
@@ -94,6 +104,7 @@ $(() => {
     setupFontAwesomeLibrary();
     registerControls();
     registerHandlers();
+    addCollisionCategories();
 
     SceneManager.add("main", new MainScene());
     SceneManager.load("main");
