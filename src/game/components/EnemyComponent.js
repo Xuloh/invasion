@@ -1,4 +1,5 @@
 import Component from "game/ecm/Component";
+import Entity2D from "game/entities/Entity2D";
 import PhysicsComponent from "game/components/PhysicsComponent";
 import Transform2DComponent from "game/components/Transform2DComponent";
 import Victor from "victor";
@@ -6,7 +7,9 @@ import Victor from "victor";
 export default class EnemyComponent extends Component {
     constructor(parent, player, speed, maxVelocity) {
         super(parent);
-        this.player = player;
+        if(!(player instanceof Entity2D))
+            throw new TypeError("Given player must be an instance of Entity2D");
+        this.player = player.getComponent(Transform2DComponent);
         this.speed = speed;
         this._maxVelocity = maxVelocity;
         this.physicsComponent = this.require(PhysicsComponent);
