@@ -31,8 +31,7 @@ function handleUIAction(action, args) {
         case "startClick":
             performUIAction("toggleMenu", {display: false});
             $container.removeClass("inactive");
-            TimeManager.reset();
-            main();
+            TimeManager.setTimeScale(1.0);
             break;
         default:
             break;
@@ -73,7 +72,7 @@ function resize() {
 function openMenu() {
     performUIAction("toggleMenu", {display: true});
     $container.addClass("inactive");
-    window.cancelAnimationFrame(mainRafToken);
+    TimeManager.setTimeScale(0.0);
 }
 
 function update(dt) {
@@ -108,6 +107,10 @@ $(() => {
 
     SceneManager.add("main", new MainScene());
     SceneManager.load("main");
+
+    TimeManager.setTimeScale(0.0);
+    main();
+
     ReactDOM.render(
         <UI
             performAction={func => performUIAction = func}
@@ -116,5 +119,5 @@ $(() => {
         document.getElementById("ui")
     );
 
-    //timeout(1000).then(() => $("#start").click());
+    timeout(1000).then(() => $("#start").click());
 });
