@@ -1,20 +1,25 @@
 import {Bodies, Body, World} from "matter-js";
+import {getCollisionFilter, getWorld} from "game/PhysicsManager";
 import Component from "game/ecm/Component";
 import Transform2DComponent from "game/components/Transform2DComponent";
-import {getWorld} from "game/PhysicsManager";
 
 export default class PhysicsComponent extends Component {
-    constructor(parent, radius, options) {
+    constructor(parent, radius, category, options) {
         super(parent);
         this.world = getWorld();
         this.transform2d = this.require(Transform2DComponent);
+
+        let collisionFilter = null;
+        if(category != null && typeof category === "string")
+            collisionFilter = getCollisionFilter(category);
 
         const position = this.transform2d.position;
         const angle = this.transform2d.rotation;
         this.body = Bodies.circle(position[0], position[1], radius, {
             label: this._parent.label,
             ...options,
-            angle: angle
+            angle: angle,
+            collisionFilter: collisionFilter
         });
         World.add(this.world, this.body);
     }
