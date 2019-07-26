@@ -1,10 +1,14 @@
+import EnemySpawner from "game/entities/EnemySpawner";
 import Player from "game/entities/Player";
 import Scene from "game/ecm/Scene";
+import Bullet from "game/entities/Bullet";
 
 export default class MainScene extends Scene {
     load() {
         // const player = this.entityFactory.makePlayer();
-        this.entities.push(new Player([0, 0]));
+        const player = new Player([0, 0]);
+        this.entities.push(player);
+        this.entities.push(new EnemySpawner(player));
         //this.entities.push(this.entityFactory.makeTest());
         // this.entities.push(player);
         // this.entities.push(this.entityFactory.makePointer(player));
@@ -15,9 +19,11 @@ export default class MainScene extends Scene {
 
     handle(message) {
         switch(message.type) {
-            case "spawn":
-                this.entities.push(new message.args.entity(...message.args.options));
+            case "spawn": {
+                const entity = new message.args.entity(...message.args.options);
+                this.entities.push(entity);
                 break;
+            }
             default:
                 break;
         }
