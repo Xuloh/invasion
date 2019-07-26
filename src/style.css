@@ -47,7 +47,7 @@ body {
 }
 
 #game.inactive {
-    animation: menu_blur 0.5s linear;
+    /* animation: menu_blur 0.5s linear; */
     animation-fill-mode: forwards;
 }
 
