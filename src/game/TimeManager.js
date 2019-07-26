@@ -15,13 +15,8 @@ function setTimeScale(scale) {
     timeScale = scale;
 }
 
-function pause() {
-    timeScale = 0.0;
-}
-
 export {
     dt,
     reset,
-    setTimeScale,
-    pause
+    setTimeScale
 };
