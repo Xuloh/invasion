@@ -2,7 +2,7 @@ import Component from "game/ecm/Component";
 import Entity2D from "game/entities/Entity2D";
 import PhysicsComponent from "game/components/PhysicsComponent";
 import Transform2DComponent from "game/components/Transform2DComponent";
-import Victor from "victor";
+import {vec2} from "gl-matrix";
 
 export default class EnemyComponent extends Component {
     constructor(parent, player, speed, maxVelocity) {
@@ -20,18 +20,19 @@ export default class EnemyComponent extends Component {
 
     update(dt) {
         super.update(dt);
-        this.physicsComponent.applyForce(
-            this.player.position
-                .clone()
-                .subtract(this.transform2d.position)
-                .norm()
-                .multiply(new Victor(this.speed, this.speed))
-                .multiply(new Victor(dt, dt))
-        );
+
+        const force = vec2.fromValues(this.player.position[0], this.player.position[1]);
+        vec2.subtract(force, force, this.transform2d.position);
+        vec2.normalize(force, force);
+        vec2.multiply(force, force, [this.speed, this.speed]);
+        vec2.multiply(force, force, [dt, dt]);
+
+        this.physicsComponent.applyForce(force);
+
         const velocity = this.physicsComponent.velocity;
-        this.physicsComponent.velocity = {
-            x: Math.sign(velocity.x) * Math.min(Math.abs(velocity.x), this._maxVelocity.x),
-            y: Math.sign(velocity.y) * Math.min(Math.abs(velocity.y), this._maxVelocity.y)
-        };
+        this.physicsComponent.velocity = [
+            Math.sign(velocity[0]) * Math.min(Math.abs(velocity[0]), this._maxVelocity),
+            Math.sign(velocity[1]) * Math.min(Math.abs(velocity[1]), this._maxVelocity)
+        ];
     }
 }
