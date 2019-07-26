@@ -29,6 +29,7 @@ export default class Entity {
         this._components.forEach(c => c.render());
     }
 
+    //TODO obsolete method to be removed
     move(movement) {
         if(typeof movement === "object")
             movement = Victor.fromObject(movement);
