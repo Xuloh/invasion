@@ -1,4 +1,5 @@
 import {mat4, vec2, vec3} from "gl-matrix";
+import {setAttributes, setUniforms} from "util/WebGLUtils";
 import Color from "color";
 import ShaderManager from "game/ShaderManager";
 
@@ -92,22 +93,6 @@ function resize() {
     }
 }
 
-function putAttribArray(location, buffer, numComponents) {
-    const type = gl.FLOAT;
-    const normalize = false;
-    const stride = 0;
-    const offset = 0;
-    gl.vertexAttribPointer(
-        location,
-        numComponents,
-        type,
-        normalize,
-        stride,
-        offset
-    );
-    gl.enableVertexAttribArray(location);
-}
-
 function queue(params) {
     renderQueue.push(params);
 }
@@ -117,53 +102,16 @@ function render() {
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     renderQueue.forEach(params => {
-        const buffers = [];
-
-        const shader = shaderManager.shaderPrograms[params.shader];
-
-        Object.keys(params.attributes).forEach(attribute => {
-            const bufferIdx = buffers.push(gl.createBuffer()) - 1;
-            const data = params.attributes[attribute];
-            gl.bindBuffer(gl.ARRAY_BUFFER, buffers[bufferIdx]);
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(data), gl.DYNAMIC_DRAW);
-            putAttribArray(shader.infos.attribLocations[attribute], buffers[bufferIdx], data.length / params.vertexCount);
+        const programInfos = shaderManager.programs[params.shader];
+        gl.useProgram(programInfos.program);
+        setUniforms(programInfos, params.uniforms);
+        setUniforms(programInfos, {
+            uProjectionMatrix: projectionMatrix
         });
-
-        gl.useProgram(shader.program);
-
-        Object.keys(params.uniforms).forEach(uniform => {
-            const data = params.uniforms[uniform];
-            switch(data.type) {
-                case "mat4":
-                    gl.uniformMatrix4fv(
-                        shader.infos.uniformLocations[uniform],
-                        false,
-                        data.value
-                    );
-                    break;
-                case "vec4":
-                    gl.uniform4fv(
-                        shader.infos.uniformLocations[uniform],
-                        data.value
-                    );
-                    break;
-                default:
-                    console.warn("Unsupported uniform type : " + data.type);
-                    break;
-            }
-        });
-
-        // set shader uniforms
-        gl.uniformMatrix4fv(
-            shader.infos.uniformLocations.projectionMatrix,
-            false,
-            projectionMatrix
-        );
-
+        setAttributes(programInfos, params.bufferInfos.attribs);
         const offset = 0;
-        gl.drawArrays(params.mode, offset, params.vertexCount);
-
-        buffers.forEach(b => gl.deleteBuffer(b));
+        console.log(params);
+        gl.drawArrays(params.mode, offset, params.bufferInfos.nbElements);
     });
 
     renderQueue = [];
