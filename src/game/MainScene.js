@@ -1,7 +1,6 @@
 import EnemySpawner from "game/entities/EnemySpawner";
 import Player from "game/entities/Player";
 import Scene from "game/ecm/Scene";
-import Bullet from "game/entities/Bullet";
 
 export default class MainScene extends Scene {
     load() {
