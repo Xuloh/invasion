@@ -2,6 +2,7 @@
 import * as Renderer from "game/Renderer";
 import Component from "game/ecm/Component";
 import Transform2DComponent from "game/components/Transform2DComponent";
+import {createBufferInfoFromArrays} from "util/WebGLUtils";
 
 export default class PolygonComponent extends Component {
     constructor(parent, edges, color, radius) {
@@ -30,20 +31,11 @@ export default class PolygonComponent extends Component {
     render() {
         Renderer.queue({
             mode: Renderer.gl.TRIANGLE_FAN,
-            vertexCount: 2 + this.edges,
             shader: this.shader,
-            attributes: {
-                vertexPosition: this.vertices
-            },
+            bufferInfos: this.bufferInfos,
             uniforms: {
-                modelViewMatrix: {
-                    type: "mat4",
-                    value: this.transform2d.transform2d
-                },
-                color: {
-                    type: "vec4",
-                    value: this.color
-                }
+                uModelViewMatrix: this.transform2d.transform2d,
+                uColor: this.color
             }
         });
     }
@@ -80,5 +72,9 @@ export default class PolygonComponent extends Component {
         }
         this.vertices.push(this.vertices[2]);
         this.vertices.push(this.vertices[3]);
+        console.log(this.vertices);
+        this.bufferInfos = createBufferInfoFromArrays(Renderer.gl, {
+            vertexPosition: {nbComponents: 2, data: this.vertices}
+        });
     }
 }
