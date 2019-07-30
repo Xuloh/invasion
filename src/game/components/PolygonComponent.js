@@ -72,7 +72,6 @@ export default class PolygonComponent extends Component {
         }
         this.vertices.push(this.vertices[2]);
         this.vertices.push(this.vertices[3]);
-        console.log(this.vertices);
         this.bufferInfos = createBufferInfoFromArrays(Renderer.gl, {
             vertexPosition: {nbComponents: 2, data: this.vertices}
         });
