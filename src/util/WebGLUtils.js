@@ -89,7 +89,6 @@ function createAttribSetter(gl, program, attribInfos) {
 
     return bufferInfos => {
         gl.bindBuffer(gl.ARRAY_BUFFER, bufferInfos.buffer);
-        gl.enableVertexAttribArray(location);
         gl.vertexAttribPointer(
             location,
             bufferInfos.nbComponents,
@@ -98,6 +97,7 @@ function createAttribSetter(gl, program, attribInfos) {
             bufferInfos.stride || 0,
             bufferInfos.offset || 0
         );
+        gl.enableVertexAttribArray(location);
     };
 }
 
@@ -194,7 +194,7 @@ function createAttribsFromArrays(gl, arrays) {
         const attribName = toAttribName(name);
         const array = arrays[name];
         attribs[attribName] = {
-            buffer: createBufferWithData(gl, array.data),
+            buffer: createBufferWithData(gl, array),
             nbComponents: array.nbComponents,
             type: array.type || gl.FLOAT
         };
@@ -216,11 +216,27 @@ function getElementsCount(arrays) {
 }
 
 // creates a new buffer and puts the given data into it
-function createBufferWithData(gl, data) {
+function createBufferWithData(gl, array) {
     const buffer = gl.createBuffer();
+    const data = array.data;
+    const type = isTypedArray(array.type) ? array.type : Float32Array;
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
-    gl.bufferData(gl.ARRAY_BUFFER, data, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, new type(data), gl.STATIC_DRAW);
     return buffer;
+}
+
+function isTypedArray(type) {
+    return type === Int8Array ||
+        type === Uint8Array ||
+        type === Uint8ClampedArray ||
+        type === Int16Array ||
+        type === Uint16Array ||
+        type === Int32Array ||
+        type === Uint32Array ||
+        type === Float32Array ||
+        type === Float64Array ||
+        type === BigInt64Array ||
+        type === BigUint64Array;
 }
 
 function toAttribName(name) {
