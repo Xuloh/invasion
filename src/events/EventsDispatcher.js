@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 const handlers = {"*": []};
 const supportedEvents = ["keydown", "keyup", "mousedown", "mouseup", "mousemove"];
 let eventsDisabled = false;

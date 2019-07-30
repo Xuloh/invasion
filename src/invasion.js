@@ -13,9 +13,6 @@ import {registerHandler} from "events/EventsDispatcher";
 import {setControl} from "events/ControlsManager";
 import setupFontAwesomeLibrary from "font-awesome-library";
 
-window.$ = $;
-window.jQuery = $;
-
 let $container = null;
 let disableEnemies = false;
 let mainRafToken = null;
