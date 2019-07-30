@@ -13,6 +13,10 @@ let renderQueue = [];
 
 const pixelRatio = 50;
 
+function logGLCall(functionName, args) {
+    console.log("gl." + functionName + "(" + WebGLDebugUtils.glFunctionArgsToString(functionName, args) + ")");
+}
+
 function init(canvasId, opts) {
     // get canvas
     if(typeof canvasId !== "string")
@@ -22,7 +26,11 @@ function init(canvasId, opts) {
     // get webgl context
     if(canvas.getContext == null)
         throw new Error("Canvas API not supported on this browser");
+
     gl = canvas.getContext("webgl");
+    if(opts.debug)
+        gl = WebGLDebugUtils.makeDebugContext(gl, undefined, logGLCall);
+
     if(gl == null)
         throw new Error("Couldn't initialize WebGL. It may not be supported on this browser");
 
@@ -110,7 +118,6 @@ function render() {
         });
         setAttributes(programInfos, params.bufferInfos.attribs);
         const offset = 0;
-        console.log(params);
         gl.drawArrays(params.mode, offset, params.bufferInfos.nbElements);
     });
 
