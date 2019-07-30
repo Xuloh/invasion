@@ -57,8 +57,12 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /webgl-debug\.js/,
+                use: "exports-loader?WebGLDebugUtils"
+            },
+            {
                 test: /\.jsx?/,
-                exclude: /node_modules/,
+                exclude: /(node_modules|webgl-debug\.js)/,
                 use: [
                     loaders.babelLoader,
                     loaders.eslintLoader
@@ -74,7 +78,7 @@ module.exports = {
             {
                 test: /\.glsl/,
                 use: loaders.rawLoader
-            }
+            },
             /*{
                 test: /\.scss/,
                 exclude: /node_modules/,
