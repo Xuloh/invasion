@@ -2,6 +2,7 @@ import {mat4, vec2, vec3} from "gl-matrix";
 import {setAttributes, setUniforms} from "util/WebGLUtils";
 import Color from "color";
 import ShaderManager from "game/ShaderManager";
+import {WebGLDebugUtils} from "util/webgl-debug";
 
 let canvas = null;
 let gl = null;
