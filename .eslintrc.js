@@ -12,7 +12,10 @@ module.exports = {
     ],
     globals: {
         Atomics: "readonly",
-        SharedArrayBuffer: "readonly"
+        SharedArrayBuffer: "readonly",
+        WebGLDebugUtils: "readonly",
+        BigInt64Array: "readonly",
+        BigUint64Array: "readonly"
     },
     parserOptions: {
         ecmaFeatures: {
