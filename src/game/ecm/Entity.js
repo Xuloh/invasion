@@ -1,5 +1,4 @@
 import Component from "game/ecm/Component";
-import Victor from "victor";
 
 export default class Entity {
     constructor(label) {
@@ -27,20 +26,6 @@ export default class Entity {
 
     render() {
         this._components.forEach(c => c.render());
-    }
-
-    //TODO obsolete method to be removed
-    move(movement) {
-        if(typeof movement === "object")
-            movement = Victor.fromObject(movement);
-        else if(Array.isArray(movement))
-            movement = Victor.fromArray(movement);
-        else
-            throw TypeError("movement should either be an array or an object with a x and y property");
-
-        this.position.add(movement);
-
-        return this;
     }
 
     addComponent(component, ...args) {
