@@ -12,8 +12,13 @@ const loaders = {
         loader: "babel-loader",
         options: {
             presets: [
-                "@babel/preset-env",
-                "@babel/preset-react"
+                [
+                    "@babel/preset-env",
+                    {
+                        modules: false
+                    }
+                ],
+                "@babel/preset-react",
             ],
             cacheDirectory: true
         }
@@ -116,5 +121,9 @@ module.exports = {
     },
     performance: {
         hints: false
+    },
+    optimization: {
+        sideEffects: true,
+        usedExports: true
     }
 };
