@@ -13,6 +13,7 @@ export default class ShaderManager {
     }
 
     init() {
+        console.groupCollapsed("shader init");
         Object.keys(this.shaders).forEach(shaderName => {
             this.programs[shaderName] = createProgram(
                 this.gl,
@@ -20,5 +21,6 @@ export default class ShaderManager {
                 this.shaders[shaderName].fs
             );
         });
+        console.groupEnd("shader init");
     }
 }
