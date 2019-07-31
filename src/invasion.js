@@ -95,7 +95,8 @@ function main() {
 $(() => {
     PhysicsManager.init({x: 0, y: 0});
     Renderer.init("game", {
-        clearColor: "#eee"
+        clearColor: "#eee",
+        debug: false
     });
 
     $container = $("#game");
@@ -106,6 +107,8 @@ $(() => {
 
     SceneManager.add("main", new MainScene());
     SceneManager.load("main");
+    SceneManager.updateCurrentScene();
+    render();
 
     ReactDOM.render(
         <UI
