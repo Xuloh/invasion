@@ -2,7 +2,7 @@ import {mat4, vec2, vec3} from "gl-matrix";
 import {setAttributes, setUniforms} from "util/WebGLUtils";
 import Color from "color";
 import ShaderManager from "game/ShaderManager";
-import {WebGLDebugUtils} from "util/webgl-debug";
+import WebGLDebugUtils from "util/webgl-debug";
 
 let canvas = null;
 let gl = null;
@@ -13,10 +13,6 @@ let invProjectionMatrix = null;
 let renderQueue = [];
 
 const pixelRatio = 50;
-
-function logGLCall(functionName, args) {
-    console.log("gl." + functionName + "(" + WebGLDebugUtils.glFunctionArgsToString(functionName, args) + ")");
-}
 
 function init(canvasId, opts) {
     // get canvas
@@ -29,8 +25,15 @@ function init(canvasId, opts) {
         throw new Error("Canvas API not supported on this browser");
 
     gl = canvas.getContext("webgl");
-    if(opts.debug)
-        gl = WebGLDebugUtils.makeDebugContext(gl, undefined, logGLCall);
+    console.info(
+        `webgl debug is %c${opts.debug ? "on" : "off"}`,
+        `font-weight: bold; text-decoration: underline; color: ${opts.debug ? "#009432" : "#EA2027"}`
+    );
+    if(opts.debug) {
+        gl = WebGLDebugUtils.makeDebugContext(gl, undefined, (functionName, args) => {
+            console.log("gl." + functionName + "(" + WebGLDebugUtils.glFunctionArgsToString(functionName, args) + ")");
+        });
+    }
 
     if(gl == null)
         throw new Error("Couldn't initialize WebGL. It may not be supported on this browser");
@@ -42,10 +45,12 @@ function init(canvasId, opts) {
     createProjection();
 
     // init some webgl stuff
+    if(opts.debug) console.groupCollapsed("webgl init"); // eslint-disable-line
     gl.clearColor(...options.clearColor);
     gl.clearDepth(1.0);
     gl.enable(gl.DEPTH_TEST);
     gl.depthFunc(gl.LEQUAL);
+    if(opts.debug) console.groupEnd("webgl init"); // eslint-disable-line
 }
 
 function handleOptions(opts) {
@@ -66,6 +71,7 @@ function handleOptions(opts) {
 
     options = {
         clearColor: [0.0, 0.0, 0.0, 1.0],
+        debug: false,
         ...opts
     };
 }
@@ -110,7 +116,9 @@ function render() {
     //TODO implement a render queue instead of rendering everything on the spot
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
-    renderQueue.forEach(params => {
+    if(options.debug) console.groupCollapsed("webgl render"); // eslint-disable-line
+    renderQueue.forEach((params, idx) => {
+        if(options.debug) console.groupCollapsed("render " + idx); // eslint-disable-line
         const programInfos = shaderManager.programs[params.shader];
         gl.useProgram(programInfos.program);
         setUniforms(programInfos, params.uniforms);
@@ -120,8 +128,9 @@ function render() {
         setAttributes(programInfos, params.bufferInfos.attribs);
         const offset = 0;
         gl.drawArrays(params.mode, offset, params.bufferInfos.nbElements);
+        if(options.debug) console.groupEnd("render " + idx); // eslint-disable-line
     });
-
+    if(options.debug) console.groupEnd("webgl render"); // eslint-disable-line
     renderQueue = [];
 }
 
