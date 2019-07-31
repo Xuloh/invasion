@@ -89,7 +89,6 @@ function main() {
     mainRafToken = window.requestAnimationFrame(main);
     const dt = TimeManager.dt();
     if(!pause) {
-        console.log(dt);
         update(dt);
         render();
     }
