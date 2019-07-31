@@ -5,7 +5,7 @@ import EntitySpawnerComponent from "game/components/EntitySpawnerComponent";
 export default class EnemySpawner extends Entity {
     constructor(player) {
         super("EnemySpawner");
-        this.addComponent(EntitySpawnerComponent, Enemy, 1500, {
+        this.addComponent(EntitySpawnerComponent, Enemy, 5, {
             x: -3,
             y: 3
         }, [player]);
