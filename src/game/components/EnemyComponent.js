@@ -14,8 +14,6 @@ export default class EnemyComponent extends Component {
         this._maxVelocity = maxVelocity;
         this.physicsComponent = this.require(PhysicsComponent);
         this.transform2d = this.require(Transform2DComponent);
-        if(this.physicsComponent == null)
-            throw new Error("EnemyComponent needs a PhysicsComponent, please add one to its parent entity");
     }
 
     update(dt) {
