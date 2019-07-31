@@ -4,6 +4,10 @@ import Component from "game/ecm/Component";
 import Transform2DComponent from "game/components/Transform2DComponent";
 import {createBufferInfoFromArrays} from "util/WebGLUtils";
 
+// map to share geometry buffers between all similar shapes
+// ex: 2 pentagons with the same radius will have the exact same geometry and will thus share the same buffers
+const geometryBuffers = {};
+
 export default class PolygonComponent extends Component {
     constructor(parent, edges, color, radius) {
         super(parent);
@@ -23,7 +27,7 @@ export default class PolygonComponent extends Component {
 
         this.shader = "flatColor";
 
-        this._buildVertices();
+        this._createVerticesAndBuffer();
 
         this.color = color;
     }
@@ -64,16 +68,29 @@ export default class PolygonComponent extends Component {
     }
     */
 
-    _buildVertices() {
-        this.vertices = [0.0, 0.0];
-        for(let i = 1; i <= this.edges; i++) {
-            this.vertices.push(this.radius * Math.cos(2 * i * Math.PI / this.edges));
-            this.vertices.push(this.radius * Math.sin(2 * i * Math.PI / this.edges));
+    _createVerticesAndBuffer() {
+        const key = this.edges + "," + this.radius;
+        if(Object.prototype.hasOwnProperty.call(geometryBuffers, key)) {
+            this.bufferInfos = geometryBuffers[key].bufferInfos;
+            this.vertices = geometryBuffers[key].vertices;
         }
-        this.vertices.push(this.vertices[2]);
-        this.vertices.push(this.vertices[3]);
-        this.bufferInfos = createBufferInfoFromArrays(Renderer.gl, {
-            vertexPosition: {nbComponents: 2, data: this.vertices}
-        });
+        else {
+            this.vertices = [0.0, 0.0];
+            for(let i = 1; i <= this.edges; i++) {
+                this.vertices.push(this.radius * Math.cos(2 * i * Math.PI / this.edges));
+                this.vertices.push(this.radius * Math.sin(2 * i * Math.PI / this.edges));
+            }
+            this.vertices.push(this.vertices[2]);
+            this.vertices.push(this.vertices[3]);
+
+            this.bufferInfos = createBufferInfoFromArrays(Renderer.gl, {
+                vertexPosition: {nbComponents: 2, data: this.vertices}
+            });
+
+            geometryBuffers[key] = {
+                bufferInfos: this.bufferInfos,
+                vertices: this.vertices
+            };
+        }
     }
 }
