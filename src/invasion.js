@@ -28,6 +28,7 @@ function handleUIAction(action, args) {
             performUIAction("toggleMenu", {display: false});
             $container.removeClass("inactive");
             TimeManager.setTimeScale(1.0);
+            main();
             break;
         default:
             break;
@@ -70,7 +71,7 @@ function addCollisionCategories() {
 function openMenu() {
     performUIAction("toggleMenu", {display: true});
     $container.addClass("inactive");
-    TimeManager.setTimeScale(0.0);
+    window.cancelAnimationFrame(mainRafToken);
 }
 
 function update(dt) {
@@ -105,9 +106,6 @@ $(() => {
 
     SceneManager.add("main", new MainScene());
     SceneManager.load("main");
-
-    TimeManager.setTimeScale(0.0);
-    main();
 
     ReactDOM.render(
         <UI
