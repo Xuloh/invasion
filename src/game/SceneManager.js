@@ -15,11 +15,7 @@ function load(name) {
     nextScene = name;
 }
 
-function getCurrentScene() {
-    return currentSceneName;
-}
-
-function update(dt) {
+function updateCurrentScene() {
     if(nextScene != null) {
         if(currentScene != null)
             currentScene.unload();
@@ -28,6 +24,14 @@ function update(dt) {
         currentScene.load();
         nextScene = null;
     }
+}
+
+function getCurrentScene() {
+    return currentSceneName;
+}
+
+function update(dt) {
+    updateCurrentScene();
     currentScene.update(dt);
 }
 
@@ -44,6 +48,7 @@ export {
     load,
     getCurrentScene,
     update,
+    updateCurrentScene,
     render,
     message
 };
