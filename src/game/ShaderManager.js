@@ -1,15 +1,18 @@
 /* eslint-disable camelcase */
 import * as flatColor from "shaders/flatColor";
+import * as grid from "shaders/grid";
 import {createProgram} from "util/WebGLUtils";
 
 export default class ShaderManager {
     constructor(webGLContext) {
         this.shaders = {
-            flatColor: flatColor
+            flatColor: flatColor,
+            grid: grid
         };
         this.gl = webGLContext;
         this.programs = {};
         this.init();
+        console.log(this.programs);
     }
 
     init() {
