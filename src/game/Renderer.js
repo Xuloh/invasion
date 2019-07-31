@@ -113,7 +113,6 @@ function queue(params) {
 }
 
 function render() {
-    //TODO implement a render queue instead of rendering everything on the spot
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     if(options.debug) console.groupCollapsed("webgl render"); // eslint-disable-line
