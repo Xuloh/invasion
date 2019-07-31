@@ -122,7 +122,10 @@ function render() {
         const programInfos = shaderManager.programs[params.program];
         gl.useProgram(programInfos.program);
 
-        params.uniforms.uProjectionMatrix = projectionMatrix;
+        const transformMatrix = mat4.create();
+        mat4.multiply(transformMatrix, projectionMatrix, params.transformMatrix);
+        params.uniforms.uTransformMatrix = transformMatrix;
+
         setUniforms(programInfos, params.uniforms);
         setAttributes(programInfos, params.bufferInfos.attribs);
 

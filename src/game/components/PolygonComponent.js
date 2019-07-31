@@ -38,9 +38,9 @@ export default class PolygonComponent extends Component {
             program: this.program,
             bufferInfos: this.bufferInfos,
             uniforms: {
-                uModelViewMatrix: this.transform2d.transform2d,
                 uColor: this.color
-            }
+            },
+            transformMatrix: this.transform2d.transform2d
         });
     }
 
