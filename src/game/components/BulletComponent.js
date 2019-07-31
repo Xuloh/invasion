@@ -1,6 +1,6 @@
 import Component from "game/ecm/Component";
 import PhysicsComponent from "game/components/PhysicsComponent";
-import {timeout} from "util/PromiseUtil";
+import Timeout from "util/Timeout";
 import {vec2} from "gl-matrix";
 
 export default class BulletComponent extends Component {
@@ -21,17 +21,21 @@ export default class BulletComponent extends Component {
         vec2.normalize(this.direction, this.direction);
 
         // bullet ttl
-        timeout(2000).then(() => this._parent.setForDeletion());
+        this.timeout = new Timeout(2);
     }
 
     update(dt) {
         super.update(dt);
 
-        const force = vec2.create();
-        vec2.copy(force, this.direction);
-        vec2.multiply(force, force, [this.speed, this.speed]);
-        vec2.multiply(force, force, [dt, dt]);
+        if(this.timeout.update(dt))
+            this._parent.setForDeletion();
+        else {
+            const force = vec2.create();
+            vec2.copy(force, this.direction);
+            vec2.multiply(force, force, [this.speed, this.speed]);
+            vec2.multiply(force, force, [dt, dt]);
 
-        this.physicsComponent.applyForce(force);
+            this.physicsComponent.applyForce(force);
+        }
     }
 }

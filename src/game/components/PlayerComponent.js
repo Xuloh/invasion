@@ -3,25 +3,25 @@ import {getMousePosition, isControlPressed} from "events/ControlsManager";
 import Bullet from "game/entities/Bullet";
 import Component from "game/ecm/Component";
 import PhysicsComponent from "game/components/PhysicsComponent";
+import Timeout from "util/Timeout";
 import Transform2DComponent from "game/components/Transform2DComponent";
 import {mapScreenToWorldCoordinates} from "game/Renderer";
-import {timeout} from "util/PromiseUtil";
 import {vec2} from "gl-matrix";
 
 export default class PlayerComponent extends Component {
     constructor(parent, speed, maxVelocity) {
         super(parent);
         this.speed = speed;
-        this.fireCooldown = true;
         this._maxVelocity = maxVelocity;
         this.physicsComponent = this.require(PhysicsComponent);
         this.transform2d = this.require(Transform2DComponent);
+        this.fireCooldown = new Timeout(0.5);
     }
 
     update(dt) {
         super.update(dt);
         this.movePlayer(dt);
-        this.fire();
+        this.fire(dt);
     }
 
     movePlayer(dt) {
@@ -41,8 +41,10 @@ export default class PlayerComponent extends Component {
         ];
     }
 
-    fire() {
-        if(this.fireCooldown && isControlPressed("fire")) {
+    fire(dt) {
+        if(this.fireCooldown.update(dt) && isControlPressed("fire")) {
+            this.fireCooldown.reset();
+
             const mousePos = mapScreenToWorldCoordinates([getMousePosition().x, getMousePosition().y]);
             const playerPos = this.transform2d.position;
             const playerToMouse = vec2.distance(mousePos, playerPos);
@@ -63,9 +65,6 @@ export default class PlayerComponent extends Component {
                     options: [position, direction]
                 }
             });
-
-            this.fireCooldown = false;
-            timeout(500).then(() => this.fireCooldown = true);
         }
     }
 }
