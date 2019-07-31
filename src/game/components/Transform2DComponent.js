@@ -1,6 +1,7 @@
 import {mat4, quat, vec2} from "gl-matrix";
 import Component from "game/ecm/Component";
 
+// TODO implement mechanism similar to z-index
 export default class Transform2DComponent extends Component {
     constructor(parent, position, rotation, scale) {
         super(parent);
