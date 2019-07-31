@@ -16,6 +16,7 @@ import setupFontAwesomeLibrary from "font-awesome-library";
 let $container = null;
 let disableEnemies = false;
 let mainRafToken = null;
+let pause = true;
 
 // this function is provided by the UI component when it is created
 // function performUIAction(action, args)
@@ -27,8 +28,7 @@ function handleUIAction(action, args) {
         case "startClick":
             performUIAction("toggleMenu", {display: false});
             $container.removeClass("inactive");
-            TimeManager.setTimeScale(1.0);
-            main();
+            pause = false;
             break;
         default:
             break;
@@ -71,7 +71,7 @@ function addCollisionCategories() {
 function openMenu() {
     performUIAction("toggleMenu", {display: true});
     $container.addClass("inactive");
-    window.cancelAnimationFrame(mainRafToken);
+    pause = true;
 }
 
 function update(dt) {
@@ -88,8 +88,11 @@ function render() {
 function main() {
     mainRafToken = window.requestAnimationFrame(main);
     const dt = TimeManager.dt();
-    update(dt);
-    render();
+    if(!pause) {
+        console.log(dt);
+        update(dt);
+        render();
+    }
 }
 
 $(() => {
@@ -109,6 +112,7 @@ $(() => {
     SceneManager.load("main");
     SceneManager.updateCurrentScene();
     render();
+    main();
 
     ReactDOM.render(
         <UI
