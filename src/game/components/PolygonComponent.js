@@ -25,7 +25,7 @@ export default class PolygonComponent extends Component {
         this.radius = radius;
         this.transform2d = this.require(Transform2DComponent);
 
-        this.shader = "flatColor";
+        this.program = "flatColor";
 
         this._createVerticesAndBuffer();
 
@@ -35,7 +35,7 @@ export default class PolygonComponent extends Component {
     render() {
         Renderer.queue({
             mode: Renderer.gl.TRIANGLE_FAN,
-            shader: this.shader,
+            program: this.program,
             bufferInfos: this.bufferInfos,
             uniforms: {
                 uModelViewMatrix: this.transform2d.transform2d,

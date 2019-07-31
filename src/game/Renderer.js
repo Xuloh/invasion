@@ -118,15 +118,16 @@ function render() {
     if(options.debug) console.groupCollapsed("webgl render"); // eslint-disable-line
     renderQueue.forEach((params, idx) => {
         if(options.debug) console.groupCollapsed("render " + idx); // eslint-disable-line
-        const programInfos = shaderManager.programs[params.shader];
+
+        const programInfos = shaderManager.programs[params.program];
         gl.useProgram(programInfos.program);
+
+        params.uniforms.uProjectionMatrix = projectionMatrix;
         setUniforms(programInfos, params.uniforms);
-        setUniforms(programInfos, {
-            uProjectionMatrix: projectionMatrix
-        });
         setAttributes(programInfos, params.bufferInfos.attribs);
-        const offset = 0;
-        gl.drawArrays(params.mode, offset, params.bufferInfos.nbElements);
+
+        gl.drawArrays(params.mode, 0, params.bufferInfos.nbElements);
+
         if(options.debug) console.groupEnd("render " + idx); // eslint-disable-line
     });
     if(options.debug) console.groupEnd("webgl render"); // eslint-disable-line
