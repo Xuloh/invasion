@@ -1,26 +1,30 @@
 import Component from "game/ecm/Component";
+import Entity2D from "game/entities/Entity2D";
 import Transform2DComponent from "game/components/Transform2DComponent";
-import Victor from "victor";
 import {getMousePosition} from "events/ControlsManager";
-import {pixelRatio} from "game/Renderer";
+import {mapScreenToWorldCoordinates} from "game/Renderer";
+import {vec2} from "gl-matrix";
 
 export default class PointerComponent extends Component {
     constructor(parent, player, distanceToPlayer) {
         super(parent);
+        if(!(player instanceof Entity2D))
+            throw new TypeError("Given player must be an instance of Entity2D");
         this.transform2d = this.require(Transform2DComponent);
-        this.player = player;
+        this.player = player.getComponent(Transform2DComponent);
         this.distanceToPlayer = distanceToPlayer;
     }
 
     update(dt) {
         super.update(dt);
-        const mousePos = Victor.fromObject(getMousePosition).multiply({x: 1 / pixelRatio, y: 1 / pixelRatio});
+        const mousePos = mapScreenToWorldCoordinates([getMousePosition().x, getMousePosition().y]);
         const playerPos = this.player.position;
-        const playerToMouse = mousePos.distance(playerPos);
-        this.transform2d.position = {
-            x: playerPos.x + (mousePos.x - playerPos.x) * this.distanceToPlayer / playerToMouse,
-            y: playerPos.y + (mousePos.y - playerPos.y) * this.distanceToPlayer / playerToMouse
-        };
-        this.transform2d.angle = mousePos.subtract(playerPos).angle();
+        const playerToMouse = vec2.distance(mousePos, playerPos);
+        this.transform2d.position = [
+            playerPos[0] + (mousePos[0] - playerPos[0]) * this.distanceToPlayer / playerToMouse,
+            playerPos[1] + (mousePos[1] - playerPos[1]) * this.distanceToPlayer / playerToMouse
+        ];
+        vec2.subtract(mousePos, mousePos, playerPos);
+        this.transform2d.rotation = vec2.angle(mousePos, [1, 0]);
     }
 }
