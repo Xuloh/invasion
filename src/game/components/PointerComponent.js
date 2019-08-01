@@ -13,10 +13,12 @@ export default class PointerComponent extends Component {
         this.transform2d = this.require(Transform2DComponent);
         this.player = player.getComponent(Transform2DComponent);
         this.distanceToPlayer = distanceToPlayer;
+        this._parent.visible = false;
     }
 
     update(dt) {
         super.update(dt);
+        this._parent.visible = true;
         const mousePos = mapScreenToWorldCoordinates([getMousePosition().x, getMousePosition().y]);
         const playerPos = this.player.position;
         const playerToMouse = vec2.distance(mousePos, playerPos);
