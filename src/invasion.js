@@ -97,7 +97,7 @@ function main() {
 $(() => {
     PhysicsManager.init({x: 0, y: 0});
     Renderer.init("game", {
-        clearColor: "#eee",
+        clearColor: "#fff",
         debug: false
     });
 
