@@ -1,6 +1,7 @@
 import {createBufferInfoFromArrays, setAttributes, setUniforms} from "util/WebGLUtils";
 import {mat4, vec2, vec3} from "gl-matrix";
 import Color from "color";
+import OrthographicCamera from "game/OrthographicCamera";
 import ShaderManager from "game/ShaderManager";
 import WebGLDebugUtils from "util/webgl-debug";
 
@@ -8,9 +9,8 @@ let canvas = null;
 let gl = null;
 let shaderManager = null;
 let options = null;
-let projectionMatrix = null;
-let invProjectionMatrix = null;
 let renderQueue = [];
+let camera = null;
 
 const pixelRatio = 50;
 
@@ -44,7 +44,7 @@ function init(canvasId, opts) {
 
     shaderManager = new ShaderManager(gl);
 
-    createProjection();
+    camera = new OrthographicCamera(canvas.clientWidth, canvas.clientHeight, pixelRatio);
     createBackground();
 
     // init some webgl stuff
@@ -98,27 +98,6 @@ function handleOptions(opts) {
     };
 }
 
-function createProjection() {
-    // create projection matrix
-    const width = canvas.clientWidth * 1 / pixelRatio;
-    const height = canvas.clientHeight * 1 / pixelRatio;
-
-    projectionMatrix = mat4.create();
-
-    mat4.ortho(
-        projectionMatrix,
-        -width / 2,
-        width / 2,
-        -height / 2,
-        height / 2,
-        0.0,
-        100.0
-    );
-
-    invProjectionMatrix = mat4.create();
-    mat4.invert(invProjectionMatrix, projectionMatrix);
-}
-
 function resize() {
     const width = canvas.clientWidth;
     const height = canvas.clientHeight;
@@ -126,7 +105,7 @@ function resize() {
         canvas.width = width;
         canvas.height = height;
         gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-        createProjection();
+        camera = new OrthographicCamera(canvas.clientWidth, canvas.clientHeight, pixelRatio);
     }
 }
 
@@ -157,7 +136,7 @@ function render() {
 
         if(params.transformMatrix) {
             const transformMatrix = mat4.create();
-            mat4.multiply(transformMatrix, projectionMatrix, params.transformMatrix);
+            mat4.multiply(transformMatrix, camera.viewProjectionMatrix, params.transformMatrix);
             params.uniforms.uTransformMatrix = transformMatrix;
         }
 
@@ -175,7 +154,7 @@ function render() {
 function mapWorldToScreenCoordinates(worldPos) {
     if(worldPos.length === 2)
         worldPos = vec3.fromValues(worldPos[0], worldPos[1], 0.0);
-    vec3.transformMat4(worldPos, worldPos, projectionMatrix);
+    vec3.transformMat4(worldPos, worldPos, camera.viewProjectionMatrix);
     const screenX = Math.round(((worldPos[0] + 1) / 2) * canvas.clientWidth);
     const screenY = Math.round(((1 - worldPos[1]) / 2) * canvas.clientHeight);
     return vec2.fromValues(screenX, screenY);
@@ -185,7 +164,7 @@ function mapScreenToWorldCoordinates(screenPos) {
     const worldX = 2 * screenPos[0] / canvas.clientWidth - 1;
     const worldY = -2 * screenPos[1] / canvas.clientHeight + 1;
     const worldPos = vec3.fromValues(worldX, worldY, 0);
-    vec3.transformMat4(worldPos, worldPos, invProjectionMatrix);
+    vec3.transformMat4(worldPos, worldPos, camera.invViewProjectionMatrix);
     return worldPos;
 }
 
