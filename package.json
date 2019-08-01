@@ -4,7 +4,7 @@
   "description": "small js game",
   "main": "src/invasion.js",
   "scripts": {
-    "watch": "webpack-dev-server -d --hot",
+    "watch": "webpack-dev-server -d --hot --host 0.0.0.0",
     "build": "webpack -p",
     "build-dev": "webpack -d"
   },
@@ -46,6 +46,7 @@
     "@fortawesome/free-regular-svg-icons": "^5.9.0",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
     "@material-ui/core": "^4.2.0",
+    "@material-ui/icons": "^4.2.1",
     "color": "^3.1.2",
     "gl-matrix": "^3.0.0",
     "jquery": "^3.4.1",
