@@ -8,7 +8,7 @@ export default class PhysicsComponent extends Component {
         super(parent);
         this.world = getWorld();
         this.transform2d = this.require(Transform2DComponent);
-
+        this.collisionHandlers = [];
         let collisionFilter = null;
         if(category != null && typeof category === "string")
             collisionFilter = getCollisionFilter(category);
@@ -21,6 +21,7 @@ export default class PhysicsComponent extends Component {
             angle: angle,
             collisionFilter: collisionFilter
         });
+        this.body._physicsComponent = this;
         World.add(this.world, this.body);
     }
 
@@ -30,6 +31,24 @@ export default class PhysicsComponent extends Component {
             this.body.position.y
         ];
         this.transform2d.rotation = this.body.angle;
+    }
+
+    onCollision(handler) {
+        this.collisionHandlers.push(handler);
+    }
+
+    collisionEvent(event) {
+        switch(event.name) {
+            case "collisionStart":
+                this.collisionHandlers.forEach(h => h(event));
+                break;
+            case "collisionEnd":
+                break;
+            case "collisionActive":
+                break;
+            default:
+                break;
+        }
     }
 
     get velocity() {
