@@ -22,7 +22,7 @@ export default class TriangleComponent extends Component {
         ];
         this.color = [0.0, 0.0, 0.0, 1.0];
 
-        this._buildVertices();
+        this._createVerticesAndBuffer();
     }
 
     render() {
@@ -37,7 +37,7 @@ export default class TriangleComponent extends Component {
         });
     }
 
-    _buildVertices() {
+    _createVerticesAndBuffer() {
         const key = this.radius + "";
         if(Object.prototype.hasOwnProperty.call(geometryBuffers, key)) {
             this.bufferInfos = geometryBuffers[key].bufferInfos;
