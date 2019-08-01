@@ -9,6 +9,7 @@ export default class BulletComponent extends Component {
         this.speed = speed;
 
         this.physicsComponent = this.require(PhysicsComponent);
+        this.physicsComponent.onCollision(() => this._parent.setForDeletion());
         if(direction == null)
             this.direction = vec2.create();
         else if(Array.isArray(direction))
