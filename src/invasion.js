@@ -1,96 +1,123 @@
 import "./style.css";
 
+import * as PhysicsManager from "game/PhysicsManager";
+import * as Renderer from "game/Renderer";
+import * as SceneManager from "game/SceneManager";
+import * as TimeManager from "game/TimeManager";
 import $ from "jquery";
-import ControlsManager from "./events/ControlsManager";
-import EntityFactory from "./game/EntityFactory";
-import EventsDispatcher from "./events/EventsDispatcher";
-import MainScene from "./game/MainScene";
-import PhysicsManager from "./game/PhysicsManager";
+import MainScene from "game/MainScene";
 import React from "react";
 import ReactDOM from "react-dom";
-import Timer from "./util/Timer";
-import UI from "./ui/UI";
-import setupFontAwesomeLibrary from "./font-awesome-library";
+import UI from "ui/UI";
+import {registerHandler} from "events/EventsDispatcher";
+import {setControl} from "events/ControlsManager";
+import setupFontAwesomeLibrary from "font-awesome-library";
 
-window.$ = $;
-window.jQuery = $;
+let $container = null;
+let disableEnemies = false;
+let mainRafToken = null; // eslint-disable-line
+let pause = true;
+
+// this function is provided by the UI component when it is created
+// function performUIAction(action, args)
+let performUIAction = null;
+
+// eslint-disable-next-line no-unused-vars
+function handleUIAction(action, args) {
+    switch(action) {
+        case "startClick":
+            performUIAction("toggleMenu", {display: false});
+            $container.removeClass("inactive");
+            pause = false;
+            break;
+        default:
+            break;
+    }
+}
 
 function registerControls() {
-    gameState.controlsManager.setControl("up", "KeyW");
-    gameState.controlsManager.setControl("down", "KeyS");
-    gameState.controlsManager.setControl("left", "KeyA");
-    gameState.controlsManager.setControl("right", "KeyD");
-    gameState.controlsManager.setControl("fire", "mouse0");
+    [
+        ["up", "KeyW"],
+        ["down", "KeyS"],
+        ["left", "KeyA"],
+        ["right", "KeyD"],
+        ["fire", "mouse0"]
+    ].forEach(control => setControl(control[0], control[1]));
 }
 
 function registerHandlers() {
-    gameState.eventsDispatcher.registerHandler("keyup", gameState.stop, {
+    registerHandler("keyup", openMenu, {
         keys: ["Escape"]
     });
 
-    gameState.eventsDispatcher.registerHandler("keyup", event => {
+    registerHandler("keyup", event => {
         if(event.originalEvent.shiftKey)
-            gameState.disableEnemies = !gameState.disableEnemies;
+            disableEnemies = !disableEnemies;
     }, {
         keys: ["KeyQ"]
     });
-
-    gameState.eventsDispatcher.registerHandler("mousemove", event => {
-        gameState.mouse.position = {
-            x: event.originalEvent.clientX,
-            y: event.originalEvent.clientY
-        };
-    });
 }
 
-function start() {
-    gameState.$ui.toggleMenu(false);
-    $("#game").removeClass("inactive");
-    gameState.timer.reset();
-    main();
+function addCollisionCategories() {
+    PhysicsManager.addCategory("player");
+    PhysicsManager.addCategory("enemy");
+    PhysicsManager.addCategory("bullet");
+
+    PhysicsManager.setCategoryMask("player", ["enemy"]);
+    PhysicsManager.setCategoryMask("enemy", ["player", "bullet"]);
+    PhysicsManager.setCategoryMask("bullet", ["enemy"]);
 }
 
-function stop() {
-    gameState.$ui.toggleMenu(true);
-    $("#game").addClass("inactive");
-    window.cancelAnimationFrame(gameState.mainRafToken);
+function openMenu() {
+    performUIAction("toggleMenu", {display: true});
+    $container.addClass("inactive");
+    pause = true;
 }
 
 function update(dt) {
-    gameState.physicsManager.update(dt);
-    gameState.mainScene.update(dt);
+    PhysicsManager.update(dt);
+    SceneManager.update(dt);
+}
+
+function render() {
+    Renderer.resize();
+    SceneManager.render();
+    Renderer.render();
 }
 
 function main() {
-    gameState.mainRafToken = window.requestAnimationFrame(main);
-    const dt = gameState.timer.dt();
-    update(dt);
+    mainRafToken = window.requestAnimationFrame(main);
+    const dt = TimeManager.dt();
+    if(!pause) {
+        update(dt);
+        render();
+    }
 }
 
 $(() => {
-    window.gameState = {
-        $container: $("#game"),
-        mouse: {
-            position: {
-                x: 0,
-                y: 0
-            }
-        },
-        disableEnemies: false,
-        start: start,
-        stop: stop,
-        timer: new Timer(),
-        ef: new EntityFactory(),
-        mainScene: new MainScene(),
-        physicsManager: new PhysicsManager({x: 0, y: 0}),
-        pixelToMetersRatio: 50
-    };
+    PhysicsManager.init({x: 0, y: 0});
+    Renderer.init("game", {
+        clearColor: "#fff",
+        debug: false
+    });
 
-    gameState.eventsDispatcher = new EventsDispatcher();
-    gameState.controlsManager = new ControlsManager(gameState.eventsDispatcher);
-    gameState.mainScene.load();
+    $container = $("#game");
     setupFontAwesomeLibrary();
     registerControls();
     registerHandlers();
-    ReactDOM.render(<UI/>, document.getElementById("ui"));
+    addCollisionCategories();
+
+    SceneManager.add("main", new MainScene());
+    SceneManager.load("main");
+    SceneManager.updateCurrentScene();
+    render();
+    main();
+
+    ReactDOM.render(
+        <UI
+            performAction={func => performUIAction = func}
+            handleAction={handleUIAction}
+        />,
+        document.getElementById("ui")
+    );
 });

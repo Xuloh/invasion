@@ -13,7 +13,9 @@ module.exports = {
     globals: {
         Atomics: "readonly",
         SharedArrayBuffer: "readonly",
-        gameState: "writable"
+        WebGLDebugUtils: "readonly",
+        BigInt64Array: "readonly",
+        BigUint64Array: "readonly"
     },
     parserOptions: {
         ecmaFeatures: {
@@ -30,11 +32,13 @@ module.exports = {
     settings: {
         react: {
             version: "detect"
-        }
+        },
+        "import/resolver": "webpack"
     },
     rules: {
         "no-loops/no-loops": "warn",
         "sort-imports": "warn",
+        "react/require-render-return": "off",
         "quotes": [
             "error",
             "double",

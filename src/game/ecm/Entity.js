@@ -1,30 +1,15 @@
-import Component from "./Component";
-import Victor from "victor";
+import Component from "game/ecm/Component";
 
 export default class Entity {
-    constructor(position, size, label) {
-        if(position == null)
-            this._position = new Victor(0, 0);
-        else if(Array.isArray(position))
-            this._position = Victor.fromArray(position);
-        else if(typeof position === "object")
-            this._position = Victor.fromObject(position);
-        else
-            throw TypeError("position should either be an array or an object with an x and y property");
-
-        if(size == null || !("width" in size) || !("height" in size))
-            size = {width: 1, height: 1};
-
+    constructor(label) {
         if(label == null || typeof label !== "string")
             label = "Entity";
 
         this.label = label;
         this._components = [];
-        this.size = size;
-        this.origin = new Victor(size.width / 2, size.height / 2);
-        this.angle = 0;
 
         this.alive = true;
+        this.visible = true;
         this._isForDeletion = false;
     }
 
@@ -39,17 +24,8 @@ export default class Entity {
         });
     }
 
-    move(movement) {
-        if(typeof movement === "object")
-            movement = Victor.fromObject(movement);
-        else if(Array.isArray(movement))
-            movement = Victor.fromArray(movement);
-        else
-            throw TypeError("movement should either be an array or an object with a x and y property");
-
-        this.position.add(movement);
-
-        return this;
+    render() {
+        this._components.forEach(c => c.render());
     }
 
     addComponent(component, ...args) {
@@ -76,22 +52,6 @@ export default class Entity {
 
     setForDeletion() {
         this._isForDeletion = true;
-    }
-
-    get position() {
-        return this._position;
-    }
-
-    set position(position) {
-        if(typeof position === "object")
-            position = Victor.fromObject(position);
-        else if(Array.isArray(position))
-            position = Victor.fromArray(position);
-        else
-            throw TypeError("position should either be an array or an object with a x and y property");
-
-        this._position.copy(position);
-        return this;
     }
 
     destroy() {

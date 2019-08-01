@@ -1,39 +1,46 @@
-import Component from "../ecm/Component";
-import PhysicsComponent from "./PhysicsComponent";
-import Victor from "victor";
-import {timeout} from "../../util/PromiseUtil";
+import Component from "game/ecm/Component";
+import PhysicsComponent from "game/components/PhysicsComponent";
+import Timeout from "util/Timeout";
+import {vec2} from "gl-matrix";
 
 export default class BulletComponent extends Component {
     constructor(parent, direction, speed) {
         super(parent);
         this.speed = speed;
 
-        this.physicsComponent = this._parent.getComponent(PhysicsComponent);
-        if(this.physicsComponent == null)
-            throw new Error("BulletComponent needs a PhysicsComponent, please add one to its parent entity");
+        this.physicsComponent = this.require(PhysicsComponent);
+        this.physicsComponent.onCollision(() => this.onCollision());
 
         if(direction == null)
-            this.direction = new Victor(0, 0);
-        else if(typeof direction === "object")
-            this.direction = Victor.fromObject(direction);
+            this.direction = vec2.create();
         else if(Array.isArray(direction))
-            this.direction = Victor.fromArray(direction);
+            this.direction = vec2.fromValues(...direction);
+        else if(direction instanceof Float32Array)
+            this.direction = direction;
         else
-            throw TypeError("direction should either be an array or an object with a x and y property");
+            throw TypeError("direction should be an array");
 
-        this.direction.norm();
+        vec2.normalize(this.direction, this.direction);
 
         // bullet ttl
-        timeout(2000).then(() => this._parent.setForDeletion());
+        this.timeout = new Timeout(2);
     }
 
     update(dt) {
         super.update(dt);
-        this.physicsComponent.applyForce(
-            this.direction
-                .clone()
-                .multiply(new Victor(this.speed, this.speed))
-                .multiply(new Victor(dt, dt))
-        );
+
+        if(this.timeout.update(dt))
+            this._parent.setForDeletion();
+        else {
+            const velocity = vec2.create();
+            vec2.copy(velocity, this.direction);
+            vec2.multiply(velocity, velocity, [this.speed, this.speed]);
+
+            this.physicsComponent.velocity = velocity;
+        }
+    }
+
+    onCollision() {
+        this._parent.setForDeletion();
     }
 }

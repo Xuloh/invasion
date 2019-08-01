@@ -1,5 +1,4 @@
 body {
-    background-color: #eee;
     box-sizing: border-box;
     height: 100vh;
     margin: 0;
@@ -24,7 +23,6 @@ body {
     animation: menu_bg_color 0.7s linear;
     animation-fill-mode: forwards;
 
-    font-family: "Ubuntu", sans-serif;
     height: 100%;
     padding-top: 20vh;
     position: absolute;
@@ -58,38 +56,8 @@ body {
 }
 
 #game.inactive {
-    animation: menu_blur 0.5s linear;
+    /* animation: menu_blur 0.5s linear; */
     animation-fill-mode: forwards;
-}
-
-.entity {
-    left: 0;
-    position: absolute;
-    top: 0;
-}
-
-.player {
-    background-color: hsl(120, 20%, 50%);
-    border: 1px solid #000;
-    border-radius: 50px;
-}
-
-.pointer {
-    align-items: center;
-    display: flex;
-    font-size: 20px;
-    justify-content: center;
-}
-
-.bullet {
-    background-color: #555;
-    border-radius: 50px;
-}
-
-.enemy {
-    background-color: hsl(10, 20%, 50%);
-    border: 1px solid #000;
-    border-radius: 50px;
 }
 
 @keyframes menu_bg_color {

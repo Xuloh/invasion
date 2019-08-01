@@ -1,61 +1,70 @@
-import Component from "../ecm/Component";
-import PhysicsComponent from "./PhysicsComponent";
-import Victor from "victor";
+import * as SceneManager from "game/SceneManager";
+import {getMousePosition, isControlPressed} from "events/ControlsManager";
+import Bullet from "game/entities/Bullet";
+import Component from "game/ecm/Component";
+import PhysicsComponent from "game/components/PhysicsComponent";
+import Timeout from "util/Timeout";
+import Transform2DComponent from "game/components/Transform2DComponent";
+import {mapScreenToWorldCoordinates} from "game/Renderer";
+import {vec2} from "gl-matrix";
 
 export default class PlayerComponent extends Component {
     constructor(parent, speed, maxVelocity) {
         super(parent);
         this.speed = speed;
-        this.fireCooldown = true;
         this._maxVelocity = maxVelocity;
-        this.physicsComponent = this._parent.getComponent(PhysicsComponent);
-
-        if(this.physicsComponent == null)
-            throw new Error("PlayerComponent needs a PhysicsComponent, please add one to its parent entity");
+        this.physicsComponent = this.require(PhysicsComponent);
+        this.transform2d = this.require(Transform2DComponent);
+        this.fireCooldown = new Timeout(0.5);
     }
 
     update(dt) {
         super.update(dt);
         this.movePlayer(dt);
-        this.fire();
+        this.fire(dt);
     }
 
     movePlayer(dt) {
-        if(gameState.controlsManager.isControlPressed("up"))
-            this.physicsComponent.applyForce({x: 0, y: -this.speed * dt});
-        if(gameState.controlsManager.isControlPressed("down"))
-            this.physicsComponent.applyForce({x: 0, y: this.speed * dt});
-        if(gameState.controlsManager.isControlPressed("left"))
-            this.physicsComponent.applyForce({x: -this.speed * dt, y: 0});
-        if(gameState.controlsManager.isControlPressed("right"))
-            this.physicsComponent.applyForce({x: this.speed * dt, y: 0});
+        if(isControlPressed("up"))
+            this.physicsComponent.applyForce([0, this.speed * dt]);
+        if(isControlPressed("down"))
+            this.physicsComponent.applyForce([0, -this.speed * dt]);
+        if(isControlPressed("left"))
+            this.physicsComponent.applyForce([-this.speed * dt, 0]);
+        if(isControlPressed("right"))
+            this.physicsComponent.applyForce([this.speed * dt, 0]);
 
         const velocity = this.physicsComponent.velocity;
-        this.physicsComponent.velocity = {
-            x: Math.sign(velocity.x) * Math.min(Math.abs(velocity.x), this._maxVelocity.x),
-            y: Math.sign(velocity.y) * Math.min(Math.abs(velocity.y), this._maxVelocity.y)
-        };
+        this.physicsComponent.velocity = [
+            Math.sign(velocity[0]) * Math.min(Math.abs(velocity[0]), this._maxVelocity),
+            Math.sign(velocity[1]) * Math.min(Math.abs(velocity[1]), this._maxVelocity)
+        ];
     }
 
-    fire() {
-        if(this.fireCooldown && gameState.controlsManager.isControlPressed("fire")) {
-            const ratio = gameState.pixelToMetersRatio;
+    fire(dt) {
+        if(this.fireCooldown.update(dt) && isControlPressed("fire")) {
+            this.fireCooldown.reset();
 
-            const mousePos = Victor.fromObject(gameState.mouse.position).multiply({x: 1 / ratio, y: 1 / ratio});
-            const playerPos = this._parent.position;
-            const playerToMouse = mousePos.distance(playerPos);
+            const mousePos = mapScreenToWorldCoordinates([getMousePosition().x, getMousePosition().y]);
+            const playerPos = this.transform2d.position;
+            const playerToMouse = vec2.distance(mousePos, playerPos);
 
-            const position = {
-                x: playerPos.x + (mousePos.x - playerPos.x) * 1.5 / playerToMouse,
-                y: playerPos.y + (mousePos.y - playerPos.y) * 1.5 / playerToMouse
-            };
-            const direction = mousePos.subtract(this._parent.position).norm();
+            const position = [
+                playerPos[0] + (mousePos[0] - playerPos[0]) * 1.5 / playerToMouse,
+                playerPos[1] + (mousePos[1] - playerPos[1]) * 1.5 / playerToMouse
+            ];
 
-            const bullet = gameState.ef.makeBullet(position, direction);
+            const direction = vec2.create();
+            vec2.subtract(direction, mousePos, playerPos);
+            vec2.normalize(direction, direction);
 
-            gameState.mainScene.entities.push(bullet);
-            this.fireCooldown = false;
-            setTimeout(() => this.fireCooldown = true, 500);
+            SceneManager.message({
+                type: "spawn",
+                args: {
+                    entity: Bullet,
+                    options: [position, direction]
+                }
+            });
         }
     }
 }

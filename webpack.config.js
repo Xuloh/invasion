@@ -12,8 +12,13 @@ const loaders = {
         loader: "babel-loader",
         options: {
             presets: [
-                "@babel/preset-env",
-                "@babel/preset-react"
+                [
+                    "@babel/preset-env",
+                    {
+                        modules: false
+                    }
+                ],
+                "@babel/preset-react",
             ],
             cacheDirectory: true
         }
@@ -23,8 +28,9 @@ const loaders = {
         options: {
             cache: false,
             formatter: eslint.CLIEngine.getFormatter("unix"),
-            emitError: true,
+            emitError: false,
             emitWarning: true,
+            failOnWarning: false,
             failOnError: true
         }
     },
@@ -41,7 +47,8 @@ const loaders = {
             implementation: require("sass")
         }
     },*/
-    fileLoader: "file-loader"
+    fileLoader: "file-loader",
+    rawLoader: "raw-loader"
 };
 
 module.exports = {
@@ -55,8 +62,12 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /webgl-debug\.js/,
+                use: "exports-loader?WebGLDebugUtils"
+            },
+            {
                 test: /\.jsx?/,
-                exclude: /node_modules/,
+                exclude: /(node_modules|webgl-debug\.js)/,
                 use: [
                     loaders.babelLoader,
                     loaders.eslintLoader
@@ -68,6 +79,10 @@ module.exports = {
                     loaders.styleLoader,
                     loaders.cssLoader
                 ]
+            },
+            {
+                test: /\.glsl/,
+                use: loaders.rawLoader
             },
             /*{
                 test: /\.scss/,
@@ -85,6 +100,12 @@ module.exports = {
             }*/
         ]
     },
+    resolve: {
+        modules: [
+            path.resolve("./src"),
+            path.resolve("./node_modules")
+        ]
+    },
     plugins: [
         new HtmlWebpackPlugin({
             template: "src/index.html"
@@ -100,5 +121,9 @@ module.exports = {
     },
     performance: {
         hints: false
+    },
+    optimization: {
+        sideEffects: true,
+        usedExports: true
     }
 };

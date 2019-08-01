@@ -7,10 +7,6 @@ import Settings from "@material-ui/icons/Settings";
 import {Typography} from "@material-ui/core";
 
 export default class Menu extends React.Component {
-    startClick() {
-        gameState.start();
-    }
-
     render() {
         const display = this.props.display ? "flex" : "none";
         return (
@@ -18,7 +14,7 @@ export default class Menu extends React.Component {
                 <Typography id="title" variant="h1" gutterBottom>Invasion</Typography>
 
                 <Grid container direction="column" alignItems="center">
-                    <Button id="start" variant="contained" color="primary" size="large" onClick={() => this.startClick()}>
+                    <Button id="start" variant="contained" color="primary" size="large" onClick={() => this.props.startClick()}>
                         <PlayArrow style={{marginRight: "5px"}}/>
                         Start
                     </Button>
@@ -33,5 +29,6 @@ export default class Menu extends React.Component {
 }
 
 Menu.propTypes = {
-    display: PropTypes.bool
+    display: PropTypes.bool,
+    startClick: PropTypes.func
 };

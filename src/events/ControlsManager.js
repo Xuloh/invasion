@@ -1,41 +1,62 @@
-export default class ControlsManager {
-    constructor(eventsDispatcher) {
-        this.keys = {};
-        this.controls = {};
-        this.eventsDispatcher = eventsDispatcher;
-        this.eventsDispatcher.registerHandler("keydown keyup mousedown mouseup", event => this._handleEvents(event));
-    }
+import {registerHandler} from "events/EventsDispatcher";
 
-    setControl(control, key) {
-        this.controls[control] = key;
-    }
+const keys = {};
+const controls = {};
+const mousePosition = {x: 0, y: 0};
 
-    isKeyPressed(key) {
-        return Object.prototype.hasOwnProperty.call(this.keys, key) && this.keys[key];
-    }
+registerHandler("keydown keyup mousedown mouseup mousemove", event => handleEvents(event));
 
-    isControlPressed(control) {
-        return Object.prototype.hasOwnProperty.call(this.controls, control) && this.isKeyPressed(this.controls[control]);
-    }
+function setControl(control, key) {
+    controls[control] = key;
+}
 
-    _handleEvents(event) {
-        const keyCode = event.originalEvent.code;
-        const mouseButton = event.originalEvent.button;
-        switch(event.type) {
-            case "keydown":
-                this.keys[keyCode] = true;
-                break;
-            case "keyup":
-                this.keys[keyCode] = false;
-                break;
-            case "mousedown":
-                this.keys[`mouse${mouseButton}`] = true;
-                break;
-            case "mouseup":
-                this.keys[`mouse${mouseButton}`] = false;
-                break;
-            default:
-                break;
+function isKeyPressed(key) {
+    return Object.prototype.hasOwnProperty.call(keys, key) && keys[key];
+}
+
+function isControlPressed(control) {
+    return Object.prototype.hasOwnProperty.call(controls, control) && isKeyPressed(controls[control]);
+}
+
+function getMousePosition() {
+    return {
+        get x() {
+            return mousePosition.x;
+        },
+        get y() {
+            return mousePosition.y;
         }
+    };
+}
+
+function handleEvents(event) {
+    const keyCode = event.originalEvent.code;
+    const mouseButton = event.originalEvent.button;
+    switch(event.type) {
+        case "keydown":
+            keys[keyCode] = true;
+            break;
+        case "keyup":
+            keys[keyCode] = false;
+            break;
+        case "mousedown":
+            keys[`mouse${mouseButton}`] = true;
+            break;
+        case "mouseup":
+            keys[`mouse${mouseButton}`] = false;
+            break;
+        case "mousemove":
+            mousePosition.x = event.originalEvent.clientX;
+            mousePosition.y = event.originalEvent.clientY;
+            break;
+        default:
+            break;
     }
 }
+
+export {
+    setControl,
+    isKeyPressed,
+    isControlPressed,
+    getMousePosition
+};
