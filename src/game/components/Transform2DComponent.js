@@ -21,6 +21,14 @@ export default class Transform2DComponent extends Component {
 
         this._2dTransform = mat4.create();
         this._updateTransform();
+        this._modified = false;
+    }
+
+    update() {
+        if(this._modified) {
+            this._updateTransform();
+            this._modified = false;
+        }
     }
 
     _updateTransform() {
@@ -40,8 +48,7 @@ export default class Transform2DComponent extends Component {
 
     set position(position) {
         this._position = position;
-        this._updateTransform();
-        //mat4.translate(this._2dTransform, this._2dTransform, [this._position[0], this._position[1], 0.0]);
+        this._modified = true;
     }
 
     get rotation() {
@@ -50,8 +57,7 @@ export default class Transform2DComponent extends Component {
 
     set rotation(rotation) {
         this._rotation = rotation;
-        this._updateTransform();
-        //mat4.rotateZ(this._2dTransform, this._2dTransform, this._rotation);
+        this._modified = true;
     }
 
     get scale() {
@@ -60,8 +66,7 @@ export default class Transform2DComponent extends Component {
 
     set scale(scale) {
         this._scale = scale;
-        this._updateTransform();
-        //mat4.scale(this._2dTransform, this._2dTransform, [this._scale[0], this._scale[1], 1.0]);
+        this._modified = true;
     }
 
     get transform2d() {
