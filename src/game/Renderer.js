@@ -105,7 +105,8 @@ function resize() {
         canvas.width = width;
         canvas.height = height;
         gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
-        camera = new OrthographicCamera(canvas.clientWidth, canvas.clientHeight, pixelRatio);
+        camera.updateProjectionMatrix(canvas.clientWidth, canvas.clientHeight, pixelRatio);
+        camera.updateViewProjectionMatrix();
     }
 }
 
