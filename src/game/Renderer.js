@@ -175,6 +175,7 @@ export {
     queue,
     render,
     gl,
+    camera,
     mapWorldToScreenCoordinates,
     mapScreenToWorldCoordinates
 };
