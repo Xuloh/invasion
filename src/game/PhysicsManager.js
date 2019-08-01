@@ -1,4 +1,4 @@
-import {Engine, World} from "matter-js";
+import {Engine, Events, World} from "matter-js";
 
 let world = null;
 let engine = null;
@@ -24,6 +24,20 @@ function init(gravity) {
         velocityIterations: 4,
         world: world
     });
+
+    const collisionHandler = event => {
+        const pairs = event.pairs;
+        pairs.forEach(pair => {
+            if(Object.prototype.hasOwnProperty.call(pair.bodyA, "_physicsComponent"))
+                pair.bodyA._physicsComponent.collisionEvent(event);
+            if(Object.prototype.hasOwnProperty.call(pair.bodyB, "_physicsComponent"))
+                pair.bodyB._physicsComponent.collisionEvent(event);
+        });
+    };
+
+    Events.on(engine, "collisionStart", collisionHandler);
+    Events.on(engine, "collisionEnd", collisionHandler);
+    Events.on(engine, "collisionActive", collisionHandler);
 }
 
 function update(dt) {
