@@ -1,5 +1,7 @@
+import * as PhysicsManager from "game/PhysicsManager";
 import Component from "game/ecm/Component";
 import Entity2D from "game/entities/Entity2D";
+import HealthComponent from "game/components/HealthComponent";
 import PhysicsComponent from "game/components/PhysicsComponent";
 import Transform2DComponent from "game/components/Transform2DComponent";
 import {vec2} from "gl-matrix";
@@ -13,7 +15,9 @@ export default class EnemyComponent extends Component {
         this.speed = speed;
         this._maxVelocity = maxVelocity;
         this.physicsComponent = this.require(PhysicsComponent);
+        this.physicsComponent.onCollision(event => this.onCollision(event));
         this.transform2d = this.require(Transform2DComponent);
+        this.HealthComponent = this.require(HealthComponent);
     }
 
     update(dt) {
@@ -32,5 +36,10 @@ export default class EnemyComponent extends Component {
             Math.sign(velocity[0]) * Math.min(Math.abs(velocity[0]), this._maxVelocity),
             Math.sign(velocity[1]) * Math.min(Math.abs(velocity[1]), this._maxVelocity)
         ];
+    }
+
+    onCollision(event) {
+        if(event.other.collisionFilter.category === PhysicsManager.getCollisionFilter("bullet").category)
+            this.HealthComponent.health--;
     }
 }
