@@ -25,6 +25,6 @@ export default class PointerComponent extends Component {
             playerPos[1] + (mousePos[1] - playerPos[1]) * this.distanceToPlayer / playerToMouse
         ];
         vec2.subtract(mousePos, mousePos, playerPos);
-        this.transform2d.rotation = vec2.angle(mousePos, [1, 0]);
+        this.transform2d.rotation = vec2.angle(mousePos, [1, 0]) * Math.sign(mousePos[1]);
     }
 }
