@@ -71,7 +71,6 @@ function createBackground() {
             ]
         }
     });
-    console.log(bgBufferInfos);
 }
 /* eslint-enable array-element-newline */
 

@@ -12,7 +12,6 @@ export default class ShaderManager {
         this.gl = webGLContext;
         this.programs = {};
         this.init();
-        console.log(this.programs);
     }
 
     init() {
