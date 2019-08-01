@@ -30,12 +30,11 @@ export default class BulletComponent extends Component {
         if(this.timeout.update(dt))
             this._parent.setForDeletion();
         else {
-            const force = vec2.create();
-            vec2.copy(force, this.direction);
-            vec2.multiply(force, force, [this.speed, this.speed]);
-            vec2.multiply(force, force, [dt, dt]);
+            const velocity = vec2.create();
+            vec2.copy(velocity, this.direction);
+            vec2.multiply(velocity, velocity, [this.speed, this.speed]);
 
-            this.physicsComponent.applyForce(force);
+            this.physicsComponent.velocity = velocity;
         }
     }
 }
