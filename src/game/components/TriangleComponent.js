@@ -15,13 +15,6 @@ export default class TriangleComponent extends Component {
         this.color = color;
         this.radius = radius;
 
-        this.vertices = [
-            -0.5, 0.87,
-            0.0, 0.0,
-            0.5, 0.87
-        ];
-        this.color = [0.0, 0.0, 0.0, 1.0];
-
         this._createVerticesAndBuffer();
     }
 
