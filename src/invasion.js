@@ -15,7 +15,7 @@ import setupFontAwesomeLibrary from "font-awesome-library";
 
 let $container = null;
 let disableEnemies = false;
-let mainRafToken = null;
+let mainRafToken = null; // eslint-disable-line
 let pause = true;
 
 // this function is provided by the UI component when it is created

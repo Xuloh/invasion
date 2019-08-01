@@ -128,6 +128,7 @@ function render() {
             uPosition: [...camera.position, 0.0, 1.0]
         }
     });
+
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     if(options.debug) console.groupCollapsed("webgl render"); // eslint-disable-line
