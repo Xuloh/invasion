@@ -28,10 +28,20 @@ function init(gravity) {
     const collisionHandler = event => {
         const pairs = event.pairs;
         pairs.forEach(pair => {
-            if(Object.prototype.hasOwnProperty.call(pair.bodyA, "_physicsComponent"))
-                pair.bodyA._physicsComponent.collisionEvent(event);
-            if(Object.prototype.hasOwnProperty.call(pair.bodyB, "_physicsComponent"))
-                pair.bodyB._physicsComponent.collisionEvent(event);
+            if(Object.prototype.hasOwnProperty.call(pair.bodyA, "_physicsComponent")) {
+                pair.bodyA._physicsComponent.collisionEvent({
+                    name: event.name,
+                    self: pair.bodyA,
+                    other: pair.bodyB
+                });
+            }
+            if(Object.prototype.hasOwnProperty.call(pair.bodyB, "_physicsComponent")) {
+                pair.bodyB._physicsComponent.collisionEvent({
+                    name: event.name,
+                    self: pair.bodyB,
+                    other: pair.bodyA
+                });
+            }
         });
     };
 
