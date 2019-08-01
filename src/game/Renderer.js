@@ -123,7 +123,7 @@ function render() {
             uBgColor: [1.0, 1.0, 1.0, 1.0],
             uGridColor: [0.8, 0.94, 1.0, 1.0],
             uInterval: 2.0,
-            uLineWidth: 0.05,
+            uLineWidth: 0.1,
             uInvViewProjection: camera.invViewProjectionMatrix
         }
     });
