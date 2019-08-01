@@ -122,8 +122,10 @@ function render() {
         uniforms: {
             uBgColor: [1.0, 1.0, 1.0, 1.0],
             uGridColor: [0.8, 0.94, 1.0, 1.0],
-            uInterval: 30.0,
-            uLineWidth: 1.0
+            uInterval: 2.0,
+            uLineWidth: 0.05,
+            uInvViewProjection: camera.invViewProjectionMatrix,
+            uPosition: [...camera.position, 0.0, 1.0]
         }
     });
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
