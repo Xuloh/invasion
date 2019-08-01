@@ -10,12 +10,12 @@ export default class OrthographicCamera {
         this.viewProjectionMatrix = mat4.create();
         this.invViewProjectionMatrix = mat4.create();
 
-        this.createProjectionMatrix(width, height, pixelRatio);
-        this.createViewMatrix();
-        this.createViewProjectionMatrix();
+        this.updateProjectionMatrix(width, height, pixelRatio);
+        this.updateViewMatrix();
+        this.updateViewProjectionMatrix();
     }
 
-    createProjectionMatrix(width, height, pixelRatio) {
+    updateProjectionMatrix(width, height, pixelRatio) {
         // create projection matrix
         width = width * 1 / pixelRatio;
         height = height * 1 / pixelRatio;
@@ -31,11 +31,11 @@ export default class OrthographicCamera {
         );
     }
 
-    createViewMatrix() {
+    updateViewMatrix() {
         mat4.invert(this.viewMatrix, this.cameraMatrix);
     }
 
-    createViewProjectionMatrix() {
+    updateViewProjectionMatrix() {
         mat4.multiply(this.viewProjectionMatrix, this.projectionMatrix, this.viewMatrix);
         mat4.invert(this.invViewProjectionMatrix, this.viewProjectionMatrix);
     }
@@ -43,7 +43,8 @@ export default class OrthographicCamera {
     set position(position) {
         this.cameraMatrix[12] = position[0];
         this.cameraMatrix[13] = position[1];
-        this.createViewMatrix();
+        this.updateViewMatrix();
+        this.updateViewProjectionMatrix();
     }
 
     get position() {
