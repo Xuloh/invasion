@@ -1,5 +1,5 @@
+import {createBufferInfoFromArrays, setAttributes, setUniforms} from "util/WebGLUtils";
 import {mat4, vec2, vec3} from "gl-matrix";
-import {setAttributes, setUniforms} from "util/WebGLUtils";
 import Color from "color";
 import ShaderManager from "game/ShaderManager";
 import WebGLDebugUtils from "util/webgl-debug";
@@ -13,6 +13,8 @@ let invProjectionMatrix = null;
 let renderQueue = [];
 
 const pixelRatio = 50;
+
+let bgBufferInfos = null;
 
 function init(canvasId, opts) {
     // get canvas
@@ -43,6 +45,7 @@ function init(canvasId, opts) {
     shaderManager = new ShaderManager(gl);
 
     createProjection();
+    createBackground();
 
     // init some webgl stuff
     if(opts.debug) console.groupCollapsed("webgl init"); // eslint-disable-line
@@ -52,6 +55,25 @@ function init(canvasId, opts) {
     gl.depthFunc(gl.LEQUAL);
     if(opts.debug) console.groupEnd("webgl init"); // eslint-disable-line
 }
+
+/* eslint-disable array-element-newline */
+function createBackground() {
+    bgBufferInfos = createBufferInfoFromArrays(gl, {
+        position: {
+            nbComponents: 2,
+            data: [
+                -1.0, 1.0,
+                1.0, 1.0,
+                1.0, -1.0,
+                -1.0, 1.0,
+                1.0, -1.0,
+                -1.0, -1.0
+            ]
+        }
+    });
+    console.log(bgBufferInfos);
+}
+/* eslint-enable array-element-newline */
 
 function handleOptions(opts) {
     if(opts != null && typeof opts !== "object")
@@ -113,6 +135,17 @@ function queue(params) {
 }
 
 function render() {
+    queue({
+        mode: gl.TRIANGLES,
+        program: "grid",
+        bufferInfos: bgBufferInfos,
+        uniforms: {
+            uBgColor: [1.0, 1.0, 1.0, 1.0],
+            uGridColor: [0.8, 0.94, 1.0, 1.0],
+            uInterval: 30.0,
+            uLineWidth: 1.0
+        }
+    });
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
     if(options.debug) console.groupCollapsed("webgl render"); // eslint-disable-line
@@ -122,9 +155,11 @@ function render() {
         const programInfos = shaderManager.programs[params.program];
         gl.useProgram(programInfos.program);
 
-        const transformMatrix = mat4.create();
-        mat4.multiply(transformMatrix, projectionMatrix, params.transformMatrix);
-        params.uniforms.uTransformMatrix = transformMatrix;
+        if(params.transformMatrix) {
+            const transformMatrix = mat4.create();
+            mat4.multiply(transformMatrix, projectionMatrix, params.transformMatrix);
+            params.uniforms.uTransformMatrix = transformMatrix;
+        }
 
         setUniforms(programInfos, params.uniforms);
         setAttributes(programInfos, params.bufferInfos.attribs);
