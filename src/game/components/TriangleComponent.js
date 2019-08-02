@@ -1,4 +1,4 @@
-/* eslint-disable array-element-newline */
+/* eslint-disable array-element-newline, no-loops/no-loops */
 import * as Renderer from "game/Renderer";
 import Component from "game/ecm/Component";
 import Transform2DComponent from "game/components/Transform2DComponent";
