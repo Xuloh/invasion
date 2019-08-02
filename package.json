@@ -5,8 +5,10 @@
   "main": "src/invasion.js",
   "scripts": {
     "watch": "webpack-dev-server -d --hot --host 0.0.0.0",
-    "build": "webpack -p",
-    "build-dev": "webpack -d"
+    "build-v": "webpack -p --color --progress",
+    "build-v": "webpack -p --color --progress --verbose",
+    "build-dev-v": "webpack -d --color --progress",
+    "build-dev-v": "webpack -d --color --progress --verbose"
   },
   "repository": {
     "type": "git",
