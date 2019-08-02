@@ -38,17 +38,7 @@ export default class PhysicsComponent extends Component {
     }
 
     collisionEvent(event) {
-        switch(event.name) {
-            case "collisionStart":
-                this.collisionHandlers.forEach(h => h(event));
-                break;
-            case "collisionEnd":
-                break;
-            case "collisionActive":
-                break;
-            default:
-                break;
-        }
+        this.collisionHandlers.forEach(h => h(event));
     }
 
     get velocity() {

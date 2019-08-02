@@ -73,7 +73,8 @@ export default class PlayerComponent extends Component {
     }
 
     onCollision(event) {
-        if(event.other.collisionFilter.category === PhysicsManager.getCollisionFilter("enemy").category)
-            this.healthComponent.health--;
+        if(event.name === "collisionStart")
+            if(event.other.collisionFilter.category === PhysicsManager.getCollisionFilter("enemy").category)
+                this.healthComponent.health--;
     }
 }
