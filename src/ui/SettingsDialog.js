@@ -17,6 +17,11 @@ export default class SettingsDialog extends React.Component {
         this.state = Settings.get();
     }
 
+    defaultClick() {
+        Settings.reset();
+        this.setState(Settings.get());
+    }
+
     cancelClick() {
         this.props.onClose();
     }
@@ -54,6 +59,9 @@ export default class SettingsDialog extends React.Component {
                     </FormGroup>
                 </DialogContent>
                 <DialogActions>
+                    <Button onClick={() => this.defaultClick()}>
+                        Reset defaults
+                    </Button>
                     <Button color="primary" onClick={() => this.cancelClick()}>
                         Cancel
                     </Button>
