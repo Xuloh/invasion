@@ -73,9 +73,7 @@ export default class HealthComponent extends Component {
             const baseHeight = 2;
             const interval = width / this._maxHealth;
             this.vertices = [];
-            console.log(interval);
             for(let i = 0; i < width; i += interval) {
-                console.log(i);
                 this.vertices.push(i - width / 2);
                 this.vertices.push(baseHeight + height);
                 this.vertices.push(i - width / 2);
@@ -100,7 +98,5 @@ export default class HealthComponent extends Component {
                 vertices: this.vertices
             };
         }
-
-        console.log(this.vertices);
     }
 }
