@@ -1,6 +1,8 @@
-const settings = {
+const defaultSettings = {
     showGrid: true
 };
+
+const settings = {};
 
 const SETTINGS_PREFIX = "invasion.";
 
@@ -32,10 +34,12 @@ const localStorageAvailable = (function() {
 
 function init() {
     if(localStorageAvailable) {
-        Object.keys(settings)
+        Object.keys(defaultSettings)
             .filter(k => localStorage.getItem(SETTINGS_PREFIX + k) == null)
-            .forEach(k => localStorage.setItem(SETTINGS_PREFIX + k, settings[k]));
+            .forEach(k => localStorage.setItem(SETTINGS_PREFIX + k, defaultSettings[k]));
     }
+    else
+        Object.keys(defaultSettings).forEach(k => settings[k] = defaultSettings[k]);
 }
 
 function set(k, v) {
@@ -44,7 +48,7 @@ function set(k, v) {
             Object.keys(k).forEach(key => set(key, k[key]));
             break;
         case "string":
-            if(!Object.prototype.hasOwnProperty.call(settings, k))
+            if(!Object.prototype.hasOwnProperty.call(defaultSettings, k))
                 throw new Error(`Attempted to set unknown setting '${k}' with value '${v}'`);
             if(localStorageAvailable)
                 localStorage.setItem(SETTINGS_PREFIX + k, v);
@@ -91,6 +95,13 @@ function get(k) {
     return value;
 }
 
+function reset() {
+    if(localStorageAvailable)
+        Object.keys(defaultSettings).forEach(k => localStorage.setItem(SETTINGS_PREFIX + k, defaultSettings[k]));
+    else
+        Object.keys(defaultSettings).forEach(k => settings[k] = defaultSettings[k]);
+}
+
 window.getSetting = get;
 window.setSetting = set;
 
@@ -98,5 +109,6 @@ export {
     init,
     get,
     set,
+    reset,
     localStorageAvailable
 };
