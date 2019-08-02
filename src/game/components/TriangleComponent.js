@@ -37,16 +37,11 @@ export default class TriangleComponent extends Component {
             this.vertices = geometryBuffers[key].vertices;
         }
         else {
-            const angle = 2 * Math.PI / 3;
-            const x = Math.cos(angle);
-            const y = Math.sin(angle);
-            this.vertices = [
-                1.0, 0.0,
-                x, y,
-                x, -y
-            ];
-            if(this.radius !== 1)
-                this.vertices = this.vertices.map(v => v * this.radius / 2 * y);
+            this.vertices = [];
+            for(let i = 1; i <= 3; i++) {
+                this.vertices.push(this.radius * Math.cos(2 * i * Math.PI / 3));
+                this.vertices.push(this.radius * Math.sin(2 * i * Math.PI / 3));
+            }
 
             this.bufferInfos = createBufferInfoFromArrays(Renderer.gl, {
                 vertexPosition: {nbComponents: 2, data: this.vertices}

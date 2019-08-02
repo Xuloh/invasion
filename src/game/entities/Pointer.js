@@ -6,6 +6,6 @@ export default class Pointer extends Entity2D {
     constructor(player) {
         super([0.0, 0.0], 0.0, 1.0, "Pointer");
         this.addComponent(PointerComponent, player, 1.5);
-        this.addComponent(TriangleComponent, [0.0, 0.0, 0.0, 1.0], 0.3);
+        this.addComponent(TriangleComponent, [0.0, 0.0, 0.0, 1.0], 0.15);
     }
 }
