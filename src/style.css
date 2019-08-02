@@ -15,23 +15,14 @@ body {
 }
 
 #menu {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-
     background-color: rgba(255, 255, 255, 0.5);
     animation: menu_bg_color 0.7s linear;
     animation-fill-mode: forwards;
 
     height: 100%;
-    padding-top: 20vh;
     position: absolute;
     width: 100%;
     z-index: 100;
-}
-
-#menu > * {
-    margin-bottom: 0.35em;
 }
 
 #title {

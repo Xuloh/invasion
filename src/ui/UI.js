@@ -40,6 +40,7 @@ export default class UI extends React.Component {
         );
     }
 }
+
 UI.propTypes = {
     performAction: PropTypes.func,
     handleAction: PropTypes.func
