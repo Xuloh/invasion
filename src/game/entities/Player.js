@@ -12,6 +12,6 @@ export default class Player extends Entity2D {
         this.addComponent(PolygonComponent, 30, [0.4, 0.6, 0.4, 1.0], 1);
         this.addComponent(PlayerComponent, 1, 3);
         this.addComponent(CameraFollowComponent);
-        this.addComponent(HealthComponent, 3, false);
+        this.addComponent(HealthComponent, 3, true);
     }
 }

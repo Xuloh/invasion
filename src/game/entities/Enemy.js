@@ -8,7 +8,7 @@ export default class Enemy extends Entity2D {
     constructor(position, player) {
         super(position, 0.0, 1.0, "Enemy");
         this.addComponent(PhysicsComponent, 1, "enemy");
-        this.addComponent(HealthComponent, 1, false);
+        this.addComponent(HealthComponent, 2, true);
         this.addComponent(EnemyComponent, player, 0.7, 2.5);
         this.addComponent(PolygonComponent, 30, [0.65, 0.4, 0.35, 1.0], 1);
     }
