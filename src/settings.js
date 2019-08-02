@@ -86,6 +86,8 @@ function get(k) {
         return true;
     if(value === "false")
         return false;
+    if(!isNaN(value)) // if value is a string representing a number
+        return +value; // transform string into corresponding number
     return value;
 }
 
