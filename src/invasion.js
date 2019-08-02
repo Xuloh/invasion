@@ -11,7 +11,6 @@ import ReactDOM from "react-dom";
 import UI from "ui/UI";
 import {registerHandler} from "events/EventsDispatcher";
 import {setControl} from "events/ControlsManager";
-import setupFontAwesomeLibrary from "font-awesome-library";
 
 let $container = null;
 let mainRafToken = null; // eslint-disable-line
@@ -95,7 +94,6 @@ window.onload = () => {
     Settings.init();
 
     $container = document.getElementById("game");
-    setupFontAwesomeLibrary();
     registerControls();
     registerHandlers();
     addCollisionCategories();
