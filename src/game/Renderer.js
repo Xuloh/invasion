@@ -148,7 +148,7 @@ function render() {
         setUniforms(programInfos, params.uniforms);
         setAttributes(programInfos, params.bufferInfos.attribs);
 
-        gl.drawArrays(params.mode, 0, params.bufferInfos.nbElements);
+        gl.drawArrays(params.mode, params.offset || 0, params.bufferInfos.nbElements);
 
         if(options.debug) console.groupEnd("render " + idx); // eslint-disable-line
     });
