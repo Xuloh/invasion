@@ -14,6 +14,7 @@ export default class EnemyComponent extends Component {
         this.player = player.getComponent(Transform2DComponent);
         this.speed = speed;
         this._maxVelocity = maxVelocity;
+        this.touchingPlayer = false;
         this.physicsComponent = this.require(PhysicsComponent);
         this.transform2d = this.require(Transform2DComponent);
         this.healthComponent = this.require(HealthComponent);
@@ -23,23 +24,37 @@ export default class EnemyComponent extends Component {
     update(dt) {
         super.update(dt);
 
-        const force = vec2.fromValues(this.player.position[0], this.player.position[1]);
-        vec2.subtract(force, force, this.transform2d.position);
-        vec2.normalize(force, force);
-        vec2.multiply(force, force, [this.speed, this.speed]);
-        vec2.multiply(force, force, [dt, dt]);
+        if(!this.touchingPlayer) {
+            const force = vec2.fromValues(this.player.position[0], this.player.position[1]);
+            vec2.subtract(force, force, this.transform2d.position);
+            vec2.normalize(force, force);
+            vec2.multiply(force, force, [this.speed, this.speed]);
+            vec2.multiply(force, force, [dt, dt]);
 
-        this.physicsComponent.applyForce(force);
+            this.physicsComponent.applyForce(force);
 
-        const velocity = this.physicsComponent.velocity;
-        this.physicsComponent.velocity = [
-            Math.sign(velocity[0]) * Math.min(Math.abs(velocity[0]), this._maxVelocity),
-            Math.sign(velocity[1]) * Math.min(Math.abs(velocity[1]), this._maxVelocity)
-        ];
+            const velocity = this.physicsComponent.velocity;
+            this.physicsComponent.velocity = [
+                Math.sign(velocity[0]) * Math.min(Math.abs(velocity[0]), this._maxVelocity),
+                Math.sign(velocity[1]) * Math.min(Math.abs(velocity[1]), this._maxVelocity)
+            ];
+        }
     }
 
     onCollision(event) {
-        if(event.other.collisionFilter.category === PhysicsManager.getCollisionFilter("bullet").category)
-            this.healthComponent.health--;
+        if(event.name === "collisionStart") {
+            switch(event.other.collisionFilter.category) {
+                case PhysicsManager.getCollisionFilter("bullet").category:
+                    this.healthComponent.health--;
+                    break;
+                case PhysicsManager.getCollisionFilter("player").category:
+                    this.touchingPlayer = true;
+                    break;
+                default:
+                    break;
+            }
+        }
+        else if(event.name === "collisionEnd")
+            this.touchingPlayer = false;
     }
 }
