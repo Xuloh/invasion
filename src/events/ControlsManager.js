@@ -30,8 +30,8 @@ function getMousePosition() {
 }
 
 function handleEvents(event) {
-    const keyCode = event.originalEvent.code;
-    const mouseButton = event.originalEvent.button;
+    const keyCode = event.code;
+    const mouseButton = event.button;
     switch(event.type) {
         case "keydown":
             keys[keyCode] = true;
@@ -46,8 +46,8 @@ function handleEvents(event) {
             keys[`mouse${mouseButton}`] = false;
             break;
         case "mousemove":
-            mousePosition.x = event.originalEvent.clientX;
-            mousePosition.y = event.originalEvent.clientY;
+            mousePosition.x = event.clientX;
+            mousePosition.y = event.clientY;
             break;
         default:
             break;

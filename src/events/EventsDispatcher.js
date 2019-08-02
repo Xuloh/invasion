@@ -1,12 +1,10 @@
-import $ from "jquery";
-
 const handlers = {"*": []};
 const supportedEvents = ["keydown", "keyup", "mousedown", "mouseup", "mousemove"];
 let eventsDisabled = false;
 
 supportedEvents.forEach(event => {
     handlers[event] = [];
-    window.addEventListener(event, e => handleEvents($.Event(e)), true);
+    window.addEventListener(event, e => handleEvents(e), true);
 });
 
 function registerHandler(events, handler, options) {
@@ -52,14 +50,14 @@ function handleEvents(event) {
                     case "keydown":
                     case "keyup": {
                         const keys = h.options.keys || [];
-                        if(keys.length === 0 || keys.includes(event.originalEvent.code))
+                        if(keys.length === 0 || keys.includes(event.code))
                             h.handler(event);
                         break;
                     }
                     case "mousedown":
                     case "mouseup": {
                         const buttons = h.options.buttons || [];
-                        if(buttons.length === 0 || buttons.includes(event.originalEvent.button))
+                        if(buttons.length === 0 || buttons.includes(event.button))
                             h.handler(event);
                         break;
                     }

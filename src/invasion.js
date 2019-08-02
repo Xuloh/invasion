@@ -5,7 +5,6 @@ import * as Renderer from "game/Renderer";
 import * as SceneManager from "game/SceneManager";
 import * as Settings from "settings";
 import * as TimeManager from "game/TimeManager";
-import $ from "jquery";
 import MainScene from "game/MainScene";
 import React from "react";
 import ReactDOM from "react-dom";
@@ -15,7 +14,6 @@ import {setControl} from "events/ControlsManager";
 import setupFontAwesomeLibrary from "font-awesome-library";
 
 let $container = null;
-let disableEnemies = false;
 let mainRafToken = null; // eslint-disable-line
 let pause = true;
 
@@ -28,7 +26,7 @@ function handleUIAction(action, args) {
     switch(action) {
         case "startClick":
             performUIAction("toggleMenu", {display: false});
-            $container.removeClass("inactive");
+            $container.classList.remove("inactive");
             pause = false;
             break;
         default:
@@ -50,13 +48,6 @@ function registerHandlers() {
     registerHandler("keyup", openMenu, {
         keys: ["Escape"]
     });
-
-    registerHandler("keyup", event => {
-        if(event.originalEvent.shiftKey)
-            disableEnemies = !disableEnemies;
-    }, {
-        keys: ["KeyQ"]
-    });
 }
 
 function addCollisionCategories() {
@@ -71,7 +62,7 @@ function addCollisionCategories() {
 
 function openMenu() {
     performUIAction("toggleMenu", {display: true});
-    $container.addClass("inactive");
+    $container.classList.add("inactive");
     pause = true;
 }
 
@@ -95,7 +86,7 @@ function main() {
     }
 }
 
-$(() => {
+window.onload = () => {
     PhysicsManager.init({x: 0, y: 0});
     Renderer.init("game", {
         clearColor: "#fff",
@@ -103,7 +94,7 @@ $(() => {
     });
     Settings.init();
 
-    $container = $("#game");
+    $container = document.getElementById("game");
     setupFontAwesomeLibrary();
     registerControls();
     registerHandlers();
@@ -122,4 +113,4 @@ $(() => {
         />,
         document.getElementById("ui")
     );
-});
+};
