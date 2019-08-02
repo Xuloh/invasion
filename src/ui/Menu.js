@@ -18,7 +18,15 @@ export default class Menu extends React.Component {
     render() {
         const display = this.props.display ? "flex" : "none";
         return (
-            <Grid id="menu" container direction="column" alignItems="center" justify="center" spacing={10} style={{display: display}}>
+            <Grid
+                id="menu"
+                container
+                direction="column"
+                alignItems="center"
+                justify="center"
+                spacing={10}
+                style={{display: display, margin: 0}}
+            >
                 <Grid item>
                     <Typography id="title" variant="h1">Invasion</Typography>
                 </Grid>
