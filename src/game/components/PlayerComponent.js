@@ -1,7 +1,9 @@
+import * as PhysicsManager from "game/PhysicsManager";
 import * as SceneManager from "game/SceneManager";
 import {getMousePosition, isControlPressed} from "events/ControlsManager";
 import Bullet from "game/entities/Bullet";
 import Component from "game/ecm/Component";
+import HealthComponent from "game/components/HealthComponent";
 import PhysicsComponent from "game/components/PhysicsComponent";
 import Timeout from "util/Timeout";
 import Transform2DComponent from "game/components/Transform2DComponent";
@@ -15,6 +17,8 @@ export default class PlayerComponent extends Component {
         this._maxVelocity = maxVelocity;
         this.physicsComponent = this.require(PhysicsComponent);
         this.transform2d = this.require(Transform2DComponent);
+        this.healthComponent = this.require(HealthComponent);
+        this.physicsComponent.onCollision(event => this.onCollision(event));
         this.fireCooldown = new Timeout(0.5);
     }
 
@@ -66,5 +70,10 @@ export default class PlayerComponent extends Component {
                 }
             });
         }
+    }
+
+    onCollision(event) {
+        if(event.other.collisionFilter.category === PhysicsManager.getCollisionFilter("enemy").category)
+            this.healthComponent.health--;
     }
 }
