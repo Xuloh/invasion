@@ -31,17 +31,14 @@ export default class HealthComponent extends Component {
             transform[0] = 1;
             transform[1] = 0;
             transform[2] = 0;
-            transform[3] = 0;
 
             transform[4] = 0;
             transform[5] = 1;
             transform[6] = 0;
-            transform[7] = 0;
 
             transform[8] = 0;
             transform[9] = 0;
             transform[10] = 1;
-            transform[11] = 0;
 
             Renderer.queue({
                 mode: Renderer.gl.TRIANGLES,
@@ -86,7 +83,7 @@ export default class HealthComponent extends Component {
             this.vertices = geometryBuffers[key].vertices;
         }
         else {
-            const height = 0.5;
+            const height = 0.2;
             const width = 3;
             const baseHeight = 2;
             const interval = width / this._maxHealth;
