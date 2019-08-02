@@ -1,3 +1,4 @@
+import * as Settings from "settings";
 import {createBufferInfoFromArrays, setAttributes, setUniforms} from "util/WebGLUtils";
 import {mat4, vec2, vec3} from "gl-matrix";
 import Color from "color";
@@ -114,18 +115,20 @@ function queue(params) {
 }
 
 function render() {
-    queue({
-        mode: gl.TRIANGLES,
-        program: "grid",
-        bufferInfos: bgBufferInfos,
-        uniforms: {
-            uBgColor: [1.0, 1.0, 1.0, 1.0],
-            uGridColor: [0.8, 0.94, 1.0, 1.0],
-            uInterval: 2.0,
-            uLineWidth: 0.1,
-            uInvViewProjection: camera.invViewProjectionMatrix
-        }
-    });
+    if(Settings.get("showGrid")) {
+        queue({
+            mode: gl.TRIANGLES,
+            program: "grid",
+            bufferInfos: bgBufferInfos,
+            uniforms: {
+                uBgColor: [1.0, 1.0, 1.0, 1.0],
+                uGridColor: [0.8, 0.94, 1.0, 1.0],
+                uInterval: 2.0,
+                uLineWidth: 0.1,
+                uInvViewProjection: camera.invViewProjectionMatrix
+            }
+        });
+    }
 
     gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 

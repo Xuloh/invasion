@@ -1,4 +1,4 @@
-import * as settings from "settings";
+import * as Settings from "settings";
 import Button from "@material-ui/core/Button";
 import Checkbox from "@material-ui/core/Checkbox";
 import Dialog from "@material-ui/core/Dialog";
@@ -14,7 +14,7 @@ import React from "react";
 export default class SettingsDialog extends React.Component {
     constructor(props) {
         super(props);
-        this.state = settings.get();
+        this.state = Settings.get();
     }
 
     cancelClick() {
@@ -23,7 +23,7 @@ export default class SettingsDialog extends React.Component {
 
     saveClick() {
         this.props.onClose();
-        settings.set(this.state);
+        Settings.set(this.state);
     }
 
     change(key, value) {
