@@ -3,6 +3,7 @@ import * as Renderer from "game/Renderer";
 import Component from "game/ecm/Component";
 import Transform2DComponent from "game/components/Transform2DComponent";
 import {createBufferInfoFromArrays} from "util/WebGLUtils";
+import {mat4} from "gl-matrix";
 
 const geometryBuffers = {};
 
@@ -25,6 +26,23 @@ export default class HealthComponent extends Component {
 
     render() {
         if(this._displayHealthBar) {
+            const transform = mat4.create();
+            mat4.copy(transform, this.transform2d.transform2d);
+            transform[0] = 1;
+            transform[1] = 0;
+            transform[2] = 0;
+            transform[3] = 0;
+
+            transform[4] = 0;
+            transform[5] = 1;
+            transform[6] = 0;
+            transform[7] = 0;
+
+            transform[8] = 0;
+            transform[9] = 0;
+            transform[10] = 1;
+            transform[11] = 0;
+
             Renderer.queue({
                 mode: Renderer.gl.TRIANGLES,
                 program: "flatColor",
@@ -35,7 +53,7 @@ export default class HealthComponent extends Component {
                 uniforms: {
                     uColor: [0.0, 1.0, 0.0, 1.0]
                 },
-                transformMatrix: this.transform2d.transform2d
+                transformMatrix: transform
             });
             Renderer.queue({
                 mode: Renderer.gl.TRIANGLES,
@@ -47,7 +65,7 @@ export default class HealthComponent extends Component {
                 uniforms: {
                     uColor: [0.0, 0.0, 0.0, 1.0]
                 },
-                transformMatrix: this.transform2d.transform2d,
+                transformMatrix: transform,
                 offset: 6 * this._health
             });
         }
