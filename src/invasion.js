@@ -3,6 +3,7 @@ import "./style.css";
 import * as PhysicsManager from "game/PhysicsManager";
 import * as Renderer from "game/Renderer";
 import * as SceneManager from "game/SceneManager";
+import * as Settings from "settings";
 import * as TimeManager from "game/TimeManager";
 import $ from "jquery";
 import MainScene from "game/MainScene";
@@ -100,6 +101,7 @@ $(() => {
         clearColor: "#fff",
         debug: false
     });
+    Settings.init();
 
     $container = $("#game");
     setupFontAwesomeLibrary();
