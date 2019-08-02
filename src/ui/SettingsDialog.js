@@ -41,7 +41,16 @@ export default class SettingsDialog extends React.Component {
                 </DialogTitle>
                 <DialogContent>
                     <FormGroup>
-                        <FormControlLabel control={<Checkbox checked={this.state.showGrid} onChange={(e, v) => this.change("showGrid", v)} color="secondary"/>} label="Show grid"/>
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={this.state.showGrid}
+                                    onChange={(e, v) => this.change("showGrid", v)}
+                                    color="secondary"
+                                />
+                            }
+                            label="Show grid"
+                        />
                     </FormGroup>
                 </DialogContent>
                 <DialogActions>
