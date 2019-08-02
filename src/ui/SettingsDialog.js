@@ -66,6 +66,26 @@ export default class SettingsDialog extends React.Component {
                             }
                             label="Show grid"
                         />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={this.state.displayPlayerHP}
+                                    onChange={(e, v) => this.change("displayPlayerHP", v)}
+                                    color="secondary"
+                                />
+                            }
+                            label="Display player health bar"
+                        />
+                        <FormControlLabel
+                            control={
+                                <Checkbox
+                                    checked={this.state.displayEnemyHP}
+                                    onChange={(e, v) => this.change("displayEnemyHP", v)}
+                                    color="secondary"
+                                />
+                            }
+                            label="Display enemy health bars"
+                        />
                     </FormGroup>
                 </DialogContent>
                 <DialogActions>

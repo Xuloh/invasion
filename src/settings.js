@@ -1,5 +1,7 @@
 const defaultSettings = {
-    showGrid: true
+    showGrid: true,
+    displayEnemyHP: true,
+    displayPlayerHP: true
 };
 
 const settings = {};

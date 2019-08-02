@@ -1,3 +1,4 @@
+import * as Settings from "settings";
 import CameraFollowComponent from "game/components/CameraFollowComponent";
 import Entity2D from "game/entities/Entity2D";
 import HealthComponent from "game/components/HealthComponent";
@@ -12,6 +13,6 @@ export default class Player extends Entity2D {
         this.addComponent(PolygonComponent, 30, [0.4, 0.6, 0.4, 1.0], 1);
         this.addComponent(PlayerComponent, 1, 3);
         this.addComponent(CameraFollowComponent);
-        this.addComponent(HealthComponent, 3, true);
+        this.addComponent(HealthComponent, 3, Settings.get("displayPlayerHP"));
     }
 }
