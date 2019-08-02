@@ -7,7 +7,7 @@ export default class Bullet extends Entity2D {
     constructor(position, direction) {
         super(position, 0.0, 1.0, "Bullet");
         this.addComponent(PhysicsComponent, 0.2, "bullet");
-        this.addComponent(PolygonComponent, 10, null, 0.2);
+        this.addComponent(PolygonComponent, 10, null, 0.15);
         this.addComponent(BulletComponent, direction, 1);
     }
 }
