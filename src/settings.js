@@ -102,9 +102,6 @@ function reset() {
         Object.keys(defaultSettings).forEach(k => settings[k] = defaultSettings[k]);
 }
 
-window.getSetting = get;
-window.setSetting = set;
-
 export {
     init,
     get,
