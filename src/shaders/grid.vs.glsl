@@ -14,6 +14,7 @@ varying vec4 vWorldPos;
 
 void main() {
     gl_Position = aPosition;
+    gl_Position.z = 1.0;
     vGridColor = uGridColor;
     vBgColor = uBgColor;
     vLineWidth = uLineWidth;
