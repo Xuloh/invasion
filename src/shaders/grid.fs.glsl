@@ -1,14 +1,17 @@
+#version 300 es
 precision mediump float;
 
-varying vec4 vGridColor;
-varying vec4 vBgColor;
-varying float vLineWidth;
-varying float vInterval;
-varying vec4 vWorldPos;
+in vec4 vGridColor;
+in vec4 vBgColor;
+in float vLineWidth;
+in float vInterval;
+in vec4 vWorldPos;
+
+out vec4 fragColor;
 
 void main() {
     if((mod(vWorldPos.x, vInterval) < vLineWidth) || (mod(vWorldPos.y, vInterval) < vLineWidth))
-        gl_FragColor = vGridColor;
+        fragColor = vGridColor;
     else
-        gl_FragColor = vBgColor;
+        fragColor = vBgColor;
 }

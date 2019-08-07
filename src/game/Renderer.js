@@ -27,7 +27,7 @@ function init(canvasId, opts) {
     if(canvas.getContext == null)
         throw new Error("Canvas API not supported on this browser");
 
-    gl = canvas.getContext("webgl");
+    gl = canvas.getContext("webgl2");
     console.info(
         `webgl debug is %c${opts.debug ? "on" : "off"}`,
         `font-weight: bold; text-decoration: underline; color: ${opts.debug ? "#009432" : "#EA2027"}`

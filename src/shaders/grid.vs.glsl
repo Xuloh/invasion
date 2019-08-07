@@ -1,4 +1,5 @@
-attribute vec4 aPosition;
+#version 300 es
+in vec4 aPosition;
 
 uniform vec4 uGridColor;
 uniform vec4 uBgColor;
@@ -6,11 +7,11 @@ uniform float uLineWidth;
 uniform float uInterval;
 uniform mat4 uInvViewProjection;
 
-varying vec4 vGridColor;
-varying vec4 vBgColor;
-varying float vLineWidth;
-varying float vInterval;
-varying vec4 vWorldPos;
+out vec4 vGridColor;
+out vec4 vBgColor;
+out float vLineWidth;
+out float vInterval;
+out vec4 vWorldPos;
 
 void main() {
     gl_Position = aPosition;
