@@ -19,3 +19,13 @@ Then you can run
 - `npm run build` to build the app, you can then find it in the `dist` sub directory
 
 Enjoy :D
+
+## Controls
+
+
+Key | control
+--- | ---
+`ZQSD`/`WASD` | move around
+`mouse` | aim
+`left click` | shoot
+`Escape` | open menu
