@@ -5,6 +5,10 @@ You need [NodeJS](https://nodejs.org/en/).
 Oh and a [browser](https://www.mozilla.org/en-US/firefox/new/).
 That's it.
 
+## What does it look like ?
+
+You can see it live [here](https://xuloh.github.io/invasion)
+
 ## How to run/build/whatever
 
 Once the repo is cloned, cd into the directory and run
